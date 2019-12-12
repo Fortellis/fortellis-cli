@@ -2,65 +2,74 @@ const { Command, flags } = require("@oclif/command");
 const fs = require("fs");
 const prompt = require("prompt");
 const ConfigManagementService = require("../services/config.management.service");
+const RepositoryService = require("../services/repository.service");
 
 class ConfigureCommand extends Command {
   async run() {
-    const configDir = "./.fortellis";
-    if (!fs.existsSync(configDir)) {
+    const { flags } = this.parse(ConfigureCommand);
+
+    const repoService = new RepositoryService();
+    if (!repoService.repoIsValid()) {
       this.error("This is not a Fortellis repository.");
       return 1;
     }
 
-    const prompt_attributes = [
-      {
-        name: "username"
-      },
-      {
-        name: "password",
-        hidden: true
-      },
-      {
-        name: "apiSpecName"
-      },
-      {
-        name: "environment"
+    let username = "";
+    let password = "";
+    let organizationId = "";
+
+    if (flags.username && flags.password) {
+      // If username/password are given in flags, simply use them and accept the values.
+      username = flags.username;
+      password = flags.password;
+
+      const configManagementService = new ConfigManagementService();
+      configManagementService.loadConfig();
+      configManagementService.setUsername(username);
+      configManagementService.setPassword(password);
+      configManagementService.setOrgId(organizationId);
+      configManagementService.saveConfig();
+
+      this.log("Configuration completed. See config file for stored values.");
+    } else {
+      // If you don't get both flags, then prompt for the values.
+      const prompt_attributes = [
+        {
+          name: "username"
+        },
+        {
+          name: "password",
+          hidden: true
+        },
+        {
+          name: "organizationId"
+        }
+      ];
+
+      if (flags.username && flags.password) {
       }
-    ];
 
-    prompt.start();
+      prompt.start();
 
-    prompt.get(prompt_attributes, (err, result) => {
-      if (err) {
-        console.log(err);
-        return 1;
-      } else {
-        let username = result.username;
-        let password = result.password;
-        let environment = result.environment;
-        let apiSpecName = result.apiSpecName;
-
-        let environmentUrl = "";
-        if (environment == "prod" || environment == "production") {
-          environmentUrl = "https://fortellis.io";
+      prompt.get(prompt_attributes, (err, result) => {
+        if (err) {
+          console.log(err);
+          return 1;
         } else {
-          environmentUrl = "https://fortellis-dev.io";
+          username = result.username;
+          password = result.password;
+          organizationId = result.organizationId;
         }
-
-        let apiSpecFileName = apiSpecName;
-        if (apiSpecFileName.indexOf(".yaml") < 0) {
-          apiSpecFileName += ".yaml";
-        }
-
-        const configManagementService = new ConfigManagementService(
-          username,
-          password,
-          apiSpecFileName
-        );
-        configManagementService.setConfig();
+        const configManagementService = new ConfigManagementService();
+        configManagementService.loadConfig();
+        configManagementService.setUsername(username);
+        configManagementService.setPassword(password);
+        configManagementService.setOrgId(organizationId);
+        configManagementService.saveConfig();
 
         this.log("Configuration completed. See config file for stored values.");
-      }
-    });
+      });
+    }
   }
 }
 
@@ -69,8 +78,9 @@ ConfigureCommand.description = `Configure the Fortellis repository.
 Set up the repository so it can communicate with Fortellis.
 `;
 
-// InitCommand.flags = {
-//   name: flags.string({ char: "n", description: "name to print" })
-// };
+ConfigureCommand.flags = {
+  username: flags.string({ char: "u", description: "Fortellis username" }),
+  password: flags.string({ char: "p", description: "Fortellis password" })
+};
 
 module.exports = ConfigureCommand;

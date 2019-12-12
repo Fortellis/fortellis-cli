@@ -1,37 +1,37 @@
 const { Command, flags } = require("@oclif/command");
 const fs = require("fs");
+const constants = require("../utils/constants");
 const ConfigManagementService = require("../services/config.management.service");
+const RepositoryService = require("../services/repository.service");
 
 class InitCommand extends Command {
   async run() {
-    const configDir = "./.fortellis";
-    const specDir = "./specs";
+    const repoService = new RepositoryService();
 
-    if (fs.existsSync(configDir)) {
+    if (repoService.repoIsValid()) {
       this.error("This directory is already a Fortellis repository.");
       return 1;
     }
-    fs.mkdirSync(configDir);
 
-    if (!fs.existsSync(specDir)) {
-      fs.mkdirSync(specDir);
+    if (!fs.existsSync(constants.configDir)) {
+      fs.mkdirSync(constants.configDir);
     }
 
-    let configData = {
-      authorization: {
-        username: "",
-        password: ""
-      },
-      specification: {
-        apiSpecFile: "",
-        apiDocsFile: "",
-        apiAuthFile: ""
-      },
-      fortellisServer: "https://fortellis-dev.io"
-    };
+    if (!fs.existsSync(constants.docsDir)) {
+      fs.mkdirSync(constants.docsDir);
+    }
 
-    const configManagementService = new ConfigManagementService("", "", "");
-    configManagementService.setConfig();
+    if (!fs.existsSync(constants.authDir)) {
+      fs.mkdirSync(constants.authDir);
+    }
+
+    if (!fs.existsSync(constants.specDir)) {
+      fs.mkdirSync(constants.specDir);
+    }
+
+    // Create blank config and save it.
+    const configManagementService = new ConfigManagementService();
+    configManagementService.saveConfig();
 
     this.log(
       `Initialized empty Fortellis repository in ${process.cwd()}/.fortellis/`
