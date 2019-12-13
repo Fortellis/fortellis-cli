@@ -67,8 +67,9 @@ async function getToken(sessionId) {
 
     const res = await axios(config);
     // const res = await axios.get(url, { params: parameters }, config);
-    console.log("ReturnCode: ", res.status);
-    console.log("HEADERS: ", res.headers);
+    // console.log("ReturnCode: ", res.status);
+    // console.log("HEADERS: ", res.headers);
+    console.log(res.data);
   } catch (err) {
     console.error(err);
   }

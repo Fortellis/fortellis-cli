@@ -1,0 +1,384 @@
+# Fortellis only accepts files that meet the criteria for the OpenAPI 2.0 Specification.
+swagger: "2.0"
+info:
+  version: "12.0.0"
+  title: Fortellis Sample Application
+  # To submit the YAML file quickly and save you time, you can use the following example to help you format your YAML file. Include a pipe in the description to make the YAML file reflect Markdown. You must include three headings in the description. Include the following information in this format in the first heading: Product Name - Root Name - API Name. The product name is the name of the product or company. The root name is the domain that the API will go under. The intended audience is who should use this API. Include information for what the API does in the next heading. In the third heading, include the intended Audience.
+  description: |
+    # Fortellis Products - Fortellis Domain - Fortellis Spec
+
+      For the product, enter the product that the API should promote.
+
+      For the domain, enter one of the Fortellis domains listed on the https://apidocs.fortellis.io.
+
+      For the name, enter the common name that you would like to provide for the specification.
+
+    # What does this API do?
+    Spec Providers can supply excellent specs to encourage the adoption and the implementation of those specs by others within the automotive space. API specs should include descriptions that start with an executive summary of what solution and implementations could do with the spec. The description should then provide information on specifically what features the specification offers. Finally, the description should explain how solution and implementation providers can use the spec to achieve personal, departmental, and organizational goals. With this format, Spec Providers can show the value and benefit of the spec outside of their organization and encourage the adoption of their API specs by other API and solution Providers, increasing the possible implementations, solutions, and users of their APIs and solutions.
+
+    # Intended Audience
+    Spec Providers that are trying to create specs that can pass the linter requirements can start with this spec and replace this placeholder text with the information that suits their specs.
+
+basePath: /service/parts-store/v12
+schemes:
+  - https
+
+# Remove the host. Functionally, this will provide no information on the Fortellis platform. Fortellis solutions call api.fortellis.io/basePath. Fortellis routes the calls to the `providerURL/basePath`. If you use the app.swaggerhub.com website, you can test the information in your API calls with a solution before you have completely built the API spec, but delete the host information before submitting the spec to Fortellis.
+
+# Describe the endpoints and the different headers, query parameters, path parameters, and body requests and responses that Solution and API Providers will use.
+
+paths:
+  # You can create multiple paths with multiple verbs. Please use only accepted OpenAPI spec verbs (Post, Get, Put, Delete).
+  /all-product-info:
+    get:
+      summary: Server example operation
+      description: You can use this call to get the information on all of the products at this resource that you need to use.
+      # Include 200 or 300 for successful responses. Include 400 or 500 responses for unsuccessful calls.
+      operationId: allProductInfo
+      tags:
+        - query
+      parameters:
+        - $ref: "#/parameters/uid"
+        - $ref: "#/parameters/organization"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/allProducts"
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/missingParameters"
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        405:
+          description: Method Not Allowed
+        406:
+          description: Not Acceptable
+        407:
+          description: Proxy Authentication Required
+        408:
+          description: Request Timeout
+        410:
+          description: Gone
+        411:
+          description: Length Required
+        412:
+          description: Precondition Failed
+        413:
+          description: Payload Too Large
+  /all-product-info/{path-product-number}:
+    get:
+      summary: Specific Product
+      description: Find a specific product.
+      operationId: productInformation
+      parameters:
+        - $ref: "#/parameters/uid"
+        - $ref: "#/parameters/organization"
+        - $ref: "#/parameters/path-product-number"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/path-product-number"
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        405:
+          description: Method Not Allowed
+        406:
+          description: Not Acceptable
+        407:
+          description: Proxy Authentication Required
+        408:
+          description: Request Timeout
+        410:
+          description: Gone
+        411:
+          description: Length Required
+        412:
+          description: Precondition Failed
+        413:
+          description: Payload Too Large
+  /all-product-info/{path-product-number}/productSize:
+    get:
+      summary: Specific Product Description
+      description: Find the description for a specific product.
+      operationId: productDescription
+      parameters:
+        - $ref: "#/parameters/path-product-number"
+        - $ref: "#/parameters/productSize"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/productSize"
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        405:
+          description: Method Not Allowed
+        406:
+          description: Not Acceptable
+        407:
+          description: Proxy Authentication Required
+        408:
+          description: Request Timeout
+        410:
+          description: Gone
+        411:
+          description: Length Required
+        412:
+          description: Precondition Failed
+        413:
+          description: Payload Too Large
+  /ping:
+    get:
+      summary: Server heartbeat operation
+      description: Solutions can use this operation to check that the server is still available and responding to requests.
+      operationId: healthMonitor
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        405:
+          description: Method Not Allowed
+        406:
+          description: Not Acceptable
+        407:
+          description: Proxy Authentication Required
+        408:
+          description: Request Timeout
+        410:
+          description: Gone
+        411:
+          description: Length Required
+        412:
+          description: Precondition Failed
+        413:
+          description: Payload Too Large
+# Define the parameters that you will use in your spec. You will repeat these multiple times throughout the definition. Some of these items will be common header values that your backend system will expect. Some of them will be unique path values that capture the individual values of each of your systems.
+parameters:
+  header.Request-Id:
+    name: Request-Id
+    in: header
+    required: true
+    type: string
+    format: guid
+    description: A correlation ID that should be returned back to the caller to indicate the return of the given request
+  query.email:
+    name: email
+    in: query
+    description: Filters customers by email address
+    type: string
+  query.name:
+    name: name
+    in: query
+    description: Filters customers by name
+    type: string
+  query.phone:
+    name: phone
+    in: query
+    description: Filters customers by phone number
+    type: string
+  uid:
+    name: user id
+    in: header
+    description: Identifies the user accessing the account
+    required: true
+    type: string
+  organization:
+    name: organization
+    in: header
+    description: Identifies the organization that the user is in
+    required: true
+    type: string
+  path-product-number:
+    name: path-product-number
+    in: path
+    description: Filters for a specific product
+    required: true
+    type: array
+    items:
+      type: number
+  productSize:
+    name: productSize
+    in: path
+    description: Filters for the product size of a specific product
+    required: true
+    type: string
+#Define definitions for the return values. You can start to make the information that you want each of your endpoints to return.
+definitions:
+  missingParameters:
+    type: object
+    properties:
+      error:
+        type: string
+    example:
+      error: Include your user id and organization to access this resource.
+  productSize:
+    type: object
+    properties:
+      productWidth:
+        type: string
+      productHeight:
+        type: string
+      productLength:
+        type: string
+      productWeight:
+        type: string
+    required:
+      - productWith
+      - productHeight
+      - productLength
+      - productWeight
+    example:
+      productSize:
+        productWidth: 4 inches
+        productHeight: 1.8 cm
+        productLength: 4 inches
+        productWeight: 22 g
+  path-product-number:
+    type: object
+    properties:
+      name:
+        type: string
+      id:
+        type: string
+      number:
+        type: integer
+      location:
+        type: string
+      productSize:
+        type: object
+        properties:
+          productWidth:
+            type: string
+          productHeight:
+            type: string
+          productWeight:
+            type: string
+    required:
+      - name
+      - id
+      - number
+      - location
+      - productSize
+    example: # <----------
+      - name: Radiator
+        id: 3897
+        number: 5
+        location: 9th & 10th floor, Binarius Building, Deepak Complex National Games Road, Opp Golf Course, Shastrinagar, Yerawada, Pune, Maharashtra 411006, India
+        productSize:
+          productWidth: 19-3/4 inches
+          productHeight: 19-1/8 inches
+          productLength: 2-3/16
+          productWeight: 17.8 lbs.
+  # Products
+  allProducts:
+    type: object
+    properties:
+      products:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+            number:
+              type: integer
+            location:
+              type: string
+            productSize:
+              type: object
+              properties:
+                productWidth:
+                  type: string
+                productHeight:
+                  type: string
+                productLength:
+                  type: string
+                productWeight:
+                  type: string
+    required:
+      - name
+      - id
+      - number
+      - location
+      - productSize
+    example:
+      products:
+        - name: Gasket
+          id: 4960
+          number: 1
+          location: 8601 Ranch to Market 2222 Building 1 Austin, TX 78730
+          productSize:
+            productWidth: 4 inches
+            productHeight: 1.8 cm
+            productLength: 4 inches
+            productWeight: 22 g
+        - name: Chasis
+          id: 8321
+          number: 2
+          location: CDK Global, 1 Cygnet Way, Charnham Park, Hungerford RG17 0YL, UK
+          productSize:
+            productWidth: 7 ft
+            productHeight: 1 ft
+            productLength: 12 ft
+            productWeight: 250 lbs
+        - name: Steering Wheel
+          id: 7629
+          number: 3
+          location: 2525 SW 1st Ave Suite 400, Portland, OR 97201
+          productSize:
+            productWidth: 14 1/2 inches
+            productHeight: 3 5/8 inches
+            productLength: 14 1/2 inches
+            productWeight: 385 grams
+        - name: Engine
+          id: 2385
+          number: 4
+          location: 1950 Hassell Rd, Hoffman Estates, IL 60169
+          productSize:
+            productWidth: 28 inches
+            productHeight: 27 inches
+            productLength: 26 inches
+            productWeight: 411 lbs.
+        - name: Radiator
+          id: 3897
+          number: 5
+          location: 9th & 10th floor, Binarius Building, Deepak Complex National Games Road, Opp Golf Course, Shastrinagar, Yerawada, Pune, Maharashtra 411006, India
+          productSize:
+            productWidth: 19-3/4 inches
+            productHeight: 19-1/8 inches
+            productLength: 2-3/16
+            productWeight: 17.8 lbs.
