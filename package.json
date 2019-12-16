@@ -8,12 +8,16 @@
   },
   "bugs": "https://github.com/deastland/fortellis-cli/issues",
   "dependencies": {
+    "@cdkglobal/fortellis-dev-utils": "^1.9.0",
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.13.3",
     "@oclif/plugin-help": "^2.2.2",
+    "@stoplight/spectral": "^4.2.0",
+    "@stoplight/yaml": "^3.5.0",
     "axios": "^0.19.0",
     "js-yaml": "^3.13.1",
-    "prompt": "^1.0.0"
+    "prompt": "^1.0.0",
+    "stoplight": "0.0.7"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",

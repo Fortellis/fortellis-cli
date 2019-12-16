@@ -1,5 +1,6 @@
 const { Command, flags } = require("@oclif/command");
 const RepositoryService = require("../services/repository.service");
+const ConfigManagementService = require("../services/config.management.service");
 const fs = require("fs");
 
 /**
@@ -59,10 +60,22 @@ class TemplateCommand extends Command {
       }
     );
 
+    const configService = new ConfigManagementService();
+    configService.loadConfig();
+    configService.setAuthFile("samplePermissions.txt");
+    configService.setDocFile("sampleDocumentation.md");
+    configService.setSpecFile("sampleApiSpec.yaml");
+    configService.saveConfig();
+
     this.log(
       "Template Created: [sampleApiSpec.yaml, sampleDocumentation.md, samplePermissions.txt]"
     );
   }
 }
+
+TemplateCommand.description = `Put example template documents into an empty repository.
+...
+This creates sample spec, documentaiton, and permissions documents that the user can then modify for API development.
+`;
 
 module.exports = TemplateCommand;

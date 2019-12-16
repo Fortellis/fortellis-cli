@@ -75,7 +75,8 @@ class ConfigureCommand extends Command {
 
 ConfigureCommand.description = `Configure the Fortellis repository.
 ...
-Set up the repository so it can communicate with Fortellis.
+Set up the repository so it can communicate with Fortellis. This command will edit the
+config.yaml file, reflecting the data entered during configuration.
 `;
 
 ConfigureCommand.flags = {

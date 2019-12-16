@@ -82,9 +82,9 @@ class StatusCommand extends Command {
   }
 }
 
-StatusCommand.description = `Initialize a Fortellis repository in the current directory.
+StatusCommand.description = `List the status of the fortellis repository.
 ...
-This creates a .fortellis directory and creates a default config.yaml file.
+List all of the repository files and their status.
 `;
 
 module.exports = StatusCommand;

@@ -90,7 +90,7 @@ class GetAuthTommand extends Command {
   }
 }
 
-GetAuthTommand.description = `Describe the command here
+GetAuthTommand.description = `Test fetching an authorization token
 ...
 Extra documentation goes here
 `;

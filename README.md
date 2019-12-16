@@ -1,5 +1,4 @@
-fortellis-cli
-=============
+# fortellis-cli
 
 Command Line for Fortellis API Specs
 
@@ -9,11 +8,15 @@ Command Line for Fortellis API Specs
 [![License](https://img.shields.io/npm/l/fortellis-cli.svg)](https://github.com/deastland/fortellis-cli/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [Usage](#usage)
+- [Commands](#commands)
+  <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g fortellis-cli
 $ fortellis-cli COMMAND
@@ -25,29 +28,34 @@ USAGE
   $ fortellis-cli COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`fortellis-cli hello`](#fortellis-cli-hello)
-* [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
 
-## `fortellis-cli hello`
+- [`fortellis-cli hello`](#fortellis-cli-hello)
+- [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
 
-Describe the command here
+## `fortellis-cli init`
+
+This creates a Fortellis repository in the current directory.
 
 ```
 USAGE
-  $ fortellis-cli hello
+  $ fortellis-cli init
 
 OPTIONS
-  -n, --name=name  name to print
 
 DESCRIPTION
   ...
-  Extra documentation goes here
+  A fortellis repository is a directory containing a ./.fortellis sub-directory. In this
+  sub-directory will be a config.yaml file which will eventually contain the configuration data
+  for the repository.
 ```
 
-_See code: [src/commands/hello.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/hello.js)_
+_See code: [src/commands/hello.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/init.js)_
 
 ## `fortellis-cli help [COMMAND]`
 
@@ -65,4 +73,5 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.2/src/commands/help.ts)_
+
 <!-- commandsstop -->

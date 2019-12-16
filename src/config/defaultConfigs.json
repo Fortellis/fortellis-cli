@@ -1,0 +1,23 @@
+{
+  "corsPolicy": "xch-cors",
+  "destination": "/tmp/tmpProxies",
+  "virtualhosts": "default,secure",
+  "baseuri": "https://api.enterprise.apigee.com",
+  "portal": {
+    "devUrl": "https://api.enterprise.apigee.com/v1/o/cdk-preprod",
+    "url": "https://api.enterprise.apigee.com/v1/o/cdk",
+    "portalUrl_template": "-cdk.devportal.apigee.io",
+    "apigeeHost": "api.fortellis.io",
+    "apigeeHostDev": "cdk-preprod-stage.apigee.net",
+    "apigeeSchemes": ["https"],
+    "exampleApiKey": "3PoBlVYmA38CbThRGxfeL45ZJy4eIWFY",
+    "exampleSubscriptionId": "test",
+    "cronJobUrl_template": "-cdk.devportal.apigee.io/cron.php?cron_key=6A2qZywjjg7uPhMWyImSWvygmIz_Ulj_u1rWmbxwMPY",
+    "publishEnvironments": ["live"],
+    "publishDevEnvironments": ["dev"]
+  },
+  "adminEmails": [
+    "RD.Solutions.Dev@cdk.com",
+    "Fortellis.Developer.Network@cdk.com"
+  ]
+}

@@ -39,9 +39,11 @@ class InitCommand extends Command {
   }
 }
 
-InitCommand.description = `Initialize a Fortellis repository in the current directory.
+InitCommand.description = `Create a Fortellis repository in the current directory.
 ...
-This creates a .fortellis directory and creates a default config.yaml file.
+A fortellis repository is a directory containing a ./.fortellis sub-directory. In this
+sub-directory will be a config.yaml file which will eventually contain the configuration data
+for the repository.
 `;
 
 module.exports = InitCommand;
