@@ -38,6 +38,11 @@ paths:
       tags:
         - query
       parameters:
+        - name: Request-Id
+          in: header
+          required: true
+          description: Used for tracing requests
+          type: string
         - $ref: "#/parameters/uid"
         - $ref: "#/parameters/organization"
       produces:
@@ -79,6 +84,11 @@ paths:
       description: Find a specific product.
       operationId: productInformation
       parameters:
+        - name: Request-Id
+          in: header
+          required: true
+          description: Used for tracing requests
+          type: string
         - $ref: "#/parameters/uid"
         - $ref: "#/parameters/organization"
         - $ref: "#/parameters/path-product-number"
@@ -119,6 +129,11 @@ paths:
       description: Find the description for a specific product.
       operationId: productDescription
       parameters:
+        - name: Request-Id
+          in: header
+          required: true
+          description: Used for tracing requests
+          type: string
         - $ref: "#/parameters/path-product-number"
         - $ref: "#/parameters/productSize"
       produces:
@@ -157,6 +172,12 @@ paths:
       summary: Server heartbeat operation
       description: Solutions can use this operation to check that the server is still available and responding to requests.
       operationId: healthMonitor
+      parameters:
+        - name: Request-Id
+          in: header
+          required: true
+          description: Used for tracing requests
+          type: string
       responses:
         200:
           description: OK

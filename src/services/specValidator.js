@@ -5,6 +5,10 @@ const defaultConfigs = require("../config/defaultConfigs");
 const { logService: logger } = require("@cdkglobal/fortellis-dev-utils");
 const ERROR_PATH_DELIM = "/";
 
+// This will need to be moved to an ENV variable (and possibly set by Terraform)
+const domainServiceUrl =
+  "https://h9mfexl1db.execute-api.us-west-2.amazonaws.com/api/v1/domains";
+
 /**
  * Validates a spec by first linting the spec against the OpenAPI and Fortellis schema standards.
  * Throws error listing validation failures if spec is invalid.
@@ -70,7 +74,7 @@ function getDomainNameError(domainName = "") {
 }
 
 function validateDomain(spec, Authorization) {
-  const domainServiceUrl = process.env.DOMAIN_SERVICE_URL;
+  //   const domainServiceUrl = process.env.DOMAIN_SERVICE_URL;
   const { basePath = "" } = spec;
   const domainName = basePath.split("/")[1];
   if (!domainName) {

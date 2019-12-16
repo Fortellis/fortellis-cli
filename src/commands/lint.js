@@ -21,7 +21,12 @@ class LintCommand extends Command {
     configService.loadConfig();
 
     const specFileName = configService.specFileName;
-    this.log("Spec File:", specFileName);
+    if (!specFileName) {
+      this.error(
+        "Unable to validate spec. No spec file exists in this repository"
+      );
+    }
+    this.log("Linting Spec File:", specFileName);
 
     // Load the spec file for linting.
     const specFileContents = fs.readFileSync(
