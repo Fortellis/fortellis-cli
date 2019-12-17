@@ -12,7 +12,6 @@ class AddCommand extends Command {
     // Verify that this is a Fortellis repo
     if (!repositoryService.repoIsValid()) {
       this.error("This is not a Fortellis repository.");
-      return 1;
     }
 
     const configManagementService = new ConfigManagementService();

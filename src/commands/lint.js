@@ -3,18 +3,18 @@ const fs = require("fs");
 const constants = require("../utils/constants");
 const ConfigManagementService = require("../services/config.management.service");
 const specValidator = require("../services/specValidator");
+const RepositoryService = require("../services/repository.service");
 
 const redColor = "\x1b[31m%s\x1b[0m";
 const resetColor = "\x1b[0m%s";
 
 class LintCommand extends Command {
-  //   async validateSpec(contents, options) {
-  //     const validationErrors = await specValidator.validate(contents, options);
-
-  //     return validationErrors;
-  //   }
-
   async run() {
+    const repoService = new RepositoryService();
+    if (!repoService.repoIsValid()) {
+      this.error("This is not a Fortellis repository.");
+    }
+
     const { flags } = this.parse(LintCommand);
 
     let configService = new ConfigManagementService();

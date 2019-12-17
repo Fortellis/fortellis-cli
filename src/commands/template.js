@@ -15,7 +15,6 @@ class TemplateCommand extends Command {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
       this.error("This is not a valid Fortellis repository.");
-      return 1;
     }
 
     // Check that the repo is empty
@@ -27,7 +26,6 @@ class TemplateCommand extends Command {
       this.error(
         "Files are alread saved in this repo. Create an empty repo for a template."
       );
-      return 1;
     }
 
     fs.copyFile(

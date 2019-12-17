@@ -10,7 +10,6 @@ class InitCommand extends Command {
 
     if (repoService.repoIsValid()) {
       this.error("This directory is already a Fortellis repository.");
-      return 1;
     }
 
     if (!fs.existsSync(constants.configDir)) {

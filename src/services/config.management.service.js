@@ -43,7 +43,7 @@ class ConfigManagementService {
       this.docFileName = data.specification.apiDocsFile;
       this.authFileName = data.specification.apiAuthFile;
     } catch (err) {
-      console.error(err);
+      console.error("Error loading configuraiton: ", err);
     }
   }
 

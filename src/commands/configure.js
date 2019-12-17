@@ -11,7 +11,6 @@ class ConfigureCommand extends Command {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
       this.error("This is not a Fortellis repository.");
-      return 1;
     }
 
     let username = "";
@@ -53,8 +52,7 @@ class ConfigureCommand extends Command {
 
       prompt.get(prompt_attributes, (err, result) => {
         if (err) {
-          console.log(err);
-          return 1;
+          this.error(err);
         } else {
           username = result.username;
           password = result.password;

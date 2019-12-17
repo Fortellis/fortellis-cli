@@ -12,7 +12,6 @@ class StatusCommand extends Command {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
       this.error("This is not a Fortellis repository.");
-      return 1;
     }
 
     const configManagementService = new ConfigManagementService();
