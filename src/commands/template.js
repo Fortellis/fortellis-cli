@@ -14,7 +14,7 @@ class TemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error("This is not a valid Fortellis repository.");
+      this.error("This is not a Fortellis repository.");
     }
 
     // Check that the repo is empty
