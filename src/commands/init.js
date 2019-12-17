@@ -40,8 +40,8 @@ class InitCommand extends Command {
 
 InitCommand.description = `Create a Fortellis repository in the current directory.
 ...
-A fortellis repository is a directory containing a ./.fortellis sub-directory. In this
-sub-directory will be a config.yaml file which will eventually contain the configuration data
+A fortellis repository is a directory containing a spec, docs, permissions, and .fortellis sub-directory. 
+In the .fortellis sub-directory will be a config.yaml file which will contain the configuration data
 for the repository.
 `;
 
