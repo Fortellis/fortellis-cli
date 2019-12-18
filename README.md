@@ -67,7 +67,7 @@ Configure the Fortellis repository.
 
 ```
 USAGE
-\$ fortellis-cli configure
+$ fortellis-cli configure
 
 OPTIONS
 --username=<username> Fortellis username
@@ -80,6 +80,64 @@ DESCRIPTION
 ```
 
 _See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
+
+## `fortellis-cli template`
+
+Put example template documents into an empty repository.
+
+```
+USAGE
+$ fortellis-cli template
+
+OPTIONS
+
+DESCRIPTION
+  ...
+  Create sample spec, documentation, and permissions documents that the user can then modify for API Development.
+```
+
+_See code: [src/commands/template.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/template.js)_
+
+## `fortellis-cli status`
+
+List all fo the repository files and their status.
+
+```
+USAGE
+$ fortellis-cli status
+
+OPTIONS
+
+DESCRIPTION
+  ...
+  List all spec, documentation, and permissions files in the repository. Note if any of the files have been added,
+  or deleted since the last time the repository was updated.
+```
+
+_See code: [src/commands/status.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/status.js)_
+
+## `fortellis-cli add`
+
+Add either an API Spec, docs, or permissions file to the repository.
+
+```
+USAGE
+$ fortellis-cli add
+
+OPTIONS
+  -a, --apispec=<SpecFileName>      Add spec file to the repository
+  -d, --documentation=<DocFileName> Add doc file to the repository
+  -p, --permissions=<AuthFileName>  Add permissions file to the repository
+
+DESCRIPTION
+  ...
+  Add a new file to the repository.
+
+  The file name can be specified and it will be added to the repo. If '*' is entered as the filename the
+  file which is in the proper directory (specs/docs/permissions) will be added to the repository.
+```
+
+_See code: [src/commands/add.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/add.js)_
 
 ## `fortellis-cli help [COMMAND]`
 
