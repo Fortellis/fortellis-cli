@@ -35,8 +35,12 @@ USAGE
 
 <!-- commands -->
 
-- [`fortellis-cli hello`](#fortellis-cli-hello)
 - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+- [`fortellis-cli init`](#fortellis-cli-init-command)
+- [`fortellis-cli configure`](#fortellis-cli-configure-command)
+- [`fortellis-cli template`](#fortellis-cli-template-command)
+- [`fortellis-cli status`](#fortellis-cli-status-command)
+- [`fortellis-cli add`](#fortellis-cli-add-command)
 
 ## `fortellis-cli init`
 
@@ -55,7 +59,27 @@ DESCRIPTION
   for the repository.
 ```
 
-_See code: [src/commands/hello.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/init.js)_
+_See code: [src/commands/init.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/init.js)_
+
+## `fortellis-cli configure`
+
+Configure the Fortellis repository.
+
+...
+USAGE
+\$ fortellis-cli configure
+
+OPTIONS
+--username=<username> Fortellis username
+--password=<password> Fortellis password
+
+DESCRIPTION
+...
+Set up the repository so it can communicate with Fortellis. This command will edit the
+config.yaml file, reflecting the data entered during configuration.
+...
+
+_See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
 
 ## `fortellis-cli help [COMMAND]`
 
