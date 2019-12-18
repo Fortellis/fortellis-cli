@@ -65,7 +65,7 @@ _See code: [src/commands/init.js](https://github.com/deastland/fortellis-cli/blo
 
 Configure the Fortellis repository.
 
-...
+```
 USAGE
 \$ fortellis-cli configure
 
@@ -74,10 +74,10 @@ OPTIONS
 --password=<password> Fortellis password
 
 DESCRIPTION
-...
-Set up the repository so it can communicate with Fortellis. This command will edit the
-config.yaml file, reflecting the data entered during configuration.
-...
+  ...
+  Set up the repository so it can communicate with Fortellis. This command will edit the
+  config.yaml file, reflecting the data entered during configuration.
+```
 
 _See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
 
