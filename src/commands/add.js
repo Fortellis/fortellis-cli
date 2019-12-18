@@ -24,9 +24,8 @@ class AddCommand extends Command {
       fileName = flags.apispec;
       if (fileName == "*") {
         // If file name is '*', use the file in the directory.
-        configManagementService.setSpecFile(
-          repositoryService.getSpecInDirectory()
-        );
+        fileName = repositoryService.getSpecInDirectory();
+        configManagementService.setSpecFile(fileName);
       } else {
         // If the file name is specified, make sure it is a .yaml file.
         if (fileName.indexOf(".yaml") < 0) {
@@ -38,9 +37,9 @@ class AddCommand extends Command {
       // Save a new Documentation file to the config
       fileName = flags.documentation;
       if (fileName == "*") {
-        configManagementService.setDocFile(
-          repositoryService.getDocsInDirectory()
-        );
+        fileName = repositoryService.getDocsInDirectory();
+
+        configManagementService.setDocFile(fileName);
       } else {
         configManagementService.setDocFile(fileName);
       }
@@ -48,9 +47,8 @@ class AddCommand extends Command {
       // Save a new Permissions file to the config
       fileName = flags.permission;
       if (fileName == "*") {
-        configManagementService.setAuthFile(
-          repositoryService.getAuthInDirectory()
-        );
+        fileName = repositoryService.getAuthInDirectory();
+        configManagementService.setAuthFile(fileName);
       } else {
         configManagementService.setAuthFile(fileName);
       }
@@ -63,7 +61,7 @@ class AddCommand extends Command {
 
     configManagementService.saveConfig();
 
-    // this.log(`${fileName} has been added to the repository.`);
+    this.log(`${fileName} has been added to the repository.`);
   }
 }
 

@@ -1,4 +1,4 @@
-const { Command, flags } = require("@oclif/command");
+const { Command } = require("@oclif/command");
 const fs = require("fs");
 const constants = require("../utils/constants");
 const ConfigManagementService = require("../services/config.management.service");

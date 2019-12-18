@@ -31,6 +31,20 @@ class RepositoryService {
     }
   }
 
+  deleteFolderRecursive(path) {
+    if (fs.existsSync(path)) {
+      fs.readdirSync(path).forEach((file, index) => {
+        let curPath = path + "/" + file;
+        if (fs.lstatSync(curPath).isDirectory()) {
+          deleteFolderRecursive(curPath);
+        } else {
+          fs.unlinkSync(curPath);
+        }
+      });
+      fs.rmdirSync(path);
+    }
+  }
+
   getSpecInDirectory() {
     return this.getFileFromDirectory(constants.specDir);
   }
@@ -41,6 +55,13 @@ class RepositoryService {
 
   getAuthInDirectory() {
     return this.getFileFromDirectory(constants.authDir);
+  }
+
+  deleteRepositoy() {
+    this.deleteFolderRecursive(constants.specDir);
+    this.deleteFolderRecursive(constants.docsDir);
+    this.deleteFolderRecursive(constants.authDir);
+    this.deleteFolderRecursive(constants.configDir);
   }
 }
 
