@@ -10,6 +10,12 @@ describe("template", () => {
 
   test
     .stdout()
+    .command(["template"])
+    .exit(2)
+    .it("exits with status 2 when repo does not exist");
+
+  test
+    .stdout()
     .command(["init"])
     .it("runs init", ctx => {
       expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");

@@ -8,17 +8,27 @@ describe("configure", () => {
     console.log("Cleaning up repository");
   });
 
-  test
-    .stdout()
-    .command(["init"])
-    .it("runs init", ctx => {
-      expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");
-    });
+  describe("- Configure with no repository...", () => {
+    test
+      .stdout()
+      .command(["configure"])
+      .exit(2)
+      .it("exits with status 2 when repo does not exist");
+  });
 
-  test
-    .stdout()
-    .command(["configure", "-u=username", "-p=password"])
-    .it("runs config -u=username -p=password", ctx => {
-      expect(ctx.stdout).to.contain("Configuration completed.");
-    });
+  describe("- Configure after creating a valid repo...", () => {
+    test
+      .stdout()
+      .command(["init"])
+      .it("runs init", ctx => {
+        expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");
+      });
+
+    test
+      .stdout()
+      .command(["configure", "-u=username", "-p=password"])
+      .it("runs config -u=username -p=password", ctx => {
+        expect(ctx.stdout).to.contain("Configuration completed.");
+      });
+  });
 });

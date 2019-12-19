@@ -14,4 +14,10 @@ describe("init", () => {
     .it("runs init", ctx => {
       expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");
     });
+
+  test
+    .stdout()
+    .command(["init"])
+    .exit(2)
+    .it("exit with status 2 if repo already exists");
 });
