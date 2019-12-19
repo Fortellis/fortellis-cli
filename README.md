@@ -3,10 +3,13 @@
 ## Geting started
 
 `git clone ssh://git@stash.cdk.com/cexchng/fortellis-cli.git`
+
 `cd fortellis-cli`
+
 `npm install`
 
 In order for the "fortellis-cli" command to work on a machine where it is installed, you need to link the command with the follwoing command.
+
 `npm link`
 
 Command Line for Fortellis API Specs
