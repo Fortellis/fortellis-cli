@@ -1,6 +1,6 @@
 const { Command, flags } = require("@oclif/command");
 const fs = require("fs");
-const prompt = require("prompt");
+const inquirer = require("inquirer");
 const ConfigManagementService = require("../services/config.management.service");
 const RepositoryService = require("../services/repository.service");
 
@@ -31,38 +31,41 @@ class ConfigureCommand extends Command {
 
       this.log("Configuration completed. See config file for stored values.");
     } else {
-      // If you don't get both flags, then prompt for the values.
-      const prompt_attributes = [
+      // This literal list of organizations needs to eventually be a list created
+      // by a call to Fortellis with the provided username/password. It will then
+      // display the names, but save the organizationId
+      let organizationList = [
+        "Fortellis-DNP",
+        "Tirith Used Cars",
+        "CDK Global"
+      ];
+      const questions = [
         {
-          name: "username"
+          type: "input",
+          name: "fortellisUsername",
+          message: "username:"
         },
         {
-          name: "password",
-          hidden: true
+          type: "password",
+          name: "fortellisPassword",
+          message: "password:"
         },
         {
-          name: "organizationId"
+          type: "list",
+          name: "organization",
+          message: "Select organization:",
+          choices: organizationList
         }
       ];
 
-      if (flags.username && flags.password) {
-      }
+      inquirer.prompt(questions).then(answers => {
+        this.log(answers);
 
-      prompt.start();
-
-      prompt.get(prompt_attributes, (err, result) => {
-        if (err) {
-          this.error(err);
-        } else {
-          username = result.username;
-          password = result.password;
-          organizationId = result.organizationId;
-        }
         const configManagementService = new ConfigManagementService();
         configManagementService.loadConfig();
-        configManagementService.setUsername(username);
-        configManagementService.setPassword(password);
-        configManagementService.setOrgId(organizationId);
+        configManagementService.setUsername(answers.fortellisUsername);
+        configManagementService.setPassword(answers.fortellisPassword);
+        configManagementService.setOrgId(answers.organization);
         configManagementService.saveConfig();
 
         this.log("Configuration completed. See config file for stored values.");
