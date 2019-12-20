@@ -53,10 +53,9 @@ class AddCommand extends Command {
         configManagementService.setAuthFile(fileName);
       }
     } else {
-      this.log(
+      this.error(
         "You must specifiy the type of flie to be added to the repository"
       );
-      return 1;
     }
 
     configManagementService.saveConfig();

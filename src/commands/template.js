@@ -24,7 +24,7 @@ class TemplateCommand extends Command {
       repoService.getDocsInDirectory()
     ) {
       this.error(
-        "Files are alread saved in this repo. Create an empty repo for a template."
+        "Files are already saved in this repo. Create an empty repo for a template."
       );
     }
 
