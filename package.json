@@ -17,6 +17,7 @@
     "axios": "^0.19.0",
     "inquirer": "^7.0.1",
     "js-yaml": "^3.13.1",
+    "request": "^2.88.0",
     "stoplight": "0.0.7"
   },
   "devDependencies": {
