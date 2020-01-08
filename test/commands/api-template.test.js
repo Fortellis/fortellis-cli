@@ -1,7 +1,7 @@
 const { expect, test } = require("@oclif/test");
 const RepositoryService = require("../../src/services/repository.service");
 
-describe("template", () => {
+describe("api-template command", () => {
   after(() => {
     const repoService = new RepositoryService();
     repoService.deleteRepositoy();
@@ -11,8 +11,8 @@ describe("template", () => {
   describe("Create template where there is no repo", () => {
     test
       .stdout()
-      .command(["template"])
-      .exit(2)
+      .command(["api-template"])
+      .exit(1)
       .it("exits with status 2 when repo does not exist");
   });
 
