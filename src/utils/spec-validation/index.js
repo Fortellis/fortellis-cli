@@ -7,7 +7,6 @@ const whitelistedRulesSet = require("./default-rule-whitelist");
 const defaultRuleOverrides = require("./default-rule-overrides");
 const customValidationFunctions = require("./custom-validation-functions");
 const customValidationRules = require("./custom-validation-rules");
-const { logService: logger } = require("@cdkglobal/fortellis-dev-utils");
 const spectral = new Spectral();
 let isRulesetConfigured = false;
 
@@ -41,7 +40,7 @@ async function validate(APISpecInJSON) {
     }
     return await spectral.run(APISpecInJSON);
   } catch (err) {
-    logger.error({
+    console.error({
       message: "Spectral API Spec validation failed.",
       error: err
     });
