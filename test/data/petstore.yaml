@@ -1,0 +1,1463 @@
+swagger: '2.0'
+
+info:
+  version: '1'
+  title: Customers
+  description: |
+    # Fortellis - Customers
+    A customer is an individual who has been sold a vehicle, is a prospect on a vehicle, has bought parts or has had their vehicle repaired or serviced through the dealership and exists in a Customer Relationship Management system.
+
+    # What does this API do?
+    The API will allow you to find, retrieve, and filter service customers. In addition, it will allow you to create a basic customer record. 
+
+    # Intended Audience
+    The customer is required in the Sales Deal or Service Appointment creation workflows as they are customer centric. Customer services helps vehicle salesmen or service advisors provide a positive customer experience by allowing those workflows to be tied to a customer identity.
+
+basePath: /crm/v1/customers
+
+schemes:
+  - https
+
+paths:
+  # Commands
+  /:
+    get:
+      summary: Query customers
+      description: Query customers
+      operationId: queryCustomers
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id' 
+        - $ref: '#/parameters/query.firstName'
+        - $ref: '#/parameters/query.lastName'
+        - $ref: '#/parameters/query.email'
+        - $ref: '#/parameters/query.phone'
+        - $ref: '#/parameters/query.postalCode'
+        - $ref: '#/parameters/query.page'
+        - $ref: '#/parameters/query.pageSize'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/CustomerCollection'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+    post:
+      summary: Create a customer
+      description: Create a customer
+      operationId: createCustomer
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/body.CreateCustomerRequest'
+      produces:
+        - application/json
+      responses:
+        201:
+          $ref: '#/responses/CreateCustomer'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+
+  /{customerId}/:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+    get:
+      summary: Query a customer 
+      description: Query a customer
+      operationId: queryCustomerById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id' 
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Customer'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/change-name:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+    post:
+      summary: Update the name of a customer
+      description: Update the name of a customer
+      operationId: updateCustomerNameById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/body.UpdateNameRequest'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Name'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/personal-information:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+    get:
+      summary: Query personal information for a customer
+      description: Query personal information for a customer
+      operationId: queryCustomerPersonalInformationById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/PersonalInformation'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/change-personal-information:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+    post:
+      summary: Update personal information for a customer
+      description: Update personal information for a customer
+      operationId: updateCustomerPersonalInformationById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/body.UpdatePersonalInformation'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/PersonalInformation'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/change-contact-method/{uri}:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+      - $ref: '#/parameters/path.uri'
+    post:
+      summary: Update contact method information for a customer
+      description: Update contact method information for a customer
+      operationId: updateContactMethodById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/body.ContactMethod'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/ContactMethod'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/change-postal-address/{postalAddressLabel}:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+      - $ref: '#/parameters/path.postalAddressLabel'
+    post:
+      summary: Update a postal address for a customer
+      description: Update a postal address for a customer
+      operationId: updatePostalAddressById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/body.PostalAddress'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/PostalAddress'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+    delete:
+      summary: Delete a postal address for a customer
+      description: Delete a postal address for a customer
+      operationId: deletePostalAddressById
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+      produces:
+        - application/json
+      responses:
+        204:
+          $ref: '#/responses/Deleted'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/add-vehicle-link:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+    post:
+      summary: Add a link from the customer to a known vehicle
+      description: Add a link from the customer to a known vehicle
+      operationId: addVehicleLinkByCustomerId
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/body.VehicleLink'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/VehicleLink'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /{customerId}/remove-vehicle-link/{vehicleId}:
+    parameters:
+      - $ref: '#/parameters/path.customerId'
+      - $ref: '#/parameters/path.vehicleId'
+    post:
+      summary: Remove a link from the customer to a known vehicle
+      description: Remove a link from the customer to a known vehicle
+      operationId: removeVehicleLinkByCustomerId
+      tags:
+        - customers
+      parameters:
+        - $ref: '#/parameters/header.Prefer'
+        - $ref: '#/parameters/header.Request-Id'
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/VehicleLink'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+parameters:
+  path.customerId:
+    name: customerId
+    in: path
+    description: The customer identifier
+    required: true
+    type: string
+  
+  path.contactMethodLabel:
+    name: contactMethodLabel
+    in: path
+    description: The unique label of the contact method (e.g. mobile, work, home)
+    required: true
+    type: string
+  
+  path.postalAddressLabel:
+    name: postalAddressLabel
+    in: path
+    description: The unique label of the postal address (e.g. work, home)
+    required: true
+    type: string
+  
+  path.uri:
+    name: uri
+    in: path
+    description: The RFC 3986 encoded URI address of the contact method
+    required: true
+    type: string
+
+  body.CreateCustomerRequest:
+    name: CreateCustomerRequest
+    in: body
+    description: The customer definition
+    required: true
+    schema:
+      $ref: '#/definitions/CreateCustomerRequest'
+  
+  body.UpdateNameRequest:
+    name: UpdateNameRequest
+    in: body
+    description: The customer name definition
+    required: true
+    schema:
+      $ref: '#/definitions/Name'
+  
+  body.ContactMethod:
+    name: ContactMethod
+    in: body
+    description: The contact method definition (e.g. phone, sms, email)
+    required: true
+    schema:
+      $ref: '#/definitions/ContactMethod'
+  
+  body.ContactPreferences:
+    name: ContactPreferences
+    in: body
+    description: The customer's preferences for contact (e.g. opt-out, day, time)
+    required: true
+    schema:
+      $ref: '#/definitions/UpdateContactPreferencesRequest'
+  
+  body.PostalAddress:
+    name: PostalAddress
+    in: body
+    description: The postal address definition
+    required: true
+    schema:
+      $ref: '#/definitions/PostalAddress'
+
+  body.UpdatePersonalInformation:
+    name: UpdatePersonalInformation
+    in: body
+    description: The customer's personal information
+    required: true
+    schema:
+      $ref: '#/definitions/PersonalInformation'
+
+  body.VehicleLink:
+    name: VehicleLink
+    in: body
+    description: The vehicle link definition
+    required: true
+    schema:
+      $ref: '#/definitions/VehicleLink'
+
+  path.vehicleId:
+    name: vehicleId
+    in: path
+    description: The vehicle identifier
+    required: true
+    type: string
+
+  query.firstName:
+    name: firstName
+    in: query
+    description: Filters customers by first name
+    type: string
+          
+  query.lastName:
+    name: lastName
+    in: query
+    description: Filters customers by last name
+    type: string        
+          
+  query.email:
+    name: email
+    in: query
+    description: Filters customers by email address
+    type: string         
+        
+  query.phone:
+    name: phone
+    in: query
+    description: Filters customers by phone number
+    type: string         
+    
+  query.postalCode:
+    name: postalCode
+    in: query
+    description: Filters customers by postal code
+    type: string        
+  
+  # Common Parameters (see specs/common.yaml)
+  header.Accept:
+    name: Accept
+    in: header
+    required: false
+    type: string
+    enum:
+      - application/json
+  
+  header.Prefer:
+    name: Prefer
+    in: header
+    required: false
+    type: string
+    enum:
+      - return=representation
+      - return=minimal
+  
+  header.Accept-Charset:
+    name: Accept-Charset
+    in: header
+    required: false
+    type: string
+    enum:
+      - utf-8
+  
+  header.Accept-Language:
+    name: Accept-Language
+    in: header
+    required: false
+    type: string
+  
+  header.Request-Id:
+    name: Request-Id
+    in: header
+    required: false
+    type: string
+    format: guid 
+       
+  query.page:
+    name: page
+    in: query
+    description: A non-zero integer representing the page of the results
+    type: number
+
+  query.pageSize:
+    name: pageSize
+    in: query
+    description: A non-negative, non-zero integer indicating the maximum number of results to return at one time
+    type: number
+
+responses:
+  CustomerCollection:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/CustomerCollection'
+  
+  Customer:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/Customer'
+      
+  CreateCustomer:
+    description: Created
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/Customer'
+
+  Name:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/Name'
+
+  ContactMethodCollection:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/ContactMethodCollection'
+
+  ContactMethod:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/ContactMethodResource'
+
+  ContactPreferenceCollection:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/ContactPreferenceCollection'
+
+  PostalAddressCollection:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/PostalAddressCollection'
+  
+  PostalAddress:
+    description: OK
+    headers:
+      Request-Id:
+        type: string 
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/PostalAddressResource'
+  
+  PersonalInformation:
+    description: OK
+    headers:
+      Request-Id:
+        type: string
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/PersonalInformation'
+
+  VehicleLink:
+    description: OK
+    headers:
+      Request-Id:
+        type: string
+      Preference-Applied:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    schema:
+      $ref: '#/definitions/VehicleLink'
+
+  # Common Responses (see specs/common.yaml)
+  Deleted:
+    description: 204 - No Content
+    headers:
+      Request-Id:
+        type: string
+  
+  BadRequest:
+    description: 400 - Bad Request
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+      
+  Unauthorized:
+    description: 401 - Unauthorized
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+      
+  Forbidden:
+    description: 403 - Forbidden
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  
+  NotFound:
+    description: 404 - Not Found
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+definitions:
+  Customer:
+    type: object
+    properties:
+      customerId:
+        type: string
+        format: guid
+        readOnly: true
+        description: The identifier of the customer record.
+      name:
+        $ref: '#/definitions/Name'
+        description: The name of the customer.
+      contactMethods:
+        type: array
+        items:
+          $ref: '#/definitions/ContactMethod'
+        minItems: 1
+        description: The contact methods for the customer
+      postalAddresses:
+        type: array
+        items:
+          $ref: '#/definitions/PostalAddress'
+        minItems: 1
+        description: The postal addresses associated with the customer
+      links:
+         $ref: '#/definitions/LinkSelfObject'
+         description: The hypermedia links of the customer resource
+    example:
+      customerId: c2c572e2-91c7-47cb-80c1-8672e1290444
+      name:
+        firstName: John
+        middleName: Joe
+        lastName: Doe
+        prefix: Mr
+        suffix: BSc
+        preferredName: Joe
+      contactMethods:
+        - uri: 'tel:18475555555'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T09:00'
+              endTime: '0000-01-01T17:00'
+              timeZone: CST
+        - uri: 'sms:18475555555'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T07:00'
+              endTime: '0000-01-01T22:00'
+              timeZone: CST
+        - uri: 'mailto:john.doe@example.com'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T00:00'
+              endTime: '0000-01-01T23:59'
+              timeZone: CST
+      postalAddresses:
+        - postalAddressLabel: home
+          houseName: Tall Trees
+          street: 110 The example road
+          poBox: PO Box 1234
+          neighborhood: West Side
+          city: This city
+          subRegion: Outside the city
+          region: IL
+          postalCode: IL12234
+          countryCode: US
+      links:
+        self:
+          href: https://api.fortellis.io/crm/v1/customers/c2c572e2-91c7-47cb-80c1-8672e1290444
+          method: GET
+          title: Display resource John Doe
+  
+  Name:
+    type: object
+    properties:
+      firstName:
+        type: string
+        description: The first name of the customer
+      middleName:
+        type: string
+        description: The middle name of the customer
+      lastName:
+        type: string
+        description: The last name of the customer
+      prefix:
+        type: string
+        description: The honorary prefix of the customer
+      suffix:
+        type: string
+        description: The honorary suffix of the customer
+      preferredName:
+        type: string
+        description: The preferred name of the customer
+    required: 
+      - firstName
+      - lastName
+    example:
+      firstName: John
+      middleName: Joe
+      lastName: Doe
+      prefix: Mr
+      suffix: BSc
+      preferredName: Joe
+  
+  ContactMethod:
+    type: object
+    properties:
+      uri:
+        type: string
+        description: The RFC 3986 encoded URI address of the contact method.
+      isAuthorized:
+        type: boolean
+        description: The flag indicating if the customer has authorized contact using this method.
+      preferences:
+        type: array
+        items:
+          $ref: '#/definitions/ContactPreference'
+    required:
+      - uri
+      - isAuthorized
+    example:
+      uri: 'tel:18475555555'
+      isAuthorized: true
+      preferences:
+        - startDay: MON
+          endDay: FRI
+          startTime: '0000-01-01T09:00'
+          endTime: '0000-01-01T17:00'
+          timeZone: CST
+  
+  ContactPreference:
+    type: object
+    properties:
+      startDay:
+        type: string
+        enum:
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          - SUN
+        description: The starting day of the interval
+      endDay:
+        type: string
+        enum:
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          - SUN
+        description: The ending day of the interval
+      startTime:
+        type: string
+        description: The RFC 3339 encoded starting time of the interval
+      endTime:
+        type: string
+        description: The RFC 3339 encoded ending time of the interval
+      timeZone:
+        type: string
+        description: The IANA Timezone Database encoded timezone code of the interval
+    example:
+      startDay: MON
+      endDay: FRI
+      startTime: '0000-01-01T09:00'
+      endTime: '0000-01-01T17:00'
+      timeZone: CST
+  
+  PersonalInformation:
+    type: object
+    properties:
+      dateOfBirth:
+        type: string
+        format: date
+        description: The date of birth of the customer using universal format defined in section 5.6 of RFC3339
+      driversLicenseExpirationDate:
+        type: string
+        format: date
+        description: The driver's license expiry date of the customer using universal format defined in section 5.6 of RFC3339
+      driversLicenseNumber:
+        type: string
+        description: The number of the customer's driving license
+      driversLicenseState:
+        type: string
+        description: The state or province the driving license was issued
+      socialSecurityNumber:
+        type: string
+        description: The social security number of the customer
+    example:
+      dateOfBirth: '1990-01-20'
+      driversLicenseExpirationDate: '2060-01-20'
+      driversLicenseNumber: S123-456-57-901-0
+      driversLicenseState: FL
+      socialSecurityNumber: 078-05-1120
+
+  VehicleLink:
+    type: object
+    properties:
+      vehicleId:
+        type: string
+        description: The unique vehicle identification number (possibly VIN)
+      relationship:
+        type: string
+        enum:
+           - UNKNOWN
+           - OWNER
+           - DRIVER
+           - OWNER_DRIVE
+           - FLEET_MANAGER
+        description: Relationship of the customer to the vehicle
+      vin:
+        type: string
+        description: The vehicle identification number (VIN)
+      registrationId:
+        $ref: '#/definitions/VehicleLicensePlate'
+        description: The legal registration identifier
+    required:
+      - vehicleId
+      - relationship
+    example:
+      vehicleId: 'e099bd80-f246-435f-8363-2aa277720c82'
+      relationship: 'OWNER_DRIVER'
+      vin: '1J4HR58N96C336690'
+      registrationId:
+        licensePlate: 6MB7V00
+        countryCode: US
+        subdivisionCode: CA
+
+  VehicleLicensePlate:
+    description: A description of the legal registration information about a vehicle
+    type: object
+    properties:
+      licensePlate:
+        type: string
+        description: The vehicle license plate or registration number
+      countryCode:
+        type: string
+        description: The ISO 3166 alpha-2 country code representing the the country in which vehicle is licensed
+      subdivisionCode:
+        type: string
+        description: The ISO 3166-2 subdivision code representing the province or state of the country where the vehicle is licensed
+    example:
+      licensePlate: '6MB7V00'
+      countryCode: 'US'
+      subdivisionCode: 'CA'
+
+  #Create Requests
+  CreateCustomerRequest:
+    type: object
+    properties:
+      name:
+        $ref: '#/definitions/Name'
+        description: The name of the customer.
+      contactMethods:
+        type: array
+        items:
+          $ref: '#/definitions/ContactMethodResource'
+        minItems: 1
+        description: The contact methods for the customer
+      postalAddresses:
+        type: array
+        items:
+          $ref: '#/definitions/PostalAddressResource'
+        minItems: 1
+        description: The postal addresses associated with the customer
+    example:
+      name:
+        firstName: John
+        middleName: Joe
+        lastName: Doe
+        prefix: Mr
+        suffix: BSc
+        preferredName: Joe
+      contactMethods:
+        - uri: 'tel:18475555555'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T09:00'
+              endTime: '0000-01-01T17:00'
+              timeZone: CST
+        - uri: 'sms:18475555555'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T07:00'
+              endTime: '0000-01-01T22:00'
+              timeZone: CST
+        - uri: 'mailto:john.doe@example.com'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T00:00'
+              endTime: '0000-01-01T23:59'
+              timeZone: CST
+      postalAddresses:
+        - postalAddressLabel: home
+          houseName: Tall Trees
+          street: 110 The example road
+          poBox: PO Box 1234
+          neighborhood: West Side
+          city: This city
+          subRegion: Outside the city
+          region: IL
+          postalCode: IL12234
+          countryCode: US
+  
+  # Update Requests
+  UpdateContactPreferencesRequest:
+    type: object
+    properties:
+      contactPreferences: 
+        type: array
+        items:
+          $ref: '#/definitions/ContactPreference'
+        minItems: 1
+        description: The set of contact preferences for a contact method.
+    required:
+      - contactPreferences 
+
+  # Resources
+  ContactMethodResource:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/ContactMethod'
+      - properties:
+          contactMethodLabel:
+            type: string
+            description: The label used to describe the contact method (e.g 'mobile', 'email', 'sms')
+        required:
+          - contactMethodLabel
+
+  PostalAddressResource:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/PostalAddress'
+      - properties:
+          postalAddressLabel:
+            type: string
+            description: The label used to describe the postal address (e.g 'home', 'work')
+        required:
+          - postalAddressLabel
+    example:
+      postalAddressLabel: home
+      houseName: Tall Trees
+      street: 110 The example road
+      poBox: PO Box 1234
+      neighborhood: West Side
+      city: This city
+      subRegion: Outside the city
+      region: IL
+      postalCode: IL12234
+      countryCode: US
+
+  # Collections
+  CustomerCollection:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/BaseCollection'
+      - properties:
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/Customer'
+        required:
+          - items
+    example:
+      totalItems: 2
+      totalPages: 1
+      links:
+        firstPage:
+          href: https://api.fortellis.io/crm/v1/customers?page=1&pageSize=20
+          method: GET
+          title: Get the first page of results
+        nextPage:
+          href: https://api.fortellis.io/crm/v1/customers?page=4&pageSize=20
+          method: GET
+          title: Get the first page of results
+        prevPage:
+          href: https://api.fortellis.io/crm/v1/customers?page=2&pageSize=20
+          method: GET
+          title: Get the previous page of results
+      items:
+        - customerId: c2c572e2-91c7-47cb-80c1-8672e1290444
+          name:
+            firstName: John
+            middleName: Joe
+            lastName: Doe
+            prefix: Mr
+            suffix: BSc
+            preferredName: Joe
+          contactMethods:
+            - uri: 'tel:18475555555'
+              isAuthorized: true
+              preferences:
+                - startDay: MON
+                  endDay: FRI
+                  startTime: '0000-01-01T09:00'
+                  endTime: '0000-01-01T17:00'
+                  timeZone: CST
+            - uri: 'sms:18475555555'
+              isAuthorized: true
+              preferences:
+                - startDay: MON
+                  endDay: FRI
+                  startTime: '0000-01-01T07:00'
+                  endTime: '0000-01-01T22:00'
+                  timeZone: CST
+            - uri: 'mailto:john.doe@example.com'
+              isAuthorized: true
+              preferences:
+                - startDay: MON
+                  endDay: FRI
+                  startTime: '0000-01-01T00:00'
+                  endTime: '0000-01-01T23:59'
+                  timeZone: CST
+          postalAddresses:
+            - postalAddressLabel: home
+              houseName: Tall Trees
+              street: 110 The example road
+              poBox: PO Box 1234
+              neighborhood: West Side
+              city: This city
+              subRegion: Outside the city
+              region: IL
+              postalCode: IL12234
+              countryCode: US
+          links:
+            self:
+              href: https://api.fortellis.io/crm/v1/customers/c2c572e2-91c7-47cb-80c1-8672e1290444
+              method: GET
+              title: Display resource John Doe
+        - customerId: b28abaf0-a44d-4b7a-91e1-44b43796286e
+          name:
+            firstName: Jane
+            middleName: Jo
+            lastName: Doe
+            prefix: Dr
+            suffix: PHd
+            preferredName: Jo
+          contactMethods:
+            - uri: 'tel:18476665555'
+              isAuthorized: true
+              preferences:
+                - startDay: MON
+                  endDay: FRI
+                  startTime: '0000-01-01T09:00'
+                  endTime: '0000-01-01T17:00'
+                  timeZone: CST
+            - uri: 'sms:18476665555'
+              isAuthorized: true
+              preferences:
+                - startDay: MON
+                  endDay: FRI
+                  startTime: '0000-01-01T07:00'
+                  endTime: '0000-01-01T22:00'
+                  timeZone: CST
+            - uri: 'mailto:jane.doe@example.com'
+              isAuthorized: true
+              preferences:
+                - startDay: MON
+                  endDay: FRI
+                  startTime: '0000-01-01T00:00'
+                  endTime: '0000-01-01T23:59'
+                  timeZone: CST
+          postalAddresses:
+            - postalAddressLabel: home
+              houseName: Short Trees
+              street: 101 The example road
+              poBox: PO Box 4321
+              neighborhood: East Side
+              city: This city
+              subRegion: Outside the city
+              region: IL
+              postalCode: IL42231
+              countryCode: US
+          links:
+            self:
+              href: https://api.fortellis.io/crm/v1/customers/b28abaf0-a44d-4b7a-91e1-44b43796286e
+              method: GET
+              title: Display resource Jane Doe
+
+  ContactMethodCollection:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/BaseCollection'
+      - properties:
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/ContactMethod'
+        required:
+          - items
+    example:
+      totalItems: 2
+      totalPages: 1
+      links:
+        firstPage:
+          href: https://api.fortellis.io/crm/v1/customers/contact-methods?page=1&pageSize=20
+          method: GET
+          title: Get the first page of results
+        nextPage:
+          href: https://api.fortellis.io/crm/v1/customers/contact-methods?page=4&pageSize=20
+          method: GET
+          title: Get the first page of results
+        prevPage:
+          href: https://api.fortellis.io/crm/v1/customers/contact-methods?page=2&pageSize=20
+          method: GET
+          title: Get the previous page of results
+      items:
+        - uri: 'tel:18475555555'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T09:00'
+              endTime: '0000-01-01T17:00'
+              timeZone: CST    
+        - uri: 'sms:18475555555'
+          isAuthorized: true
+          preferences:
+            - startDay: MON
+              endDay: FRI
+              startTime: '0000-01-01T07:00'
+              endTime: '0000-01-01T22:00'
+              timeZone: CST
+
+  ContactPreferenceCollection:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/BaseCollection'
+      - properties:
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/ContactPreference'
+        required:
+          - items
+    example:
+      totalItems: 2
+      totalPages: 1
+      links:
+        firstPage:
+          href: https://api.fortellis.io/crm/v1/customers/contact-methods/email?page=1&pageSize=20
+          method: GET
+          title: Get the first page of results
+        nextPage:
+          href: https://api.fortellis.io/crm/v1/customers/contact-methods/email?page=4&pageSize=20
+          method: GET
+          title: Get the first page of results
+        prevPage:
+          href: https://api.fortellis.io/crm/v1/customers/contact-methods/email?page=2&pageSize=20
+          method: GET
+          title: Get the previous page of results
+      items:
+        - startDay: MON
+          endDay: FRI
+          startTime: '0000-01-01T09:00'
+          endTime: '0000-01-01T17:00'
+          timeZone: CST
+        - startDay: SAT
+          endDay: SUN
+          startTime: '0000-01-01T10:00'
+          endTime: '0000-01-01T16:00'
+          timeZone: CST
+  
+  PostalAddressCollection:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/BaseCollection'
+      - properties:
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/PostalAddressResource'
+        required:
+          - items
+    example:
+      totalItems: 2
+      totalPages: 1
+      links:
+        firstPage:
+          href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=1&pageSize=20
+          method: GET
+          title: Get the first page of results
+        nextPage:
+          href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=4&pageSize=20
+          method: GET
+          title: Get the first page of results
+        prevPage:
+          href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=2&pageSize=20
+          method: GET
+          title: Get the previous page of results
+      items:
+        - postalAddressLabel: home
+          houseName: Tall Trees
+          street: 110 The example road
+          poBox: PO Box 1234
+          neighborhood: West Side
+          city: This city
+          subRegion: Outside the city
+          region: IL
+          postalCode: IL12234
+          countryCode: US
+  
+  # Common Definitions (see specs/common.yaml)
+  PostalAddress:
+    type: object
+    properties:
+      houseName:
+        type: string
+        description: Used in places where houses or buildings have names (and not necessarily numbers), eg. 'The Pillars'.
+      street:
+        type: string
+        description: Can be street, avenue, road, etc. This element also includes the house number and room/apartment/flat/floor number.
+      poBox:
+        type: string
+        description: Covers actual P.O. boxes, drawers, locked bags, etc. This is usually but not always mutually exclusive with street.
+      neighborhood:
+        type: string
+        description: This is used to disambiguate a street address when a city contains more than one street with the same name, or to specify a small place whose mail is routed through a larger postal town. In China it could be a county or a minor city.
+      city:
+        type: string
+        description: Can be city, village, town, borough, etc. This is the postal town and not necessarily the place of residence or place of business.
+      subRegion:
+        type: string
+        description: Handles administrative districts such as U.S. or U.K. counties that are not used for mail addressing purposes. Subregion is not intended for delivery addresses.
+      region:
+        type: string
+        description: A state, province, county (in Ireland), Land (in Germany), departement (in France), etc.
+      postalCode: 
+        type: string
+        description: Postal code. Usually country-wide, but sometimes specific to the city (e.g. '2' in 'Dublin 2, Ireland' addresses).
+      countryCode:
+        type: string
+        description: The ISO country code of the country
+    example:
+        houseName: Tall Trees
+        street: 110 The example road
+        poBox: PO Box 1234
+        neighborhood: West Side
+        city: This city
+        subRegion: Outside the city
+        region: IL
+        postalCode: IL12234
+        countryCode: US
+
+  BaseCollection:
+    type: object
+    properties:
+      totalItems:
+        type: number
+        description: The total number of items contained in the collection
+      totalPages:
+        type: number
+        description: The total number of pages given the requested page size
+      links:
+        $ref: '#/definitions/CollectionLinkSectionObject'
+        description: The hypermedia links describing the posible resource actions
+    required:
+      - totalItems
+      - totalPages
+      - links
+    example:
+      totalItems: 2
+      totalPages: 1
+      links:
+        firstPage:
+          href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=1&pageSize=20
+          method: GET
+          title: Get the first page of results
+        nextPage:
+          href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=4&pageSize=20
+          method: GET
+          title: Get the first page of results
+        prevPage:
+          href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=2&pageSize=20
+          method: GET
+          title: Get the previous page of results
+  
+  CollectionLinkSectionObject:
+    description: The standard set of hypermedia links when querying a resource collection
+    type: object
+    properties:
+      firstPage:
+        $ref: '#/definitions/LinkDescriptionObject'
+        description: The hypermedia link to the first page of query results
+      nextPage:
+        $ref: '#/definitions/LinkDescriptionObject'
+        description: The hypermedia link to the next page of query results
+      prevPage:
+        $ref: '#/definitions/LinkDescriptionObject'
+        description: The hypermedia link to the previous page of query results
+    required:
+      - firstPage
+      - nextPage
+      - prevPage
+    additionalProperties:
+      $ref: '#/definitions/LinkDescriptionObject'
+    example:
+      firstPage:
+        href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=1&pageSize=20
+        method: GET
+        title: Get the first page of results
+      nextPage:
+        href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=4&pageSize=20
+        method: GET
+        title: Get the first page of results
+      prevPage:
+        href: https://api.fortellis.io/domain/sub-domain/v0/resource?page=2&pageSize=20
+        method: GET
+        title: Get the previous page of results
+
+  LinkDescriptionObject:
+    title: Details of a link to a resource
+    type: object
+    properties:
+      href:
+        type: string
+        description: The target URI
+      method:
+        type: string
+        description: The HTTP verb that MUST be used to make a request to the target of the link
+      title:
+        type: string
+        description: The title property provides a title for the link and is a helpful documentation tool to facilitate understanding by the end clients
+    required:
+      - href
+
+  LinkSelfObject:
+    type: object
+    properties:
+      self:
+        $ref: '#/definitions/LinkDescriptionObject'
+    additionalProperties:
+      $ref: '#/definitions/LinkDescriptionObject'
+    example:
+      self:
+        href: https://api.fortellis.io/domain/sub-domain/v0/resource/123456
+        method: GET
+        title: Display resource 123456
+    required:
+      - self
+
+  LinkSectionObject:
+    type: object
+    additionalProperties:
+      $ref: '#/definitions/LinkDescriptionObject'
+    example:
+      resourceName:
+        href: https://api.fortellis.io/domain/sub-domain/v0/resource/123456
+        method: GET
+        title: Display resource 123456
+
+  BaseResource:
+    type: object
+    properties:
+      links:
+        type: array
+        items:
+          $ref: '#/definitions/LinkSectionObject'
+        description: Resource hypermedia links
+    required:
+      - links
+    additionalProperties:
+      $ref: '#/definitions/LinkSectionObject'
+
+  ErrorResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string 
+    required:
+      - code
+      - message
+    example:
+      code: 400
+      message: 'Bad Request'
+      

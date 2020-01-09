@@ -1,4 +1,10 @@
-/node_modules
 package-lock.json
 .gitignore
-.nyc_output/
+# Dependency directories
+node_modules/
+
+# nyc test coverage
+.nyc_output
+
+# output 
+bin

@@ -10,7 +10,7 @@ const fs = require("fs");
  * In fact, it should only be usable on an empty repo.
  *
  */
-class TemplateCommand extends Command {
+class ApiTemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
@@ -36,9 +36,9 @@ class TemplateCommand extends Command {
   }
 }
 
-TemplateCommand.description = `Put example template documents into an empty repository.
+ApiTemplateCommand.description = `Put example template documents into an empty repository.
 ...
 This creates sample spec, documentaiton, and permissions documents that the user can then modify for API development.
 `;
 
-module.exports = TemplateCommand;
+module.exports = ApiTemplateCommand;
