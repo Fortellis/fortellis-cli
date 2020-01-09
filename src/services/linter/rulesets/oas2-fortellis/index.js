@@ -49,33 +49,24 @@ const pathKeyKebabCase = {
 };
   
 // parameters
-const paramKeyFormat = {
-  recommended: true,
-  severity: 'warn',
-  type: 'style',
-  given: '$.parameters[${@.in == header}]',
-  then: {
-    field: '@key',
-    function: 'paramKeyFormat',
-    functionOptions: {
-      type: 'header'
-    }
-  }
-};
-
-const paramNameFormat = {
+const fortellisParamKeyFormat = {
+  /*
+   * This rule validates that parameter object keys match:
+   * 
+   *  'header.Upper-Kebab-Case',
+   *  'path.kebab-case',
+   *  'query.flatcase',
+   *  'body.PascalCase'
+   */
   recommended: true,
   severity: 'warn',
   type: 'style',
   given: '$.parameters',
   then: {
-    field: 'name',
-    function: 'paramNameFormat',
-    functionOptions: {
-      type: 'in'
-    }
+    field: '@key',
+    function: 'fortellisParamKeyFormat',
   }
-};
+}
 
 const parameterSchemaRef = {
   //description: 'parameters that declare schemas should use references',
@@ -90,6 +81,17 @@ const parameterSchemaRef = {
 };
 
 // responses
+const responsesRequestIdHeader = {
+  description: "responses should include a `Request-Id` header",
+  recommended: true,
+  severity: 'error',
+  type: 'validation',
+  given: '$.responses[*].headers',
+  then: {
+    field: 'Request-Id',
+    function: 'truthy'
+  }
+};
 
 // securityDefinitions
 
@@ -138,35 +140,17 @@ const definitionExampleProp = {
   }
 };
 
-// Unsorted  
-const responseCodeValidation = {
-  type: 'validation',
-  given: '$.paths',
-  then: {
-    function: 'responseCodeValidation'
-  }
-};
-
-const requestIdHeaderValidation = {
-  type: 'validation',
-  given: '$.paths',
-  then: {
-    function: 'requestIdHeaderValidation'
-  }
-};
-
 module.exports = {
   semanticVersion,
   basePathValiation,
   
   pathKeyKebabCase,
 
-  paramKeyFormat,
-  paramNameFormat,
+  fortellisParamKeyFormat,
+  //fortellisParamNameFormat,
   parameterSchemaRef,
 
-  responseCodeValidation,
-  requestIdHeaderValidation,
+  responsesRequestIdHeader,
 
   definitionKeyPascalCase,
   definitionPropertiesCamelCase,
