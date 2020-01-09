@@ -3,21 +3,17 @@ const constants = require("../utils/constants");
 
 class RepositoryService {
   repoIsValid() {
+    // Make sure the config directory is there.
     if (!fs.existsSync(constants.configDir)) {
       return false;
     }
 
-    if (!fs.existsSync(constants.specDir)) {
+    // Make sure the config file is there.
+    let configFile = this.getFileFromDirectory(constants.configDir);
+    if (configFile != "config.yaml") {
       return false;
     }
 
-    if (!fs.existsSync(constants.docsDir)) {
-      return false;
-    }
-
-    if (!fs.existsSync(constants.authDir)) {
-      return false;
-    }
     return true;
   }
 
@@ -49,18 +45,7 @@ class RepositoryService {
     return this.getFileFromDirectory(constants.specDir);
   }
 
-  getDocsInDirectory() {
-    return this.getFileFromDirectory(constants.docsDir);
-  }
-
-  getAuthInDirectory() {
-    return this.getFileFromDirectory(constants.authDir);
-  }
-
   deleteRepositoy() {
-    this.deleteFolderRecursive(constants.specDir);
-    this.deleteFolderRecursive(constants.docsDir);
-    this.deleteFolderRecursive(constants.authDir);
     this.deleteFolderRecursive(constants.configDir);
   }
 }

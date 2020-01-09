@@ -17,57 +17,22 @@ class TemplateCommand extends Command {
       this.error("This is not a Fortellis repository.");
     }
 
-    // Check that the repo is empty
-    if (
-      repoService.getSpecInDirectory() ||
-      repoService.getAuthInDirectory() ||
-      repoService.getDocsInDirectory()
-    ) {
-      this.error(
-        "Files are already saved in this repo. Create an empty repo for a template."
-      );
-    }
-
     fs.copyFile(
       `${__dirname}/../resources/sampleApiSpec.yaml`,
-      "./specs/sampleApiSpec.yaml",
+      "./sampleApiSpec.yaml",
       err => {
         if (err) {
-          this.error("Error copying template API spec file");
-        }
-      }
-    );
-
-    fs.copyFile(
-      `${__dirname}/../resources/sampleDocumentation.md`,
-      "./docs/sampleDocumentation.md",
-      err => {
-        if (err) {
-          this.error("error copying template documentation file.");
-        }
-      }
-    );
-
-    fs.copyFile(
-      `${__dirname}/../resources/samplePermissions.txt`,
-      "./permissions/samplePermissions.txt",
-      err => {
-        if (err) {
-          this.err("error copying template permissions file.");
+          this.error("Error copying template API spec file:", err);
         }
       }
     );
 
     const configService = new ConfigManagementService();
     configService.loadConfig();
-    configService.setAuthFile("samplePermissions.txt");
-    configService.setDocFile("sampleDocumentation.md");
-    configService.setSpecFile("sampleApiSpec.yaml");
+    configService.addSpecFile("sampleApiSpec.yaml");
     configService.saveConfig();
 
-    this.log(
-      "Template Created: [sampleApiSpec.yaml, sampleDocumentation.md, samplePermissions.txt]"
-    );
+    this.log("Template Created: sampleApiSpec.yaml");
   }
 }
 

@@ -22,36 +22,21 @@ class AddCommand extends Command {
     if (flags.apispec) {
       // Save a new Spec file to the config
       fileName = flags.apispec;
-      if (fileName == "*") {
-        // If file name is '*', use the file in the directory.
-        fileName = repositoryService.getSpecInDirectory();
-        configManagementService.setSpecFile(fileName);
-      } else {
-        // If the file name is specified, make sure it is a .yaml file.
-        if (fileName.indexOf(".yaml") < 0) {
-          fileName += ".yaml";
-        }
-        configManagementService.setSpecFile(fileName);
+      // If the file name is specified, make sure it is a .yaml file.
+      if (fileName.indexOf(".yaml") < 0) {
+        fileName += ".yaml";
       }
-    } else if (flags.documentation) {
-      // Save a new Documentation file to the config
-      fileName = flags.documentation;
-      if (fileName == "*") {
-        fileName = repositoryService.getDocsInDirectory();
 
-        configManagementService.setDocFile(fileName);
-      } else {
-        configManagementService.setDocFile(fileName);
+      // Don't add a file if it isn't in the directory
+      if (!fs.existsSync(`./${fileName}`)) {
+        this.error(`${fileName} does not exist in this directory.`);
       }
-    } else if (flags.permission) {
-      // Save a new Permissions file to the config
-      fileName = flags.permission;
-      if (fileName == "*") {
-        fileName = repositoryService.getAuthInDirectory();
-        configManagementService.setAuthFile(fileName);
-      } else {
-        configManagementService.setAuthFile(fileName);
+
+      // Don't add the same spec twice
+      if (configManagementService.specFiles.indexOf(`${fileName}`) > -1) {
+        this.error(`${fileName} is already in the repository`);
       }
+      configManagementService.addSpecFile(fileName);
     } else {
       this.error(
         "You must specifiy the type of flie to be added to the repository"
@@ -66,25 +51,13 @@ class AddCommand extends Command {
 
 AddCommand.description = `Add an item to the Fortellis repository.
 ...
-Add either an API Spec, API Docs, or Permissions file to the repository.
-
-The file name can be specified, or if '*' is entered as a file name the
-file which is in the proper diretory (specs/docs/permissions) will be added 
-to the repository.
+Add an API Spec to the repository.
 `;
 
 AddCommand.flags = {
   apispec: flags.string({
     char: "a",
     description: "Add Spec file to the repostory"
-  }),
-  documentation: flags.string({
-    char: "d",
-    description: "Add Documentation file to the repository"
-  }),
-  permission: flags.string({
-    char: "p",
-    description: "Add Permissions file to the repository"
   })
 };
 

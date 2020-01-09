@@ -5,9 +5,7 @@ class ConfigManagementService {
   constructor() {
     this.username = "";
     this.password = "";
-    this.specFileName = "";
-    this.docFileName = "";
-    this.authFileName = "";
+    this.specFiles = [];
     this.orgId = "";
   }
 
@@ -20,11 +18,7 @@ class ConfigManagementService {
       organization: {
         orgId: this.orgId
       },
-      specification: {
-        apiSpecFile: this.specFileName,
-        apiDocsFile: this.docFileName,
-        apiAuthFile: this.authFileName
-      }
+      specifications: this.specFiles
     };
 
     let yamlStr = yaml.safeDump(configData);
@@ -39,22 +33,14 @@ class ConfigManagementService {
       this.username = data.authorization.username;
       this.password = data.authorization.password;
       this.orgId = data.organization.orgId;
-      this.specFileName = data.specification.apiSpecFile;
-      this.docFileName = data.specification.apiDocsFile;
-      this.authFileName = data.specification.apiAuthFile;
+      this.specFiles = data.specifications;
     } catch (err) {
       console.error("Error loading configuraiton: ", err);
     }
   }
 
-  getFilesFromConfig() {
-    let retVal = {
-      apiSpecFile: this.specFileName,
-      apiDocsFile: this.docFileName,
-      apiAuthFile: this.authFileName
-    };
-
-    return retVal;
+  getSpecFilesFromConfig() {
+    return this.specFiles;
   }
 
   setUsername(name) {
@@ -69,16 +55,11 @@ class ConfigManagementService {
     this.orgId = value;
   }
 
-  setSpecFile(fileName) {
-    this.specFileName = fileName;
-  }
-
-  setDocFile(fileName) {
-    this.docFileName = fileName;
-  }
-
-  setAuthFile(fileName) {
-    this.authFileName = fileName;
+  addSpecFile(fileName) {
+    // Don't add the file again if it is already in the repo
+    if (this.specFiles.indexOf(fileName) === -1) {
+      this.specFiles.push(fileName);
+    }
   }
 }
 

@@ -16,18 +16,6 @@ class InitCommand extends Command {
       fs.mkdirSync(constants.configDir);
     }
 
-    if (!fs.existsSync(constants.docsDir)) {
-      fs.mkdirSync(constants.docsDir);
-    }
-
-    if (!fs.existsSync(constants.authDir)) {
-      fs.mkdirSync(constants.authDir);
-    }
-
-    if (!fs.existsSync(constants.specDir)) {
-      fs.mkdirSync(constants.specDir);
-    }
-
     // Create blank config and save it.
     const configManagementService = new ConfigManagementService();
     configManagementService.saveConfig();
