@@ -16,15 +16,6 @@ const semanticVersion = {
 };
 
 // basePath
-const basePathValiation = {
-  message: 'Missing required property: basePath',
-  type: 'style',
-  given: '$',
-  then: {
-    field: 'basePath',
-    function: 'truthy'
-  }
-};
 
 // schemes
 
@@ -142,7 +133,7 @@ const definitionExampleProp = {
 
 module.exports = {
   semanticVersion,
-  basePathValiation,
+  //basePathValiation,
   
   pathKeyKebabCase,
 
