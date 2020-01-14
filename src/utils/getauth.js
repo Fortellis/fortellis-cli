@@ -44,10 +44,8 @@ async function getSessionId() {
     };
 
     let res = await axios.post(sessionUrl, data, config);
-    // console.log(res.data);
 
     let uid = res.data.payload._embedded.user.id;
-    console.log("UserId: %s", uid);
     return res.data.payload.sessionToken;
   } catch (err) {
     console.error(err);
@@ -69,18 +67,15 @@ async function getToken(sessionToken) {
       maxRedirects: 0
     };
 
-    // console.log("URL: ", tokenUrl);
     let locationHeader = await axios
       .get(tokenUrl, config)
       .then(response => {
         if (response.status === 302) {
-          console.log("THREE OH TWO");
         }
       })
       .catch(err => {
         response = err.response;
         if (response.status === 302) {
-          // console.log(response.headers.location);
           return response.headers.location;
         }
       });
@@ -88,8 +83,6 @@ async function getToken(sessionToken) {
     let queries = parseLocationHeader(locationHeader);
 
     return queries["#access_token"];
-
-    // console.log("AuthToken:", queries["#access_token"]);
   } catch (err) {
     console.error(err);
   }

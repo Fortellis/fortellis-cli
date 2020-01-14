@@ -61,7 +61,6 @@ class ConfigureCommand extends Command {
 
         const orgService = new OrganizationService();
         orgService.getOrganizations().then(userOrgs => {
-          console.log("ORGS:", userOrgs);
           const orgQuestion = [
             {
               type: "list",

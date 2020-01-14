@@ -25,8 +25,6 @@ class OrganizationService {
 
     let fullOrgList = orgResponse.data.organizations;
 
-    // console.log(fullOrgList);
-
     fullOrgList.forEach(element => {
       this.orgList.push({
         name: element.name,

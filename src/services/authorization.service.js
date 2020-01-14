@@ -73,18 +73,15 @@ async function getToken(sessionToken) {
       maxRedirects: 0
     };
 
-    // console.log("URL: ", tokenUrl);
     let locationHeader = await axios
       .get(tokenUrl, config)
       .then(response => {
         if (response.status === 302) {
-          console.log("THREE OH TWO");
         }
       })
       .catch(err => {
         response = err.response;
         if (response.status === 302) {
-          // console.log(response.headers.location);
           return response.headers.location;
         }
       });
@@ -92,8 +89,6 @@ async function getToken(sessionToken) {
     let queries = parseLocationHeader(locationHeader);
 
     return queries["#access_token"];
-
-    // console.log("AuthToken:", queries["#access_token"]);
   } catch (err) {
     console.error(err);
   }
