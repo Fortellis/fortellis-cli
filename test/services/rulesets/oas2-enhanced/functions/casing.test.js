@@ -1,12 +1,14 @@
 const { expect } = require('chai');
 
-const { caseTypes } = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
+const {
+  caseTypes
+} = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
 
-describe('caseTypes', async function () {
-  it('should properly match kebab-case strings', async function () {
+describe('caseTypes', async function() {
+  it('should properly match kebab-case strings', async function() {
     const test = [
-      { 
-        value: 'foo', 
+      {
+        value: 'foo',
         expected: true
       },
       {
@@ -18,16 +20,16 @@ describe('caseTypes', async function () {
         expected: false
       },
       {
-          value: '1foo-bar',
-          expected: false
+        value: '1foo-bar',
+        expected: false
       },
       {
-          value: '-foo-bar',
-          expected: false
+        value: '-foo-bar',
+        expected: false
       }
     ];
 
-    for(const t of test) {
+    for (const t of test) {
       const result = caseTypes.kebabCase.regex.test(t.value);
       expect(result, `is ${t} kebab-case?`).to.equal(t.expected);
     }

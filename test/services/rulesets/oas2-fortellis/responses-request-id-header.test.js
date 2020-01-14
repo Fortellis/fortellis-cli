@@ -17,31 +17,30 @@ describe('rule responsesRequestIdHeader', () => {
       responses: {
         Foo: {
           headers: {
-              "Request-Id": {},
-              "Accept-Language": {}
+            'Request-Id': {},
+            'Accept-Language': {}
           }
         }
       }
     });
-            
-    expect(results).to.eql([]); 
+
+    expect(results).to.eql([]);
   });
 
   it("should return validation error if response object do not include a 'Request-Id' header", async function() {
     const results = await s.run({
-        responses: {
-          Foo: {
-            headers: {
-                "Accept-Language": {}
-            }
+      responses: {
+        Foo: {
+          headers: {
+            'Accept-Language': {}
           }
         }
-      });
-              
-      expect(results.length).to.equal(1);
-      expect(results[0]).to.contain({ 
-        message: "responses should include a `Request-Id` header"
-      }); 
-  });
+      }
+    });
 
+    expect(results.length).to.equal(1);
+    expect(results[0]).to.contain({
+      message: 'responses should include a `Request-Id` header'
+    });
+  });
 });

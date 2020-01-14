@@ -1,7 +1,7 @@
-const { Command, flags } = require("@oclif/command");
+const { Command, flags } = require('@oclif/command');
 const fs = require('fs');
 const path = require('path');
-const lint = require("../services/linter");
+const lint = require('../services/linter');
 const { formatResults } = require('../services/formatters/rusty');
 const { parseWithPointers } = require('@stoplight/yaml');
 
@@ -9,15 +9,16 @@ class ApiLintCommand extends Command {
   async run() {
     const { flags } = this.parse(ApiLintCommand);
 
-    const specFileName = flags.file;
     if (!flags.file) {
-      this.error('no specfication file specified', { code: 1});
+      this.error('no specfication file specified', { code: 1 });
     }
     if (!fs.existsSync(flags.file)) {
-      this.error("file '" + path.resolve(flags.file) + "' does not exist", { code: 1});
-    } 
+      this.error("file '" + path.resolve(flags.file) + "' does not exist", {
+        code: 1
+      });
+    }
 
-    const spec = fs.readFileSync(flags.file, { encoding: 'utf8'})
+    const spec = fs.readFileSync(flags.file, { encoding: 'utf8' });
     const parserResults = parseWithPointers(spec);
 
     const srcMap = spec.split('\n');
@@ -42,7 +43,7 @@ the OpenAPI 2.0 standard and fortellis style guide.
 
 ApiLintCommand.flags = {
   file: flags.string({
-    char: "f"
+    char: 'f'
   })
 };
 

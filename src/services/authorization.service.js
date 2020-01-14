@@ -1,8 +1,8 @@
-const axios = require("axios");
-const ConfigManagementService = require("./config.management.service");
+const axios = require('axios');
+const ConfigManagementService = require('./config.management.service');
 
 const parseLocationHeader = function(header) {
-  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:([0-9]+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
+  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
 
   let matches = urlRegEx.exec(header);
 
@@ -10,9 +10,9 @@ const parseLocationHeader = function(header) {
 
   if (Array.isArray(matches) && matches.length >= 7) {
     let args = matches[6];
-    let argList = args.split("&");
+    let argList = args.split('&');
     argList.forEach(item => {
-      let keyValuePair = item.split("=");
+      let keyValuePair = item.split('=');
       query[keyValuePair[0]] = keyValuePair[1];
     });
     return query;
@@ -22,7 +22,7 @@ const parseLocationHeader = function(header) {
 async function getSessionId(authUsername, authPassword) {
   try {
     // set the url
-    const sessionUrl = "https://api.accounts-dev.fortellis.io/api/v1/authn";
+    const sessionUrl = 'https://api.accounts-dev.fortellis.io/api/v1/authn';
 
     // request data object
     const data = {
@@ -33,12 +33,12 @@ async function getSessionId(authUsername, authPassword) {
     // set the headers
     const config = {
       headers: {
-        "Accept-Encoding": "gzip, deflate",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        "Content-Type": "application/json",
-        Host: "api.accounts-dev.fortellis.io",
-        Accept: "*/*"
+        'Accept-Encoding': 'gzip, deflate',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'Content-Type': 'application/json',
+        Host: 'api.accounts-dev.fortellis.io',
+        Accept: '*/*'
       }
     };
 
@@ -50,11 +50,11 @@ async function getSessionId(authUsername, authPassword) {
     };
 
     return returnValue;
-  } catch (err) {
-    if (err.response.status === 404) {
-      return "";
+  } catch (error) {
+    if (error.response.status === 404) {
+      return '';
     }
-    console.error(err);
+    console.error(error);
   }
 }
 
@@ -64,10 +64,10 @@ async function getToken(sessionToken) {
 
     const config = {
       headers: {
-        Accept: "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive"
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive'
         // Host: "api.accounts-dev.fortellis.io"
       },
       maxRedirects: 0
@@ -88,7 +88,7 @@ async function getToken(sessionToken) {
 
     let queries = parseLocationHeader(locationHeader);
 
-    return queries["#access_token"];
+    return queries['#access_token'];
   } catch (err) {
     console.error(err);
   }
@@ -96,7 +96,7 @@ async function getToken(sessionToken) {
 
 class AuthorizationService {
   constructor() {
-    this.authToken = "";
+    this.authToken = '';
   }
 
   async getAuthToken() {

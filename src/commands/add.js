@@ -1,7 +1,7 @@
-const { Command, flags } = require("@oclif/command");
-const fs = require("fs");
-const ConfigManagementService = require("../services/config.management.service");
-const RepositoryService = require("../services/repository.service");
+const { Command, flags } = require('@oclif/command');
+const fs = require('fs');
+const ConfigManagementService = require('../services/config.management.service');
+const RepositoryService = require('../services/repository.service');
 
 class AddCommand extends Command {
   async run() {
@@ -11,20 +11,20 @@ class AddCommand extends Command {
 
     // Verify that this is a Fortellis repo
     if (!repositoryService.repoIsValid()) {
-      this.error("This is not a Fortellis repository.");
+      this.error('This is not a Fortellis repository.');
     }
 
     const configManagementService = new ConfigManagementService();
     configManagementService.loadConfig();
 
-    let fileName = "";
+    let fileName = '';
 
     if (flags.apispec) {
       // Save a new Spec file to the config
       fileName = flags.apispec;
       // If the file name is specified, make sure it is a .yaml file.
-      if (fileName.indexOf(".yaml") < 0) {
-        fileName += ".yaml";
+      if (fileName.indexOf('.yaml') < 0) {
+        fileName += '.yaml';
       }
 
       // Don't add a file if it isn't in the directory
@@ -39,7 +39,7 @@ class AddCommand extends Command {
       configManagementService.addSpecFile(fileName);
     } else {
       this.error(
-        "You must specifiy the type of flie to be added to the repository"
+        'You must specifiy the type of flie to be added to the repository'
       );
     }
 
@@ -56,8 +56,8 @@ Add an API Spec to the repository.
 
 AddCommand.flags = {
   apispec: flags.string({
-    char: "a",
-    description: "Add Spec file to the repostory"
+    char: 'a',
+    description: 'Add Spec file to the repostory'
   })
 };
 

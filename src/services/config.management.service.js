@@ -1,41 +1,63 @@
-const yaml = require("js-yaml");
-const fs = require("fs");
+const yaml = require('js-yaml');
+const homedir = require('os').homedir();
+const fs = require('fs');
+const constants = require('../utils/constants');
 
 class ConfigManagementService {
   constructor() {
-    this.username = "";
-    this.password = "";
+    this.username = '';
+    this.password = '';
     this.specFiles = [];
-    this.orgId = "";
+    this.orgId = '';
+    this.orgName = '';
+  }
+
+  loadCredentials() {
+    try {
+      let fileContents = fs.readFileSync(`${homedir}/.fortellis/config.yaml`);
+      let credData = yaml.safeLoad(fileContents);
+
+      this.username = credData.username;
+      this.password = credData.password;
+    } catch (error) {
+      console.error('Error loading credentials:', error);
+    }
+  }
+
+  saveCredentials() {
+    let credData = {
+      username: this.username,
+      password: this.password
+    };
+
+    let yamlStr = yaml.safeDump(credData);
+    fs.writeFileSync(`${homedir}/.fortellis/config.yaml`, yamlStr, 'utf8');
   }
 
   saveConfig() {
+    this.saveCredentials();
     let configData = {
-      authorization: {
-        username: this.username,
-        password: this.password
-      },
       organization: {
-        orgId: this.orgId
+        orgId: this.orgId,
+        orgName: this.orgName
       },
       specifications: this.specFiles
     };
 
     let yamlStr = yaml.safeDump(configData);
-    fs.writeFileSync("./.fortellis/config.yaml", yamlStr, "utf8");
+    fs.writeFileSync(`${constants.configDir}/config.yaml`, yamlStr, 'utf8');
   }
 
   loadConfig() {
+    this.loadCredentials();
     try {
-      let fileContents = fs.readFileSync("./.fortellis/config.yaml");
+      let fileContents = fs.readFileSync(`${constants.configDir}/config.yaml`);
       let data = yaml.safeLoad(fileContents);
-
-      this.username = data.authorization.username;
-      this.password = data.authorization.password;
       this.orgId = data.organization.orgId;
+      this.orgName = data.organization.orgName;
       this.specFiles = data.specifications;
-    } catch (err) {
-      console.error("Error loading configuraiton: ", err);
+    } catch (error) {
+      console.error('Error loading configuraiton: ', error);
     }
   }
 
@@ -53,6 +75,10 @@ class ConfigManagementService {
 
   setOrgId(value) {
     this.orgId = value;
+  }
+
+  setOrgName(value) {
+    this.orgName = value;
   }
 
   addSpecFile(fileName) {

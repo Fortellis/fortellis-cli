@@ -4,13 +4,14 @@
 
 // Operation Object
 // * need a rule to enforce that an operation declares produces
-// * need a rule to enforce that an operation declares consumes 
-// * need a rule to enforce parameters should be $ref  
+// * need a rule to enforce that an operation declares consumes
+// * need a rule to enforce parameters should be $ref
 // * need to check for security scopes being declared
 
 // swagger.parameters
 const parametersObject = {
-  description: "OpenAPI object should declare a 'parameters' object.  This helps organization and readability.",
+  description:
+    "OpenAPI object should declare a 'parameters' object.  This helps organization and readability.",
   recommended: true,
   severity: 'warn',
   type: 'style',
@@ -23,7 +24,8 @@ const parametersObject = {
 
 // swagger.responses
 const responsesObject = {
-  description: "OpenAPI object should declare a 'responses' object.  This helps organization and readability.",
+  description:
+    "OpenAPI object should declare a 'responses' object.  This helps organization and readability.",
   recommended: true,
   severity: 'warn',
   type: 'style',
@@ -36,7 +38,8 @@ const responsesObject = {
 
 // swagger.defintions
 const definitionsObject = {
-  description: "OpenAPI object should declare a 'definitions' object.  This helps organization and readability.",
+  description:
+    "OpenAPI object should declare a 'definitions' object.  This helps organization and readability.",
   recommended: true,
   severity: 'warn',
   type: 'style',

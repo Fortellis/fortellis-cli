@@ -1,7 +1,7 @@
-const { Command, flags } = require("@oclif/command");
-const RepositoryService = require("../services/repository.service");
-const ConfigManagementService = require("../services/config.management.service");
-const fs = require("fs");
+const { Command } = require('@oclif/command');
+const RepositoryService = require('../services/repository.service');
+const ConfigManagementService = require('../services/config.management.service');
+const fs = require('fs');
 
 /**
  * Create a template repository, with a sample Spec, Doc, and Permissions file.
@@ -14,25 +14,25 @@ class ApiTemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error("This is not a Fortellis repository.");
+      this.error('This is not a Fortellis repository.');
     }
 
     fs.copyFile(
       `${__dirname}/../resources/sampleApiSpec.yaml`,
-      "./sampleApiSpec.yaml",
+      './sampleApiSpec.yaml',
       err => {
         if (err) {
-          this.error("Error copying template API spec file:", err);
+          this.error('Error copying template API spec file:', err);
         }
       }
     );
 
     const configService = new ConfigManagementService();
     configService.loadConfig();
-    configService.addSpecFile("sampleApiSpec.yaml");
+    configService.addSpecFile('sampleApiSpec.yaml');
     configService.saveConfig();
 
-    this.log("Template Created: sampleApiSpec.yaml");
+    this.log('Template Created: sampleApiSpec.yaml');
   }
 }
 

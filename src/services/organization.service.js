@@ -1,5 +1,6 @@
-const AuthorizationService = require("../services/authorization.service");
-const axios = require("axios");
+const AuthorizationService = require('../services/authorization.service');
+const axios = require('axios');
+const constants = require('../utils/constants');
 
 // Returns a list of Organization objects { name: <org name>, id: <orgId>}
 // for the user of the current repository.
@@ -12,8 +13,7 @@ class OrganizationService {
     let authorizationService = new AuthorizationService();
     let userToken = await authorizationService.getAuthToken();
 
-    // List organizations
-    const url = `https://organizations-dev.fortellis.io/v1/organizations?userId=${userToken.uid}`;
+    const url = `${constants.orgListUrl}?userId=${userToken.uid}`;
 
     let options = {
       headers: {

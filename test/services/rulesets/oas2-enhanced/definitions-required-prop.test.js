@@ -24,8 +24,8 @@ describe('rule definitionRequiredProp', () => {
         }
       }
     });
-            
-    expect(results).to.eql([]); 
+
+    expect(results).to.eql([]);
   });
 
   it("should return style warnings if defintion objects do not include a 'required' property", async function() {
@@ -36,8 +36,7 @@ describe('rule definitionRequiredProp', () => {
         Baz: {}
       }
     });
-            
+
     expect(results.length).to.equal(3);
   });
-
 });

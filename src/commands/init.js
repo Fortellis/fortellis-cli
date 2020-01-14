@@ -1,15 +1,21 @@
-const { Command, flags } = require("@oclif/command");
-const fs = require("fs");
-const constants = require("../utils/constants");
-const ConfigManagementService = require("../services/config.management.service");
-const RepositoryService = require("../services/repository.service");
+const { Command } = require('@oclif/command');
+const os = require('os');
+const fs = require('fs');
+const constants = require('../utils/constants');
+const ConfigManagementService = require('../services/config.management.service');
+const RepositoryService = require('../services/repository.service');
 
 class InitCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
 
     if (repoService.repoIsValid()) {
-      this.error("This directory is already a Fortellis repository.");
+      this.error('This directory is already a Fortellis repository.');
+    }
+
+    let homeDir = os.homedir();
+    if (!fs.existsSync(`${homeDir}/.fortellis`)) {
+      fs.mkdirSync(`${homeDir}/.fortellis`);
     }
 
     if (!fs.existsSync(constants.configDir)) {

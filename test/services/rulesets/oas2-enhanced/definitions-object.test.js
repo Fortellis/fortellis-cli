@@ -16,14 +16,13 @@ describe('rule definitionsObject', () => {
     const results = await s.run({
       definitions: {}
     });
-            
-    expect(results).to.eql([]); 
+
+    expect(results).to.eql([]);
   });
 
   it("should return a style warning if the OpenAPI object 'definitions' object is not declared", async function() {
     const results = await s.run({});
-            
+
     expect(results.length).to.equal(1);
   });
-
 });

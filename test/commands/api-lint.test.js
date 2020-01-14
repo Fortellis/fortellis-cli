@@ -1,19 +1,19 @@
-const { expect, test } = require("@oclif/test");
-const RepositoryService = require("../../src/services/repository.service");
+const { expect, test } = require('@oclif/test');
+const RepositoryService = require('../../src/services/repository.service');
 
-describe("api-lint", () => {
+describe('api-lint', () => {
   after(() => {
     const repoService = new RepositoryService();
     repoService.deleteRepositoy();
-    console.log("Cleaning up repository");
+    console.log('Cleaning up repository');
   });
 
-  describe("- run api-lint command with no arguments", () => {
+  describe('- run api-lint command with no arguments', () => {
     test
       .stdout()
-      .command(["api-lint"])
+      .command(['api-lint'])
       .exit(2)
-      .it("Exits with an error when no file is specified");
+      .it('Exits with an error when no file is specified');
   });
 
   // describe(" - run api-lint command with the '--file' argument", () => {

@@ -26,8 +26,8 @@ describe('rule definitionExampleProp', () => {
         }
       }
     });
-            
-    expect(results).to.eql([]); 
+
+    expect(results).to.eql([]);
   });
 
   it("should return style warnings if defintion objects do not include an 'example' property", async function() {
@@ -38,8 +38,7 @@ describe('rule definitionExampleProp', () => {
         Baz: {}
       }
     });
-            
+
     expect(results.length).to.equal(3);
   });
-
 });

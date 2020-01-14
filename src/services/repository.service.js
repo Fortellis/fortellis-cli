@@ -1,5 +1,5 @@
-const fs = require("fs");
-const constants = require("../utils/constants");
+const fs = require('fs');
+const constants = require('../utils/constants');
 
 class RepositoryService {
   repoIsValid() {
@@ -10,7 +10,7 @@ class RepositoryService {
 
     // Make sure the config file is there.
     let configFile = this.getFileFromDirectory(constants.configDir);
-    if (configFile != "config.yaml") {
+    if (configFile != 'config.yaml') {
       return false;
     }
 
@@ -23,14 +23,14 @@ class RepositoryService {
     if (files.length > 0) {
       return files[0];
     } else {
-      return "";
+      return '';
     }
   }
 
   deleteFolderRecursive(path) {
     if (fs.existsSync(path)) {
       fs.readdirSync(path).forEach((file, index) => {
-        let curPath = path + "/" + file;
+        let curPath = path + '/' + file;
         if (fs.lstatSync(curPath).isDirectory()) {
           deleteFolderRecursive(curPath);
         } else {

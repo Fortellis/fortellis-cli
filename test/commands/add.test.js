@@ -1,26 +1,26 @@
-const { expect, test } = require("@oclif/test");
-const RepositoryService = require("../../src/services/repository.service");
-const fs = require("fs");
+const { expect, test } = require('@oclif/test');
+const RepositoryService = require('../../src/services/repository.service');
+const fs = require('fs');
 
-describe("add", () => {
+describe('add', () => {
   after(() => {
     const repoService = new RepositoryService();
     repoService.deleteRepositoy();
-    if (fs.existsSync("./sampleApiSpec.yaml")) {
-      fs.unlinkSync("./sampleApiSpec.yaml");
+    if (fs.existsSync('./sampleApiSpec.yaml')) {
+      fs.unlinkSync('./sampleApiSpec.yaml');
     }
-    console.log("Cleaning up repository");
+    console.log('Cleaning up repository');
   });
 
-  describe("- Add file with no repository...", () => {
+  describe('- Add file with no repository...', () => {
     test
       .stdout()
-      .command(["add", "-a=*"])
+      .command(['add', '-a=*'])
       .exit(2)
-      .it("exits with status 2 when repo does not exist");
+      .it('exits with status 2 when repo does not exist');
   });
 
-  describe("- Add a file that does not exist", () => {
+  describe('- Add a file that does not exist', () => {
     after(() => {
       const repoService = new RepositoryService();
       repoService.deleteRepositoy();
@@ -28,19 +28,19 @@ describe("add", () => {
 
     test
       .stdout()
-      .command(["init"])
-      .it("init repo", ctx => {
-        expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");
+      .command(['init'])
+      .it('init repo', ctx => {
+        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
 
     test
       .stdout()
-      .command(["add", "-a=testSpec.yaml"])
+      .command(['add', '-a=testSpec.yaml'])
       .exit(2)
-      .it("Exits with status 2 when file does not exist");
+      .it('Exits with status 2 when file does not exist');
   });
 
-  describe("- Add a file that is already in the repo", () => {
+  describe('- Add a file that is already in the repo', () => {
     after(() => {
       const repoService = new RepositoryService();
       repoService.deleteRepositoy();
@@ -48,48 +48,48 @@ describe("add", () => {
 
     test
       .stdout()
-      .command(["init"])
-      .it("init repo", ctx => {
-        expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");
+      .command(['init'])
+      .it('init repo', ctx => {
+        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
 
     test
       .stdout()
-      .command(["api-template"])
-      .it("create template files", ctx => {
-        expect(ctx.stdout).to.contain("Template Created:");
+      .command(['api-template'])
+      .it('create template files', ctx => {
+        expect(ctx.stdout).to.contain('Template Created:');
       });
 
     test
       .stdout()
-      .command(["add", "-a=sampleApiSpec.yaml"])
+      .command(['add', '-a=sampleApiSpec.yaml'])
       .exit(2)
-      .it("Exits with status 2 when file is already in the repo");
+      .it('Exits with status 2 when file is already in the repo');
   });
 
-  describe("- Add a file", () => {
+  describe('- Add a file', () => {
     before(() => {
-      fs.closeSync(fs.openSync("./testSpec.yaml", "w"));
+      fs.closeSync(fs.openSync('./testSpec.yaml', 'w'));
     });
 
     after(() => {
       const repoService = new RepositoryService();
       repoService.deleteRepositoy();
-      fs.unlinkSync("./testSpec.yaml");
+      fs.unlinkSync('./testSpec.yaml');
     });
 
     test
       .stdout()
-      .command(["init"])
-      .it("init repo", ctx => {
-        expect(ctx.stdout).to.contain("Initialized empty Fortellis repository");
+      .command(['init'])
+      .it('init repo', ctx => {
+        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
 
     test
       .stdout()
-      .command(["add", "-a=testSpec.yaml"])
-      .it("add a file", ctx => {
-        expect(ctx.stdout).to.contain("has been added to the repository");
+      .command(['add', '-a=testSpec.yaml'])
+      .it('add a file', ctx => {
+        expect(ctx.stdout).to.contain('has been added to the repository');
       });
   });
 });

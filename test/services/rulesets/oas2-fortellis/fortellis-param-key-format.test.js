@@ -11,29 +11,29 @@ describe('rule fortellisParamKeyFormat', () => {
   });
   s.mergeRules();
 
-  it("should pass if key suffix casing matches prefix type", async function() {
+  it('should pass if key suffix casing matches prefix type', async function() {
     const results = await s.run({
       parameters: {
-        "header.Foo-Bar": {},
-        "path.foo-bar": {},
-        "query.foobar": {},
-        "body.FooBar": {}
+        'header.Foo-Bar': {},
+        'path.foo-bar': {},
+        'query.foobar': {},
+        'body.FooBar': {}
       }
     });
 
-    expect(results).to.eql([]); 
+    expect(results).to.eql([]);
   });
 
-  it("should pass if key suffix casing does not match prefix type", async function() {
+  it('should pass if key suffix casing does not match prefix type', async function() {
     const results = await s.run({
       parameters: {
-        "header.foobar": {},
-        "path.FooBar": {},
-        "query.foo-bar": {},
-        "body.foobar": {}
+        'header.foobar': {},
+        'path.FooBar': {},
+        'query.foo-bar': {},
+        'body.foobar': {}
       }
     });
-          
+
     expect(results.length).to.equal(4);
   });
 });

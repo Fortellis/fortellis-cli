@@ -1,4 +1,4 @@
-const { Command, flags } = require("@oclif/command");
+const { Command, flags } = require('@oclif/command');
 
 class PushCommand extends Command {
   async run() {
@@ -6,7 +6,7 @@ class PushCommand extends Command {
 
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error("This is not a Fortellis repository.");
+      this.error('This is not a Fortellis repository.');
     }
   }
 }
@@ -19,7 +19,7 @@ in DRAFT status, or a new version of a spec in FINAL status.
 
 PushCommand.flags = {
   file: flags.string({
-    char: "f"
+    char: 'f'
   })
 };
 

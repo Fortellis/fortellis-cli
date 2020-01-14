@@ -2,7 +2,8 @@
 
 // Info Object
 const semanticVersion = {
-  description: "the specification should follow semantic versioning: {major-nnumber}.{minor-number}.{patch-number}",
+  description:
+    'the specification should follow semantic versioning: {major-nnumber}.{minor-number}.{patch-number}',
   recommended: true,
   severity: 'warn',
   type: 'style',
@@ -10,7 +11,7 @@ const semanticVersion = {
   then: {
     function: 'pattern',
     functionOptions: {
-      match: '^[0-9]+\.[0-9]+\.[0-9]+$'
+      match: '^[0-9]+.[0-9]+.[0-9]+$'
     }
   }
 };
@@ -38,12 +39,12 @@ const pathKeyKebabCase = {
     }
   }
 };
-  
+
 // parameters
 const fortellisParamKeyFormat = {
   /*
    * This rule validates that parameter object keys match:
-   * 
+   *
    *  'header.Upper-Kebab-Case',
    *  'path.kebab-case',
    *  'query.flatcase',
@@ -55,9 +56,9 @@ const fortellisParamKeyFormat = {
   given: '$.parameters',
   then: {
     field: '@key',
-    function: 'fortellisParamKeyFormat',
+    function: 'fortellisParamKeyFormat'
   }
-}
+};
 
 const parameterSchemaRef = {
   //description: 'parameters that declare schemas should use references',
@@ -73,7 +74,7 @@ const parameterSchemaRef = {
 
 // responses
 const responsesRequestIdHeader = {
-  description: "responses should include a `Request-Id` header",
+  description: 'responses should include a `Request-Id` header',
   recommended: true,
   severity: 'error',
   type: 'validation',
@@ -134,7 +135,7 @@ const definitionExampleProp = {
 module.exports = {
   semanticVersion,
   //basePathValiation,
-  
+
   pathKeyKebabCase,
 
   fortellisParamKeyFormat,
@@ -147,4 +148,3 @@ module.exports = {
   definitionPropertiesCamelCase,
   definitionExampleProp
 };
-  

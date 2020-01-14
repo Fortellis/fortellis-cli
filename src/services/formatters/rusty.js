@@ -2,13 +2,8 @@ const colors = require('colors');
 const path = require('path');
 
 function severityPrettyPrint(code) {
-    const levels = [
-        'error'.red,
-        'warning'.yellow,
-        'info',
-        'hint'
-    ];
-    return levels[code];
+  const levels = ['error'.red, 'warning'.yellow, 'info', 'hint'];
+  return levels[code];
 }
 
 function formatResult(result, srcMap, filePath) {
@@ -22,11 +17,11 @@ function formatResult(result, srcMap, filePath) {
 
   const pad = ''.padStart(`${endLine}`.length, ' ');
 
-  output += severityPrettyPrint(result.severity) + `: ${result.message}\n`
+  output += severityPrettyPrint(result.severity) + `: ${result.message}\n`;
   output += `-->`.blue + ` ${fileName}:${startLine + 1}:${startCol + 1}\n`;
-  
+
   output += `${pad} |\n`.blue;
-  for (let l = startLine; l <= /*endLine*/startLine; l++) {
+  for (let l = startLine; l <= /*endLine*/ startLine; l++) {
     output += `${l + 1} | `.blue + `${srcMap[l]}\n`;
   }
   output += `${pad} |\n\n`.blue;
@@ -35,12 +30,12 @@ function formatResult(result, srcMap, filePath) {
 }
 
 function formatResults(linterResults, srcMap, fileName) {
-    return linterResults.reduce((output, result) => {
-        return output + formatResult(result, srcMap, fileName);
-    })
+  return linterResults.reduce((output, result) => {
+    return output + formatResult(result, srcMap, fileName);
+  });
 }
 
 module.exports = {
-    formatResult,
-    formatResults
-}
+  formatResult,
+  formatResults
+};

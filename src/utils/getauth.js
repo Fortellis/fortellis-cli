@@ -1,9 +1,9 @@
-const { Command, flags } = require("@oclif/command");
+const { Command, flags } = require('@oclif/command');
 // const https = require("https");
-const axios = require("axios");
+const axios = require('axios');
 
 const parseLocationHeader = function(header) {
-  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:([0-9]+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
+  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
 
   let matches = urlRegEx.exec(header);
 
@@ -11,9 +11,9 @@ const parseLocationHeader = function(header) {
 
   if (Array.isArray(matches) && matches.length >= 7) {
     let args = matches[6];
-    let argList = args.split("&");
+    let argList = args.split('&');
     argList.forEach(item => {
-      let keyValuePair = item.split("=");
+      let keyValuePair = item.split('=');
       query[keyValuePair[0]] = keyValuePair[1];
     });
     return query;
@@ -23,23 +23,23 @@ const parseLocationHeader = function(header) {
 async function getSessionId() {
   try {
     // set the url
-    const sessionUrl = "https://api.accounts-dev.fortellis.io/api/v1/authn";
+    const sessionUrl = 'https://api.accounts-dev.fortellis.io/api/v1/authn';
 
     // request data object
     const data = {
-      username: "daniel.eastland@cdk.com",
-      password: "Development123!"
+      username: 'daniel.eastland@cdk.com',
+      password: 'Development123!'
     };
 
     // set the headers
     const config = {
       headers: {
-        "Accept-Encoding": "gzip, deflate",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        "Content-Type": "application/json",
-        Host: "api.accounts-dev.fortellis.io",
-        Accept: "*/*"
+        'Accept-Encoding': 'gzip, deflate',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'Content-Type': 'application/json',
+        Host: 'api.accounts-dev.fortellis.io',
+        Accept: '*/*'
       }
     };
 
@@ -58,10 +58,10 @@ async function getToken(sessionToken) {
 
     const config = {
       headers: {
-        Accept: "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive"
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive'
         // Host: "api.accounts-dev.fortellis.io"
       },
       maxRedirects: 0
@@ -82,7 +82,7 @@ async function getToken(sessionToken) {
 
     let queries = parseLocationHeader(locationHeader);
 
-    return queries["#access_token"];
+    return queries['#access_token'];
   } catch (err) {
     console.error(err);
   }
@@ -95,11 +95,11 @@ class GetAuthTommand extends Command {
     // let session_id = await this.getOktaSessionId();
     let session_id = await getSessionId();
 
-    this.log("SessionID: ", session_id);
+    this.log('SessionID: ', session_id);
 
     let authToken = await getToken(session_id);
 
-    this.log("AuthToken:", authToken);
+    this.log('AuthToken:', authToken);
   }
 }
 
@@ -109,7 +109,7 @@ Extra documentation goes here
 `;
 
 GetAuthTommand.flags = {
-  name: flags.string({ char: "n", description: "name to print" })
+  name: flags.string({ char: 'n', description: 'name to print' })
 };
 
 module.exports = GetAuthTommand;
