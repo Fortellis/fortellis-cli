@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const fs = require('fs');
