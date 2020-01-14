@@ -26,7 +26,7 @@ describe("configure", () => {
 
     test
       .stdout()
-      .command(["configure", "-u=username", "-p=password"])
+      .command(["configure", "-u=username", "-p=password", "-o=12345"])
       .it("runs config -u=username -p=password", ctx => {
         expect(ctx.stdout).to.contain("Configuration completed.");
       });

@@ -12,7 +12,7 @@ describe("api-template command", () => {
     test
       .stdout()
       .command(["api-template"])
-      .exit(1)
+      .exit(2)
       .it("exits with status 2 when repo does not exist");
   });
 
@@ -26,7 +26,7 @@ describe("api-template command", () => {
 
     test
       .stdout()
-      .command(["template"])
+      .command(["api-template"])
       .it("runs template", ctx => {
         expect(ctx.stdout).to.contain("Template Created:");
       });
