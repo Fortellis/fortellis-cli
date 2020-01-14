@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { pathCasing } = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
+const { pathCasing } = require('../../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
 
 describe('function pathCasing', async function () {
   it('should properly match kebab-case path segments', async function () {

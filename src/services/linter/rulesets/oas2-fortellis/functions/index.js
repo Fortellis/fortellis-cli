@@ -3,33 +3,64 @@ const { caseTypes } = require('../../oas2-enhanced/functions');
 // parameters
 const parameterNameCasing = {
   'header': caseTypes.upperKebabCase,
-  'path': caseTypes.kebabCase,
-  'query': caseTypes.flatCase,
+  'path': caseTypes.camelCase,
+  'query': caseTypes.camelCase,
   'body': caseTypes.pascalCase
 };
 
 function fortellisParamKeyFormat(targetVal) {
   const key = targetVal;
 
-  const groups = key.match('^((header|path|query|body)\.)(.*)$');
-  if(!groups || groups.length != 4) {
+  // Validate the structure
+  const tokens = key.split('.');
+  if(tokens.length != 2) {
+    console.error("key: " + key + " split into: " + tokens);
     return [{
-      message: "parameter object keys should follow the structure: `{header|path|query|body}.{name}`"
-    }]
-  } 
-
-  const type = groups[2];
-  const typeCase = parameterNameCasing[type];
-  if(!typeCase) {
-    return [{
-      message: "parameter object keys should follow the structure: `{header|path|query|body}.{name}`"
-    }]
+      message: "invalid structure.  Structure should be `{header|path|query|body}.{param_name}`"
+    }];
   }
 
-  const suffix = groups[3];
-  if(!typeCase.regex.test(suffix)) {
+  // Validate the prefix
+  const prefix = tokens[0];
+  const suffixCase = parameterNameCasing[prefix];
+  if(!suffixCase) {
+    console.error("key: " + key + " prefix: " + prefix);
     return [{
-      message: "`" + type + "` parameter keys should have `" + typeCase.prettyName + "` suffix"
+      message: "invalid prefix `" + prefix + "`. Prefix should be `header`,`path`,`query`, or `body`"
+    }];
+  }
+
+  // Validate the casing of the suffix
+  const suffix = tokens[1];
+  if(!suffixCase.regex.test(suffix)) {
+    return [{
+      message: "suffix is incorrect case. The suffix of `" + prefix + "` parameter objects should be `" + suffixCase.prettyName + "`"
+    }];
+  }
+  return [];
+}
+
+function fortellisParamNameFormat(targetVal) {
+  const param = targetVal;
+  const name = param.name;
+  const type = param.in;
+  
+  // Verify the parameter object has the needed properties
+  if(!name || !type) {
+    return [];
+  } 
+
+  // Verifiy the parameter has a valid type.
+  // If invalid, bailout and defer to the validation rule for the OpenAPI 2.0 schema
+  const typeCase = parameterNameCasing[type];
+  if(!typeCase) {
+    return [];
+  } 
+
+  // Validate the casing of the name
+  if(!typeCase.regex.test(param.name)) {
+    return [{
+      message: "the `name` property of `" + type + "` parameter objects should be `" + typeCase.prettyName + "`"
     }];
   }  
 
@@ -38,6 +69,7 @@ function fortellisParamKeyFormat(targetVal) {
   
 module.exports = {
   parameterNameCasing,
-  fortellisParamKeyFormat
+  fortellisParamKeyFormat,
+  fortellisParamNameFormat
 }
   

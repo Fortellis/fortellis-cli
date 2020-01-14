@@ -55,7 +55,25 @@ const fortellisParamKeyFormat = {
   given: '$.parameters',
   then: {
     field: '@key',
-    function: 'fortellisParamKeyFormat',
+    function: 'fortellisParamKeyFormat'
+  }
+}
+
+const fortellisParamNameFormat = {
+  /*
+   * This rule validates that parameter object name casing matches the type:
+   * 
+   *  header => `Upper-Kebab-Case',
+   *  path => `kebab-case`,
+   *  query => `flatcase`,
+   *  body => `PascalCase'
+   */
+  recommended: true,
+  severity: 'warn',
+  type: 'style',
+  given: '$.parameters[*]',
+  then: {
+    function: 'fortellisParamNameFormat'
   }
 }
 
@@ -138,7 +156,7 @@ module.exports = {
   pathKeyKebabCase,
 
   fortellisParamKeyFormat,
-  //fortellisParamNameFormat,
+  fortellisParamNameFormat,
   parameterSchemaRef,
 
   responsesRequestIdHeader,

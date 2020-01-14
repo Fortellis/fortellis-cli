@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 
 const { Spectral } = require('@stoplight/spectral');
-const rules = require('../../../../src/services/linter/rulesets/oas2-enhanced');
+const rules = require('../../../../../src/services/linter/rulesets/oas2-enhanced');
 
 describe('rule responsesObject', () => {
   const s = new Spectral();

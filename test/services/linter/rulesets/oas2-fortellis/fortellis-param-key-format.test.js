@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { Spectral } = require('@stoplight/spectral');
-const functions = require('../../../../src/services/linter/rulesets/oas2-fortellis/functions');
-const rules = require('../../../../src/services/linter/rulesets/oas2-fortellis');
+const functions = require('../../../../../src/services/linter/rulesets/oas2-fortellis/functions');
+const rules = require('../../../../../src/services/linter/rulesets/oas2-fortellis');
 
 describe('rule fortellisParamKeyFormat', () => {
   const s = new Spectral();
@@ -15,8 +15,8 @@ describe('rule fortellisParamKeyFormat', () => {
     const results = await s.run({
       parameters: {
         "header.Foo-Bar": {},
-        "path.foo-bar": {},
-        "query.foobar": {},
+        "path.fooBar": {},
+        "query.fooBar": {},
         "body.FooBar": {}
       }
     });

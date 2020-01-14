@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const { caseTypes } = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
+const { caseTypes } = require('../../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
 
 describe('caseTypes', async function () {
   it('should properly match kebab-case strings', async function () {
