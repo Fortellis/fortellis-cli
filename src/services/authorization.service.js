@@ -44,10 +44,6 @@ async function getSessionId(authUsername, authPassword) {
 
     let res = await axios.post(sessionUrl, data, config);
 
-    // Here we can get the userId (uid).
-    //TODO: Should we save the UID to the config?
-    let uid = res.data.payload._embedded.user.id;
-
     let returnValue = {
       uid: res.data.payload._embedded.user.id,
       sessionId: res.data.payload.sessionToken
