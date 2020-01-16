@@ -4,38 +4,35 @@ const { Spectral } = require('@stoplight/spectral');
 const functions = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
 const rules = require('../../../../../src/services/linter/rulesets/oas2-fortellis');
 
-describe('rule pathKeyKebabCase', () => {
+describe('rule sdef_f001', () => {
   const s = new Spectral();
   s.addFunctions({
-    'pathCasing': functions.pathCasing
+    'casing': functions.casing
   });
   s.addRules({
-    'pathKeyKebabCase': rules.pathKeyKebabCase
+    sdef_f001: rules.sdef_f001
   });
   s.mergeRules();
 
-  it('should return no results for kebab-case path segments', async function() {
+  it("should pass if definiton object keys are `PascalCase`", async function() {
     const results = await s.run({
-      'paths': {
-        '/foo': {},  
-        '/foo-bar': {},
-        '/foo-bar/baz': {},
-        '/{foo}': {},  
-        '/foo/{bar}': {},
-        '/foo/{bar}/baz': {}
+      'definitions': {
+        'Foo': {},
+        'Bar': {}, 
+        'Baz': {}    
       }
     });
             
     expect(results).to.eql([]); 
   });
 
-  it('should return a result for a non kebab-case path segments', async function() {
+  it("should fail if definiton object keys are not `PascalCase`", async function() {
     const results = await s.run({
-      'paths': {
-        '/Foo': {},  
-        '/fooBar': {},
-        '/foo-bar-': {},
-      }
+      'definitions': {
+        'foo': {},
+        'Bar-Bar': {}, 
+        'bazBaz': {}    
+        }
     });
             
     expect(results.length).to.equal(3);

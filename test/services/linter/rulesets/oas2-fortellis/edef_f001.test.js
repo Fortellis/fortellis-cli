@@ -1,26 +1,28 @@
 const { expect } = require('chai');
 
 const { Spectral } = require('@stoplight/spectral');
-const rules = require('../../../../../src/services/linter/rulesets/oas2-enhanced');
+const { oas2Functions } = require('@stoplight/spectral/dist/rulesets/oas2');
+const rules = require('../../../../../src/services/linter/rulesets/oas2-fortellis');
 
-describe('rule definitionRequiredProp', () => {
+describe('rule edef_f001', () => {
   const s = new Spectral();
+  s.addFunctions(oas2Functions());
   s.addRules({
-    definitionRequiredProp: rules.definitionRequiredProp
+    edef_f001: rules.edef_f001
   });
   s.mergeRules();
 
-  it("shouldn't return style warnings if defintion objects include a 'required' property", async function() {
+  it("should pass if defintion objects include an `example` property", async function() {
     const results = await s.run({
       definitions: {
         Foo: {
-          required: []
+          example: {}
         },
         Bar: {
-          required: []
+          example: {}
         },
         Baz: {
-          required: []
+          example: {}
         }
       }
     });
@@ -28,7 +30,7 @@ describe('rule definitionRequiredProp', () => {
     expect(results).to.eql([]); 
   });
 
-  it("should return style warnings if defintion objects do not include a 'required' property", async function() {
+  it("should fail if defintion objects do not include an `example` property", async function() {
     const results = await s.run({
       definitions: {
         Foo: {},

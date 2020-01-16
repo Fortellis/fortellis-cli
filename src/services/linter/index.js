@@ -24,15 +24,18 @@ async function lint(parserResult, config) {
     // TODO: Need to devise on the fly ruleset generation as a workaround for Spectral v5.0.0
     //       only allowing loadRuleset().  Using addFunctions() and addRules results in
     //       deprecation messages being printed to stdout.
-    const spectral = new Spectral();
+    const spectral = new Spectral({
+      ignoreUnknownFormat: true
+    });
     spectral.addFunctions(functions); // generates deprecation message
     spectral.addRules(rules); // generates deprecation message
     spectral.mergeRules();
     
-    return spectral.run({
+    const results = spectral.run({
       parsed: parserResult,
       getLocationForJsonPath,
     });
+    return results;
 
   } catch (err) {
     console.error({

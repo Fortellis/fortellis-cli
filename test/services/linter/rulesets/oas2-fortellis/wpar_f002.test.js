@@ -3,11 +3,11 @@ const { Spectral } = require('@stoplight/spectral');
 const functions = require('../../../../../src/services/linter/rulesets/oas2-fortellis/functions');
 const rules = require('../../../../../src/services/linter/rulesets/oas2-fortellis');
 
-describe('rule fortellisParamNameFormat', () => {
+describe('rule wpar_f002', () => {
   const s = new Spectral();
   s.addFunctions(functions);
   s.addRules({
-    fortellisParamNameFormat: rules.fortellisParamNameFormat
+    wpar_f002: rules.wpar_f002
   });
   s.mergeRules();
 
@@ -98,5 +98,4 @@ describe('rule fortellisParamNameFormat', () => {
       expect(results[0], "test: " + t).to.contain(t.expected);
     }    
   });
-
 });
