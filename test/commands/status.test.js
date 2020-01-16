@@ -8,7 +8,7 @@ describe('status', () => {
   // Once all tests are done, clear out the repo artifacts
   after(() => {
     const repoService = new RepositoryService();
-    repoService.deleteRepositoy();
+    repoService.deleteLocalRepository();
     if (fs.existsSync('./sampleApiSpec.yaml')) {
       fs.unlinkSync('./sampleApiSpec.yaml');
     }
@@ -26,13 +26,13 @@ describe('status', () => {
   describe('- status with a created directory', () => {
     after(() => {
       const repoService = new RepositoryService();
-      repoService.deleteRepositoy();
+      repoService.deleteLocalRepository();
       console.log('Cleaning up repository');
     });
 
     test
       .stdout()
-      .command(['init'])
+      .command(['init', '-n=MyOrg', '-i=1234'])
       .it('creating repo', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
@@ -48,13 +48,13 @@ describe('status', () => {
   describe('- status after using template to create repo files', () => {
     after(() => {
       const repoService = new RepositoryService();
-      repoService.deleteRepositoy();
+      repoService.deleteLocalRepository();
       console.log('Cleaning up repository');
     });
 
     test
       .stdout()
-      .command(['init'])
+      .command(['init', '-n=MyOrg', '-i=1234'])
       .it('creating repo', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
@@ -63,7 +63,7 @@ describe('status', () => {
       .stdout()
       .command(['api-template'])
       .it('create template files', ctx => {
-        expect(ctx.stdout).to.contain('Template Created:');
+        expect(ctx.stdout).to.contain('Template spec created');
       });
 
     test

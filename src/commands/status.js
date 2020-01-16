@@ -14,7 +14,7 @@ class StatusCommand extends Command {
     }
 
     const configManagementService = new ConfigManagementService();
-    configManagementService.loadConfig();
+    configManagementService.loadLocalConfig();
 
     let specFiles = configManagementService.getSpecFilesFromConfig();
 

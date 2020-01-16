@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { Spectral } = require('@stoplight/spectral');
 const {
   oas2Functions,
@@ -39,12 +40,12 @@ async function validate(APISpecInJSON) {
       isRulesetConfigured = true;
     }
     return await spectral.run(APISpecInJSON);
-  } catch (err) {
+  } catch (error) {
     console.error({
       message: 'Spectral API Spec validation failed.',
-      error: err
+      error: error
     });
-    throw { message: 'Spectral API Spec validation failed.', error: err };
+    throw { message: 'Spectral API Spec validation failed.', error: error };
   }
 }
 

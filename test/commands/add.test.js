@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const fs = require('fs');
@@ -5,7 +7,7 @@ const fs = require('fs');
 describe('add', () => {
   after(() => {
     const repoService = new RepositoryService();
-    repoService.deleteRepositoy();
+    repoService.deleteLocalRepository();
     if (fs.existsSync('./sampleApiSpec.yaml')) {
       fs.unlinkSync('./sampleApiSpec.yaml');
     }
@@ -23,12 +25,12 @@ describe('add', () => {
   describe('- Add a file that does not exist', () => {
     after(() => {
       const repoService = new RepositoryService();
-      repoService.deleteRepositoy();
+      repoService.deleteLocalRepository();
     });
 
     test
       .stdout()
-      .command(['init'])
+      .command(['init', '-n=MyOrg', '-i=1234'])
       .it('init repo', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
@@ -43,12 +45,12 @@ describe('add', () => {
   describe('- Add a file that is already in the repo', () => {
     after(() => {
       const repoService = new RepositoryService();
-      repoService.deleteRepositoy();
+      repoService.deleteLocalRepository();
     });
 
     test
       .stdout()
-      .command(['init'])
+      .command(['init', '-n=MyOrg', '-i=1234'])
       .it('init repo', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
@@ -57,7 +59,7 @@ describe('add', () => {
       .stdout()
       .command(['api-template'])
       .it('create template files', ctx => {
-        expect(ctx.stdout).to.contain('Template Created:');
+        expect(ctx.stdout).to.contain('Template spec created');
       });
 
     test
@@ -74,13 +76,13 @@ describe('add', () => {
 
     after(() => {
       const repoService = new RepositoryService();
-      repoService.deleteRepositoy();
+      repoService.deleteLocalRepository();
       fs.unlinkSync('./testSpec.yaml');
     });
 
     test
       .stdout()
-      .command(['init'])
+      .command(['init', '-n=MyOrg', '-i=1234'])
       .it('init repo', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });

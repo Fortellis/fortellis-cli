@@ -15,7 +15,7 @@ class AddCommand extends Command {
     }
 
     const configManagementService = new ConfigManagementService();
-    configManagementService.loadConfig();
+    configManagementService.loadLocalConfig();
 
     let fileName = '';
 
@@ -23,7 +23,7 @@ class AddCommand extends Command {
       // Save a new Spec file to the config
       fileName = flags.apispec;
       // If the file name is specified, make sure it is a .yaml file.
-      if (fileName.indexOf('.yaml') < 0) {
+      if (fileName.indexOf('.yaml') < 0 && fileName.indexOf('.yml') < 0) {
         fileName += '.yaml';
       }
 
@@ -43,7 +43,7 @@ class AddCommand extends Command {
       );
     }
 
-    configManagementService.saveConfig();
+    configManagementService.saveLocalConfig();
 
     this.log(`${fileName} has been added to the repository.`);
   }
@@ -57,7 +57,7 @@ Add an API Spec to the repository.
 AddCommand.flags = {
   apispec: flags.string({
     char: 'a',
-    description: 'Add Spec file to the repostory'
+    description: 'Add API Spec file to the repostory'
   })
 };
 

@@ -1,6 +1,10 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-empty */
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-console */
 const axios = require('axios');
 const ConfigManagementService = require('./config.management.service');
+const constants = require('../utils/constants');
 
 const parseLocationHeader = function(header) {
   let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
@@ -23,7 +27,7 @@ const parseLocationHeader = function(header) {
 async function getSessionId(authUsername, authPassword) {
   try {
     // set the url
-    const sessionUrl = 'https://api.accounts-dev.fortellis.io/api/v1/authn';
+    const sessionUrl = `${constants.oktaGetSessionUrl}`;
 
     // request data object
     const data = {
@@ -59,18 +63,24 @@ async function getSessionId(authUsername, authPassword) {
   }
 }
 
-async function getToken(sessionToken) {
+async function getToken(sessionToken, entityId) {
   try {
-    const tokenUrl = `https://api-dev.identity.fortellis.io/oauth2/aus1ni5i9n9WkzcYa2p7/v1/authorize?client_id=0oa4qokpibPph9mnb2p7&nonce=nonce&prompt=none&redirect_uri=https%3A%2F%2Fdeveloper-dev.fortellis.io%2F&response_mode=fragment&response_type=token&scope=openid%20email%20profile&state=state&sessionToken=${sessionToken}`;
+    const tokenUrl = `${constants.authTokenUrl}?client_id=0oa4qokpibPph9mnb2p7&nonce=nonce&prompt=none&redirect_uri=https%3A%2F%2Fdeveloper-dev.fortellis.io%2F&response_mode=fragment&response_type=token&scope=openid%20email%20profile&state=state&sessionToken=${sessionToken}`;
 
-    const config = {
-      headers: {
-        Accept: '*/*',
-        'Accept-Encoding': 'gzip, deflate',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive'
-        // Host: "api.accounts-dev.fortellis.io"
-      },
+    let myHeaders = {
+      Accept: '*/*',
+      'Accept-Encoding': 'gzip, deflate',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive'
+    };
+
+    // If there is an entity, add it to the Cookie header.
+    if (entityId) {
+      myHeaders['Cookie'] = `entityId=${entityId}`;
+    }
+
+    config = {
+      headers: myHeaders,
       maxRedirects: 0
     };
 
@@ -80,8 +90,8 @@ async function getToken(sessionToken) {
         if (response.status === 302) {
         }
       })
-      .catch(err => {
-        response = err.response;
+      .catch(error => {
+        response = error.response;
         if (response.status === 302) {
           return response.headers.location;
         }
@@ -90,8 +100,8 @@ async function getToken(sessionToken) {
     let queries = parseLocationHeader(locationHeader);
 
     return queries['#access_token'];
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -100,20 +110,29 @@ class AuthorizationService {
     this.authToken = '';
   }
 
-  async getAuthToken() {
+  async getAuthToken(username, password) {
     let configManagementService = new ConfigManagementService();
-    configManagementService.loadConfig();
-    let username = configManagementService.username;
-    let password = configManagementService.password;
+    configManagementService.loadLocalConfig();
 
-    let userSession = await getSessionId(username, password);
+    // Get the okta sessionID
+    let userSession = '';
+    if (username && password) {
+      userSession = await getSessionId(username, password);
+    } else {
+      configManagementService.loadGlobalConfig();
+      userSession = await getSessionId(
+        configManagementService.username,
+        configManagementService.password
+      );
+    }
 
-    let token = await getToken(userSession.sessionId);
+    // Get the auth token
+    let token = await getToken(
+      userSession.sessionId,
+      configManagementService.orgId
+    );
 
-    return {
-      uid: userSession.uid,
-      authToken: token
-    };
+    return token;
   }
 }
 

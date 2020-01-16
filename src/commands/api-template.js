@@ -1,6 +1,8 @@
+/* eslint-disable node/no-unsupported-features/node-builtins */
 const { Command } = require('@oclif/command');
 const RepositoryService = require('../services/repository.service');
 const ConfigManagementService = require('../services/config.management.service');
+const constants = require('../utils/constants');
 const fs = require('fs');
 
 /**
@@ -17,9 +19,9 @@ class ApiTemplateCommand extends Command {
       this.error('This is not a Fortellis repository.');
     }
 
-    fs.copyFile(
-      `${__dirname}/../resources/sampleApiSpec.yaml`,
-      './sampleApiSpec.yaml',
+    fs.copyFileSync(
+      `${__dirname}/../resources/${constants.sampleSpecName}`,
+      constants.sampleSpecName,
       err => {
         if (err) {
           this.error('Error copying template API spec file:', err);
@@ -28,11 +30,11 @@ class ApiTemplateCommand extends Command {
     );
 
     const configService = new ConfigManagementService();
-    configService.loadConfig();
-    configService.addSpecFile('sampleApiSpec.yaml');
-    configService.saveConfig();
+    configService.loadLocalConfig();
+    configService.addSpecFile(constants.sampleSpecName);
+    configService.saveLocalConfig();
 
-    this.log('Template Created: sampleApiSpec.yaml');
+    this.log(`Template spec created: ${constants.sampleSpecName}`);
   }
 }
 

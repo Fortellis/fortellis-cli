@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const yaml = require('js-yaml');
 const homedir = require('os').homedir();
 const fs = require('fs');
@@ -12,9 +13,11 @@ class ConfigManagementService {
     this.orgName = '';
   }
 
-  loadCredentials() {
+  loadGlobalConfig() {
     try {
-      let fileContents = fs.readFileSync(`${homedir}/.fortellis/config.yaml`);
+      let fileContents = fs.readFileSync(
+        `${homedir}/${constants.configDirName}/${constants.configFileName}`
+      );
       let credData = yaml.safeLoad(fileContents);
 
       this.username = credData.username;
@@ -24,18 +27,35 @@ class ConfigManagementService {
     }
   }
 
-  saveCredentials() {
+  loadLocalConfig() {
+    try {
+      let fileContents = fs.readFileSync(
+        `${constants.configDir}/${constants.configFileName}`
+      );
+      let data = yaml.safeLoad(fileContents);
+      this.orgId = data.organization.orgId;
+      this.orgName = data.organization.orgName;
+      this.specFiles = data.specifications;
+    } catch (error) {
+      console.error('Error loading configuraiton: ', error);
+    }
+  }
+
+  saveGlobalConfig() {
     let credData = {
       username: this.username,
       password: this.password
     };
 
     let yamlStr = yaml.safeDump(credData);
-    fs.writeFileSync(`${homedir}/.fortellis/config.yaml`, yamlStr, 'utf8');
+    fs.writeFileSync(
+      `${homedir}/${constants.configDirName}/${constants.configFileName}`,
+      yamlStr,
+      'utf8'
+    );
   }
 
-  saveConfig() {
-    this.saveCredentials();
+  saveLocalConfig() {
     let configData = {
       organization: {
         orgId: this.orgId,
@@ -45,19 +65,25 @@ class ConfigManagementService {
     };
 
     let yamlStr = yaml.safeDump(configData);
-    fs.writeFileSync(`${constants.configDir}/config.yaml`, yamlStr, 'utf8');
+    fs.writeFileSync(
+      `${constants.configDir}/${constants.configFileName}`,
+      yamlStr,
+      'utf8'
+    );
   }
 
-  loadConfig() {
-    this.loadCredentials();
-    try {
-      let fileContents = fs.readFileSync(`${constants.configDir}/config.yaml`);
-      let data = yaml.safeLoad(fileContents);
-      this.orgId = data.organization.orgId;
-      this.orgName = data.organization.orgName;
-      this.specFiles = data.specifications;
-    } catch (error) {
-      console.error('Error loading configuraiton: ', error);
+  globalConfigDirExists() {
+    if (fs.existsSync(`${homedir}/${constants.configDirName}`)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  createGlobalConfigDir() {
+    if (!this.globalConfigDirExists()) {
+      fs.mkdirSync(`${homedir}/${constants.configDirName}`);
+      this.saveGlobalConfig();
     }
   }
 

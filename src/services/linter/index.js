@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 const { Spectral, isOpenApiv2 } = require('@stoplight/spectral');
 const { getLocationForJsonPath } = require('@stoplight/yaml');
 const {
@@ -36,12 +38,12 @@ async function lint(parserResult, config) {
       parsed: parserResult,
       getLocationForJsonPath
     });
-  } catch (err) {
+  } catch (error) {
     console.error({
       message: 'linter error',
-      error: err
+      error: error
     });
-    throw { message: 'linter error', error: err };
+    throw { message: 'linter error', error: error };
   }
 }
 

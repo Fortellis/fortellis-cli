@@ -1,10 +1,12 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 
 describe('api-template command', () => {
   after(() => {
     const repoService = new RepositoryService();
-    repoService.deleteRepositoy();
+    repoService.deleteLocalRepository();
     console.log('Cleaning up repository');
   });
 
@@ -19,7 +21,7 @@ describe('api-template command', () => {
   describe('Create template in a fresh repo', () => {
     test
       .stdout()
-      .command(['init'])
+      .command(['init', '-n=MyOrg', '-i=1234'])
       .it('runs init', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
       });
@@ -28,7 +30,7 @@ describe('api-template command', () => {
       .stdout()
       .command(['api-template'])
       .it('runs template', ctx => {
-        expect(ctx.stdout).to.contain('Template Created:');
+        expect(ctx.stdout).to.contain('Template spec created');
       });
   });
 

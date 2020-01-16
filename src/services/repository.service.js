@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const fs = require('fs');
 const constants = require('../utils/constants');
 
@@ -10,7 +12,7 @@ class RepositoryService {
 
     // Make sure the config file is there.
     let configFile = this.getFileFromDirectory(constants.configDir);
-    if (configFile != 'config.yaml') {
+    if (configFile != `${constants.configFileName}`) {
       return false;
     }
 
@@ -45,7 +47,7 @@ class RepositoryService {
     return this.getFileFromDirectory(constants.specDir);
   }
 
-  deleteRepositoy() {
+  deleteLocalRepository() {
     this.deleteFolderRecursive(constants.configDir);
   }
 }

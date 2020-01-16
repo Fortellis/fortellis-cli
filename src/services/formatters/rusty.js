@@ -1,4 +1,4 @@
-const colors = require('colors');
+// const colors = require('colors');
 const path = require('path');
 
 function severityPrettyPrint(code) {
@@ -13,7 +13,7 @@ function formatResult(result, srcMap, filePath) {
   const startLine = result.range.start.line;
   const startCol = result.range.start.character;
   const endLine = result.range.end.line;
-  const endCol = result.range.end.character;
+  // const endCol = result.range.end.character;
 
   const pad = ''.padStart(`${endLine}`.length, ' ');
 

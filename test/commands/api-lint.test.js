@@ -1,10 +1,12 @@
-const { expect, test } = require('@oclif/test');
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+const { /*expect,*/ test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 
 describe('api-lint', () => {
   after(() => {
     const repoService = new RepositoryService();
-    repoService.deleteRepositoy();
+    repoService.deleteLocalRepository();
     console.log('Cleaning up repository');
   });
 

@@ -3,27 +3,33 @@
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 
-describe('init', () => {
+describe('push', () => {
   after(() => {
     const repoService = new RepositoryService();
     repoService.deleteLocalRepository();
     console.log('Cleaning up repository');
   });
 
-  describe('- init an empty repo', () => {
+  describe('- push without a repo', () => {
     test
       .stdout()
-      .command(['init', '-n=MyOrg', '-i=1234'])
-      .it('runs init', ctx => {
-        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
-      });
+      .command(['push', '-p=myPass', '-u=myUser', '-f=testFile.yaml'])
+      .exit(2)
+      .it('exits with status 2 if repo does not exist');
   });
 
-  describe('- init an already created repo', () => {
+  describe('- push with a repo, but no file', () => {
     test
       .stdout()
       .command(['init', '-n=MyOrg', '-i=1234'])
+      .it('creating repo', ctx => {
+        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
+      });
+
+    test
+      .stdout()
+      .command(['push', '-p=myPass', '-u=myUser', '-f=testFile.yaml'])
       .exit(2)
-      .it('exit with status 2 if repo already exists');
+      .it('exit with status 2 if file does not exist');
   });
 });
