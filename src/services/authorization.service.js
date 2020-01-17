@@ -127,12 +127,20 @@ class AuthorizationService {
     }
 
     // Get the auth token
-    let token = await getToken(
-      userSession.sessionId,
-      configManagementService.orgId
-    );
+    let token = '';
+    if (configManagementService.orgId) {
+      token = await getToken(
+        userSession.sessionId,
+        configManagementService.orgId
+      );
+    } else {
+      token = await getToken(userSession.sessionId);
+    }
 
-    return token;
+    return {
+      uid: userSession.uid,
+      token: token
+    };
   }
 }
 

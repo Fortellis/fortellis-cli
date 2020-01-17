@@ -41,6 +41,7 @@ class InitCommand extends Command {
         }/`
       );
     } else {
+      configManagementService.saveLocalConfig();
       const orgService = new OrganizationService();
       orgService.getOrganizations().then(userOrgs => {
         const orgQuestion = [

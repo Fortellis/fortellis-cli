@@ -17,7 +17,7 @@ class OrganizationService {
 
     let options = {
       headers: {
-        Authorization: `Bearer ${userToken}`
+        Authorization: `Bearer ${userToken.token}`
       }
     };
 
