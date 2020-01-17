@@ -6,6 +6,7 @@ const ConfigManagementService = require('../services/config.management.service')
 const fs = require('fs');
 const axios = require('axios');
 const constants = require('../utils/constants');
+const path = require('path');
 
 class PushCommand extends Command {
   async run() {
@@ -18,17 +19,22 @@ class PushCommand extends Command {
       );
     }
 
+    if (!flags.file) {
+      this.error('You must specifiy a file to push.');
+    }
+
     // Get local repo config (spec file names and orgId)
     const configService = new ConfigManagementService();
     configService.loadLocalConfig();
 
-    if (flags.file) {
-      // Make sure the spec is registered in the repo
-      if (configService.getSpecFilesFromConfig().indexOf(flags.file) > -1) {
-        this.log(`Pushing ${flags.file} to Fortellis...`);
+    // Make sure the spec is registered in the repo
+    if (configService.getSpecFilesFromConfig().indexOf(flags.file) > -1) {
+      this.log(`Pushing ${flags.file} to Fortellis...`);
 
+      try {
         // Get the spec contents
-        let specString = fs.readFileSync(`${flags.file}`, 'utf8');
+        let specFile = path.join(process.cwd(), flags.file);
+        let specString = fs.readFileSync(specFile, 'utf8');
         let payload = {
           spec: specString
         };
@@ -52,19 +58,15 @@ class PushCommand extends Command {
           }
         };
 
-        try {
-          // Send the push request to Fortellis
-          let res = await axios.post(cliPushUrl, payload, config);
-        } catch (error) {
-          this.error('Error pushing spec file:', error);
-        }
-      } else {
-        this.error(
-          `${flags.file} is not in the local repository. Use the 'fortellis-cli add' command to add the spec to the repository.`
-        );
+        // Send the push request to Fortellis
+        let res = await axios.post(cliPushUrl, payload, config);
+      } catch (error) {
+        this.error('Error pushing spec file.');
       }
     } else {
-      this.error('You must specify a spec filename.');
+      this.error(
+        `${flags.file} is not in the local repository. Use the 'fortellis-cli add' command to add the spec to the repository.`
+      );
     }
   }
 }

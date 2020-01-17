@@ -17,11 +17,7 @@ class ConfigManagementService {
   loadGlobalConfig() {
     try {
       let fileContents = fs.readFileSync(
-        path.join(
-          `${homedir}`,
-          `${constants.configDirName}`,
-          `${constants.configFileName}`
-        )
+        path.join(homedir, constants.configDirName, constants.configFileName)
       );
       let credData = yaml.safeLoad(fileContents);
 
@@ -34,9 +30,12 @@ class ConfigManagementService {
 
   loadLocalConfig() {
     try {
-      let fileContents = fs.readFileSync(
-        path.join(`${constants.configDir}`, `${constants.configFileName}`)
+      let configFile = path.join(
+        process.cwd(),
+        constants.configDirName,
+        constants.configFileName
       );
+      let fileContents = fs.readFileSync(configFile);
       let data = yaml.safeLoad(fileContents);
       this.orgId = data.organization.orgId;
       this.orgName = data.organization.orgName;
@@ -54,11 +53,7 @@ class ConfigManagementService {
 
     let yamlStr = yaml.safeDump(credData);
     fs.writeFileSync(
-      path.join(
-        `${homedir}`,
-        `${constants.configDirName}`,
-        `${constants.configFileName}`
-      ),
+      path.join(homedir, constants.configDirName, constants.configFileName),
       yamlStr,
       'utf8'
     );
@@ -75,14 +70,14 @@ class ConfigManagementService {
 
     let yamlStr = yaml.safeDump(configData);
     fs.writeFileSync(
-      path.join(`${constants.configDir}`, `${constants.configFileName}`),
+      path.join(process.cwd(), constants.configDir, constants.configFileName),
       yamlStr,
       'utf8'
     );
   }
 
   globalConfigDirExists() {
-    if (fs.existsSync(path.join(`${homedir}`, `${constants.configDirName}`))) {
+    if (fs.existsSync(path.join(homedir, constants.configDirName))) {
       return true;
     }
 
@@ -91,7 +86,7 @@ class ConfigManagementService {
 
   createGlobalConfigDir() {
     if (!this.globalConfigDirExists()) {
-      fs.mkdirSync(path.join(`${homedir}, ${constants.configDirName}`));
+      fs.mkdirSync(path.join(homedir, constants.configDirName));
       this.saveGlobalConfig();
     }
   }

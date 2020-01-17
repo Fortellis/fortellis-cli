@@ -2,10 +2,11 @@ const { Command, flags } = require('@oclif/command');
 const fs = require('fs');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
+const path = require('path');
 
 class AddCommand extends Command {
   async run() {
-    const { flags } = this.parse(AddCommand);
+    const { flags, args } = this.parse(AddCommand);
 
     const repositoryService = new RepositoryService();
 
@@ -23,14 +24,16 @@ class AddCommand extends Command {
 
     if (flags.apispec) {
       // Save a new Spec file to the config
-      fileName = flags.apispec;
+      fileName = args.file;
+
       // If the file name is specified, make sure it is a .yaml file.
       if (fileName.indexOf('.yaml') < 0 && fileName.indexOf('.yml') < 0) {
         fileName += '.yaml';
       }
 
       // Don't add a file if it isn't in the directory
-      if (!fs.existsSync(`${fileName}`)) {
+      let addFile = path.join(process.cwd(), fileName);
+      if (!fs.existsSync(addFile)) {
         this.error(`${fileName} does not exist in this directory.`);
       }
 
@@ -41,7 +44,7 @@ class AddCommand extends Command {
       configManagementService.addSpecFile(fileName);
     } else {
       this.error(
-        'You must specifiy the type of flie to be added to the repository'
+        'You must specify the type of flie to be added to the repository'
       );
     }
 
@@ -51,16 +54,26 @@ class AddCommand extends Command {
   }
 }
 
-AddCommand.description = `Add an item to the Fortellis repository.
-...
-Add an API Spec to the repository.
-`;
+AddCommand.args = [
+  {
+    name: 'file',
+    required: true,
+    description: 'Path of file to be pushed.'
+  }
+];
 
 AddCommand.flags = {
-  apispec: flags.string({
-    char: 'a',
+  apispec: flags.boolean({
+    char: 's',
     description: 'Add API Spec file to the repostory'
   })
 };
+
+AddCommand.description = `Add an item to the Fortellis repository.
+...
+Add a file to the repository.
+Currently supported file types:
+ - API spec files (-s) 
+`;
 
 module.exports = AddCommand;

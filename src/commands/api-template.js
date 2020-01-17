@@ -4,6 +4,7 @@ const RepositoryService = require('../services/repository.service');
 const ConfigManagementService = require('../services/config.management.service');
 const constants = require('../utils/constants');
 const fs = require('fs');
+const path = require('path');
 /**
  * Create a template repository, with a sample Spec, Doc, and Permissions file.
  *
@@ -21,7 +22,7 @@ class ApiTemplateCommand extends Command {
     }
 
     fs.copyFileSync(
-      `${__dirname}/../resources/${constants.sampleSpecName}`,
+      path.resolve(`${__dirname}/../resources/${constants.sampleSpecName}`),
       constants.sampleSpecName,
       err => {
         if (err) {

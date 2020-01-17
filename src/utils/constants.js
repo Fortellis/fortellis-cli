@@ -1,5 +1,4 @@
 module.exports = Object.freeze({
-  configDir: './.fortellis',
   configDirName: '.fortellis',
   configFileName: 'config.yaml',
   sampleSpecName: 'sampleApiSpec.yaml',

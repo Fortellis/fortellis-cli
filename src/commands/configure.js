@@ -53,7 +53,7 @@ class ConfigureCommand extends Command {
         configManagementService.saveGlobalConfig();
 
         this.log(
-          'Configuration completed. See [$home/.fortellis/config.yaml] file for stored values.'
+          'Configuration completed. See [$HOME/.fortellis/config.yaml] file for stored values.'
         );
       });
     }
@@ -63,7 +63,7 @@ class ConfigureCommand extends Command {
 ConfigureCommand.description = `Configure Fortellis CLI.
 ...
 Set up the credentials (username/password) and other global settings
-for the fortellis CLI in this environment. This will allow it to 
+for the Fortellis CLI in this environment. This will allow it to 
 communicate with Fortellis Platform.
 `;
 

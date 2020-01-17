@@ -2,6 +2,7 @@ const { Command } = require('@oclif/command');
 const fs = require('fs');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
+const path = require('path');
 
 const redColor = '\u001B[31m%s\u001B[0m';
 const resetColor = '\u001B[0m%s';
@@ -28,7 +29,7 @@ class StatusCommand extends Command {
         let apiSpecMessage = '';
         messageColor = resetColor;
         apiSpecMessage += `\t${item}`;
-        if (!fs.existsSync(`./${item}`)) {
+        if (!fs.existsSync(path.join(process.cwd(), item))) {
           messageColor = redColor;
           apiSpecMessage += ' - DELETED';
         }

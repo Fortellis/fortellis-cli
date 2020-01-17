@@ -5,6 +5,7 @@ const OrganizationService = require('../services/organization.service');
 const constants = require('../utils/constants');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
+const path = require('path');
 
 class InitCommand extends Command {
   async run() {
@@ -25,8 +26,9 @@ class InitCommand extends Command {
       );
     }
 
-    if (!fs.existsSync(constants.configDir)) {
-      fs.mkdirSync(constants.configDir);
+    let configPath = path.join(process.cwd(), constants.configDirName);
+    if (!fs.existsSync(configPath)) {
+      fs.mkdirSync(configPath);
     }
 
     // If the values are passed in, just save without prompting
@@ -61,6 +63,12 @@ class InitCommand extends Command {
           configManagementService.setOrgId(theValue.id);
           configManagementService.setOrgName(theValue.name);
           configManagementService.saveLocalConfig();
+
+          this.log(
+            `Initialized Fortellis repository: ${process.cwd()}/${
+              constants.configDirName
+            }/`
+          );
         });
       });
 
