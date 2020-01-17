@@ -10,7 +10,9 @@ class StatusCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error('This is not a Fortellis repository.');
+      this.error(
+        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
+      );
     }
 
     const configManagementService = new ConfigManagementService();

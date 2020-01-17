@@ -4,7 +4,6 @@ const RepositoryService = require('../services/repository.service');
 const ConfigManagementService = require('../services/config.management.service');
 const constants = require('../utils/constants');
 const fs = require('fs');
-
 /**
  * Create a template repository, with a sample Spec, Doc, and Permissions file.
  *
@@ -16,7 +15,9 @@ class ApiTemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error('This is not a Fortellis repository.');
+      this.error(
+        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
+      );
     }
 
     fs.copyFileSync(

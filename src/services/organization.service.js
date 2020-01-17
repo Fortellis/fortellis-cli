@@ -9,7 +9,7 @@ class OrganizationService {
     this.orgList = [];
   }
 
-  async getOrganizations() {
+  async getUserOrganizations() {
     let authorizationService = new AuthorizationService();
     let userToken = await authorizationService.getAuthToken();
 

@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 const fs = require('fs');
 const constants = require('../utils/constants');
+const path = require('path');
 
 class RepositoryService {
   repoIsValid() {
@@ -29,17 +30,17 @@ class RepositoryService {
     }
   }
 
-  deleteFolderRecursive(path) {
-    if (fs.existsSync(path)) {
-      fs.readdirSync(path).forEach((file, index) => {
-        let curPath = path + '/' + file;
+  deleteFolderRecursive(folderPath) {
+    if (fs.existsSync(folderPath)) {
+      fs.readdirSync(folderPath).forEach((file, index) => {
+        let curPath = path.join(folderPath, file);
         if (fs.lstatSync(curPath).isDirectory()) {
           deleteFolderRecursive(curPath);
         } else {
           fs.unlinkSync(curPath);
         }
       });
-      fs.rmdirSync(path);
+      fs.rmdirSync(folderPath);
     }
   }
 

@@ -43,7 +43,7 @@ class InitCommand extends Command {
     } else {
       configManagementService.saveLocalConfig();
       const orgService = new OrganizationService();
-      orgService.getOrganizations().then(userOrgs => {
+      orgService.getUserOrganizations().then(userOrgs => {
         const orgQuestion = [
           {
             type: 'list',

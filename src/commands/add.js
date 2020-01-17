@@ -11,7 +11,9 @@ class AddCommand extends Command {
 
     // Verify that this is a Fortellis repo
     if (!repositoryService.repoIsValid()) {
-      this.error('This is not a Fortellis repository.');
+      this.error(
+        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
+      );
     }
 
     const configManagementService = new ConfigManagementService();
@@ -28,7 +30,7 @@ class AddCommand extends Command {
       }
 
       // Don't add a file if it isn't in the directory
-      if (!fs.existsSync(`./${fileName}`)) {
+      if (!fs.existsSync(`${fileName}`)) {
         this.error(`${fileName} does not exist in this directory.`);
       }
 

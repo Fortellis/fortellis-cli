@@ -13,7 +13,9 @@ class PushCommand extends Command {
 
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error('This is not a Fortellis repository.');
+      this.error(
+        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
+      );
     }
 
     // Get local repo config (spec file names and orgId)
@@ -57,7 +59,9 @@ class PushCommand extends Command {
           this.error('Error pushing spec file:', error);
         }
       } else {
-        this.error(`${flags.file} is not in the local repository.`);
+        this.error(
+          `${flags.file} is not in the local repository. Use the 'fortellis-cli add' command to add the spec to the repository.`
+        );
       }
     } else {
       this.error('You must specify a spec filename.');
