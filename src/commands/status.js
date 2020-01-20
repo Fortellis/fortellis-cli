@@ -1,12 +1,10 @@
+/* eslint-disable no-unused-vars */
 const { Command } = require('@oclif/command');
 const fs = require('fs');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
 const path = require('path');
 const colors = require('colors');
-
-const redColor = colors.red;
-const resetColor = colors.reset;
 
 class StatusCommand extends Command {
   async run() {
@@ -24,17 +22,20 @@ class StatusCommand extends Command {
 
     this.log('Organization:', configManagementService.orgName);
     this.log('Spec Files:');
-    let messageColor = resetColor;
     if (specFiles.length > 0) {
       specFiles.forEach(item => {
+        let deleted = false;
         let apiSpecMessage = '';
-        messageColor = resetColor;
         apiSpecMessage += `\t${item}`;
         if (!fs.existsSync(path.join(process.cwd(), item))) {
-          messageColor = redColor;
           apiSpecMessage += ' - DELETED';
+          deleted = true;
         }
-        this.log(messageColor, apiSpecMessage);
+        if (deleted) {
+          this.log(apiSpecMessage.red);
+        } else {
+          this.log(apiSpecMessage.reset);
+        }
       });
     }
   }

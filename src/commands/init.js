@@ -13,7 +13,7 @@ class InitCommand extends Command {
 
     const repoService = new RepositoryService();
 
-    if (repoService.repoIsValid()) {
+    if (repoService.repoIsValid() && !flags.force) {
       this.error('This directory is already a Fortellis repository.');
     }
 
@@ -46,37 +46,38 @@ class InitCommand extends Command {
       configManagementService.saveLocalConfig();
       const orgService = new OrganizationService();
       orgService.getUserOrganizations().then(userOrgs => {
-        const orgQuestion = [
-          {
-            type: 'list',
-            name: 'organization',
-            message: 'Select Organization:',
-            choices: userOrgs
-          }
-        ];
-
-        inquirer.prompt(orgQuestion).then(orgAnswers => {
-          // Find the organization ID (from userOrgs) that
-          // matches the name selected in the prompt.
-          let theValue = userOrgs.find(x => x.name === orgAnswers.organization);
-          // Create a new configuration object.
-          configManagementService.setOrgId(theValue.id);
-          configManagementService.setOrgName(theValue.name);
+        if (userOrgs.length === 0) {
+          this.log('No organizations found');
           configManagementService.saveLocalConfig();
+        } else {
+          const orgQuestion = [
+            {
+              type: 'list',
+              name: 'organization',
+              message: 'Select Organization:',
+              choices: userOrgs
+            }
+          ];
 
-          this.log(
-            `Initialized Fortellis repository: ${process.cwd()}/${
-              constants.configDirName
-            }/`
-          );
-        });
+          inquirer.prompt(orgQuestion).then(orgAnswers => {
+            // Find the organization ID (from userOrgs) that
+            // matches the name selected in the prompt.
+            let theValue = userOrgs.find(
+              x => x.name === orgAnswers.organization
+            );
+            // Create a new configuration object.
+            configManagementService.setOrgId(theValue.id);
+            configManagementService.setOrgName(theValue.name);
+            configManagementService.saveLocalConfig();
+
+            this.log(
+              `Initialized Fortellis repository: ${process.cwd()}/${
+                constants.configDirName
+              }/`
+            );
+          });
+        }
       });
-
-      this.log(
-        `Initialized Fortellis repository: ${process.cwd()}/${
-          constants.configDirName
-        }/`
-      );
     }
   }
 }
@@ -89,7 +90,11 @@ A fortellis repository is a directory containing API Specs and a config director
 
 InitCommand.flags = {
   orgname: flags.string({ char: 'n', description: 'Organization name' }),
-  orgid: flags.string({ char: 'i', description: 'Organizatino ID' })
+  orgid: flags.string({ char: 'i', description: 'Organizatino ID' }),
+  force: flags.boolean({
+    char: 'f',
+    description: 'Initialize directory even if it is already a repository.'
+  })
 };
 
 module.exports = InitCommand;

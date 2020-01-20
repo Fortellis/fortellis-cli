@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 const axios = require('axios');
 const constants = require('../utils/constants');
 const ConfigManagementService = require('../services/config.management.service');
+const colors = require('colors');
 
 // Returns a list of Organization objects { name: <org name>, id: <orgId>}
 // for the user of the current repository.
@@ -36,7 +39,16 @@ class OrganizationService {
 
       return this.orgList;
     } catch (error) {
-      console.log('Error fetching organization list:', error);
+      if (error.response.status === 403) {
+        console.log(
+          'Access token has expired. Refresh the token by executing: fortellis-cli configure'
+            .red
+        );
+        return [];
+      } else {
+        console.log('Error fetching organization list from fortellis.'.red);
+        return [];
+      }
     }
   }
 }
