@@ -1,6 +1,6 @@
-const AuthorizationService = require('../services/authorization.service');
 const axios = require('axios');
 const constants = require('../utils/constants');
+const ConfigManagementService = require('../services/config.management.service');
 
 // Returns a list of Organization objects { name: <org name>, id: <orgId>}
 // for the user of the current repository.
@@ -10,29 +10,34 @@ class OrganizationService {
   }
 
   async getUserOrganizations() {
-    let authorizationService = new AuthorizationService();
-    let userToken = await authorizationService.getAuthToken();
+    // Get the auth token from the global config.
+    let configService = new ConfigManagementService();
+    configService.loadGlobalConfig();
 
-    const url = `${constants.orgListUrl}?userId=${userToken.uid}`;
+    const url = `${constants.orgListUrl}?userId=${configService.token.uid}`;
 
     let options = {
       headers: {
-        Authorization: `Bearer ${userToken.token}`
+        Authorization: `Bearer ${configService.token.token}`
       }
     };
 
-    let orgResponse = await axios.get(url, options);
+    try {
+      let orgResponse = await axios.get(url, options);
 
-    let fullOrgList = orgResponse.data.organizations;
+      let fullOrgList = orgResponse.data.organizations;
 
-    fullOrgList.forEach(element => {
-      this.orgList.push({
-        name: element.name,
-        id: element.id
+      fullOrgList.forEach(element => {
+        this.orgList.push({
+          name: element.name,
+          id: element.id
+        });
       });
-    });
 
-    return this.orgList;
+      return this.orgList;
+    } catch (error) {
+      console.log('Error fetching organization list:', error);
+    }
   }
 }
 

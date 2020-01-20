@@ -9,6 +9,7 @@ class ConfigManagementService {
   constructor() {
     this.username = '';
     this.password = '';
+    this.token = ''; // Token is a JSON object with the structure { uid: <userId>, token: <authentication token> }
     this.specFiles = [];
     this.orgId = '';
     this.orgName = '';
@@ -21,34 +22,34 @@ class ConfigManagementService {
       );
       let credData = yaml.safeLoad(fileContents);
 
-      this.username = credData.username;
-      this.password = credData.password;
+      this.token = credData.token;
     } catch (error) {
       console.error('Error loading credentials:', error);
     }
   }
 
   loadLocalConfig() {
-    try {
-      let configFile = path.join(
-        process.cwd(),
-        constants.configDirName,
-        constants.configFileName
-      );
-      let fileContents = fs.readFileSync(configFile);
-      let data = yaml.safeLoad(fileContents);
-      this.orgId = data.organization.orgId;
-      this.orgName = data.organization.orgName;
-      this.specFiles = data.specifications;
-    } catch (error) {
-      console.error('Error loading configuraiton: ', error);
+    let configFile = path.join(
+      process.cwd(),
+      constants.configDirName,
+      constants.configFileName
+    );
+    if (fs.existsSync(configFile)) {
+      try {
+        let fileContents = fs.readFileSync(configFile);
+        let data = yaml.safeLoad(fileContents);
+        this.orgId = data.organization.orgId;
+        this.orgName = data.organization.orgName;
+        this.specFiles = data.specifications;
+      } catch (error) {
+        console.error('Error loading configuraiton: ', error);
+      }
     }
   }
 
   saveGlobalConfig() {
     let credData = {
-      username: this.username,
-      password: this.password
+      token: this.token
     };
 
     let yamlStr = yaml.safeDump(credData);
@@ -70,7 +71,11 @@ class ConfigManagementService {
 
     let yamlStr = yaml.safeDump(configData);
     fs.writeFileSync(
-      path.join(process.cwd(), constants.configDir, constants.configFileName),
+      path.join(
+        process.cwd(),
+        constants.configDirName,
+        constants.configFileName
+      ),
       yamlStr,
       'utf8'
     );
@@ -101,6 +106,11 @@ class ConfigManagementService {
 
   setPassword(value) {
     this.password = value;
+  }
+
+  // The config token has two properties uid and token.
+  setToken(value) {
+    this.token = value;
   }
 
   setOrgId(value) {

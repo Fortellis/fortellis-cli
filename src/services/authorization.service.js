@@ -27,7 +27,7 @@ const parseLocationHeader = function(header) {
 async function getSessionId(authUsername, authPassword) {
   try {
     // set the url
-    const sessionUrl = `${constants.oktaGetSessionUrl}`;
+    const sessionUrl = `${constants.getSessionUrl}`;
 
     // request data object
     const data = {

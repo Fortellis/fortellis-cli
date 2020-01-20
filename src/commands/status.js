@@ -3,9 +3,10 @@ const fs = require('fs');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
 const path = require('path');
+const colors = require('colors');
 
-const redColor = '\u001B[31m%s\u001B[0m';
-const resetColor = '\u001B[0m%s';
+const redColor = colors.red;
+const resetColor = colors.reset;
 
 class StatusCommand extends Command {
   async run() {
