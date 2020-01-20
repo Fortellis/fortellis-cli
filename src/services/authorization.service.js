@@ -7,7 +7,7 @@ const ConfigManagementService = require('./config.management.service');
 const constants = require('../utils/constants');
 
 const parseLocationHeader = function(header) {
-  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
+  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/?([a-zA-Z0-9\.\/-]*)\??(.*)/;
 
   let matches = urlRegEx.exec(header);
 

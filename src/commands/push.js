@@ -58,7 +58,6 @@ class PushCommand extends Command {
           token = {
             token: configService.token
           };
-          // token = await authService.getAuthToken();
         }
 
         let cliPushUrl = `${constants.fortellisShimURL}`;
