@@ -7,7 +7,7 @@ const ConfigManagementService = require('./config.management.service');
 const constants = require('../utils/constants');
 
 const parseLocationHeader = function(header) {
-  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/([a-zA-Z0-9\.\/-]*)\??(.*)/;
+  let urlRegEx = /^(.*)\:\/\/([a-zA-Z0-9\.-]*)(\:(\d+))?\/?([a-zA-Z0-9\.\/-]*)\??(.*)/;
 
   let matches = urlRegEx.exec(header);
 
@@ -27,7 +27,7 @@ const parseLocationHeader = function(header) {
 async function getSessionId(authUsername, authPassword) {
   try {
     // set the url
-    const sessionUrl = `${constants.oktaGetSessionUrl}`;
+    const sessionUrl = `${constants.getSessionUrl}`;
 
     // request data object
     const data = {

@@ -6,13 +6,14 @@ const path = require('path');
 
 class RepositoryService {
   repoIsValid() {
+    let localConfigDir = path.join(process.cwd(), constants.configDirName);
     // Make sure the config directory is there.
-    if (!fs.existsSync(constants.configDir)) {
+    if (!fs.existsSync(localConfigDir)) {
       return false;
     }
 
     // Make sure the config file is there.
-    let configFile = this.getFileFromDirectory(constants.configDir);
+    let configFile = this.getFileFromDirectory(localConfigDir);
     if (configFile != `${constants.configFileName}`) {
       return false;
     }
@@ -44,12 +45,10 @@ class RepositoryService {
     }
   }
 
-  getSpecInDirectory() {
-    return this.getFileFromDirectory(constants.specDir);
-  }
-
   deleteLocalRepository() {
-    this.deleteFolderRecursive(constants.configDir);
+    this.deleteFolderRecursive(
+      path.join(process.cwd(), constants.configDirName)
+    );
   }
 }
 

@@ -22,6 +22,12 @@ class PushCommand extends Command {
       this.error(toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
+    if (!flags.apispec) {
+      this.error(
+        'You must specifiy the type of file to push (--apispec, etc.).'
+      );
+    }
+
     // Get local repo config (spec file names and orgId)
     const configService = new ConfigManagementService();
     configService.loadLocalConfig();
@@ -47,7 +53,10 @@ class PushCommand extends Command {
             flags.password
           );
         } else {
-          token = await authService.getAuthToken();
+          configService.loadGlobalConfig();
+          token = {
+            token: configService.token
+          };
         }
 
         let cliPushUrl = `${constants.fortellisShimURL}`;
@@ -68,17 +77,25 @@ class PushCommand extends Command {
   }
 }
 
-PushCommand.description = `Push specified api spec to fortellis.
+PushCommand.description = `Push specified file to fortellis.
 ...
-Publish the API spec to Fortellis: either an update of an existing spec
-in DRAFT status, or a new version of a spec in FINAL status.
+Publish the file (spec, documentation, etc.) to Fortellis: either 
+an update of an existing file in DRAFT status, or a new version 
+in FINAL status.
 
 Pass in a username/password to explicitly publish with a given user. Otherwise
 the username/password configured in the enviromment (see fortellis-cli configure)
 will be used.
+
+A flag must be used to specifiy the kind of file to be pushed.
+ -s --apispec
 `;
 
 PushCommand.flags = {
+  apispec: flags.boolean({
+    char: 's',
+    description: 'Push API Spec file to Fortellis'
+  }),
   username: flags.string({ char: 'u', description: 'Fortellis username' }),
   password: flags.string({ char: 'p', description: 'Fortellis password' }),
   file: flags.string({ char: 'f' })
