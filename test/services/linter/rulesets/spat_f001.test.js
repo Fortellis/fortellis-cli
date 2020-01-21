@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 
 const { Spectral } = require('@stoplight/spectral');
-const functions = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
-const rules = require('../../../../../src/services/linter/rulesets/oas2-fortellis');
+const functions = require('../../../../src/services/linter/functions/oas2-enhanced');
+const rules = require('../../../../src/services/linter/rulesets/oas2-fortellis');
 
 describe('rule spat_f001', () => {
   const s = new Spectral();

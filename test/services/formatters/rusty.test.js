@@ -1,6 +1,6 @@
 const colors = require('colors');
 const { expect } = require('chai');
-const rusty = require('../../../src/services/formatters/rusty');
+const rusty = require('../../../src/services/linter/formatters/rusty');
 
 const testData = {
   results: [
@@ -38,7 +38,7 @@ const testData = {
   ], 
 };
 
-describe('formatSeverity()', () => {
+describe('rusty.formatSeverity()', () => {
   it("should translate spectral severity codes to human readable strings", async function() {
     const tests = [
       { severity: 0, expected: 'error'.red },
@@ -54,7 +54,7 @@ describe('formatSeverity()', () => {
   });
 });
 
-describe('formatLocation()', () => {
+describe('rusty.formatLocation()', () => {
   it("should correctly format the location of the result in the ", async function() {
     const expected = "-->".blue + " baz.yaml:1:3\n"
 
@@ -68,7 +68,7 @@ describe('formatLocation()', () => {
   });
 });
 
-describe('formatSrcView()', () => {
+describe('rusty.formatSrcView()', () => {
   it("should correctly format a view of the source code", async function() {
      
     const expected = "  |\n".blue + 
@@ -87,7 +87,7 @@ describe('formatSrcView()', () => {
   });
 });
 
-describe('formatResults()', () => {
+describe('rusty.formatResults()', () => {
   it("should correctly format a collection of results", async function() {
     const expected = rusty.formatResult(testData.results[0], testData.srcMap, testData.filePath) + '\n' +
       rusty.formatResult(testData.results[1], testData.srcMap, testData.filePath) + '\n' + 

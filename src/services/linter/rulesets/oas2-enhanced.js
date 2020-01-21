@@ -233,6 +233,9 @@ module.exports = {
   wop002,
   wop003,
 
+  wpar001,
+  wres001,
+
   wdef001,
   wdef002,
 };

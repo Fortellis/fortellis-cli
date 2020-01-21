@@ -1,8 +1,8 @@
-const { Command, flags } = require("@oclif/command");
+const { Command } = require("@oclif/command");
 const fs = require('fs');
 const path = require('path');
 const lint = require("../services/linter");
-const { formatResults } = require('../services/formatters/rusty');
+const { formatResults } = require('../services/linter/formatters/rusty');
 const { parseWithPointers } = require('@stoplight/yaml');
 
 class ApiLintCommand extends Command {

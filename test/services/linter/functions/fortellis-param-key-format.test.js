@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { fortellisParamKeyFormat } = require('../../../../../../src/services/linter/rulesets/oas2-fortellis/functions');
+const { fortellisParamKeyFormat } = require('../../../../src/services/linter/functions/oas2-fortellis');
 
 describe('function fortellisParamKeyFormat', async function () {
   it('should fail keys with invalid structure', async function () {

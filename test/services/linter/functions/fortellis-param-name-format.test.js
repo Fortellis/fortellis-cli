@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { fortellisParamNameFormat } = require('../../../../../../src/services/linter/rulesets/oas2-fortellis/functions');
+const { fortellisParamNameFormat } = require('../../../../src/services/linter/functions/oas2-fortellis');
 
 describe('function fortellisParamNameFormat', async function () {
   it("should silently ignore parameters missing the `name` property", async function () {

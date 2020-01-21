@@ -10,6 +10,9 @@
 // {type}: must be one of the following values:
 //   s   - root spec object
 //   inf - info object 
+//   sdf - security defintion object 
+//   sch - security scheme object
+//   scp - security scope object
 //   par - parameter object
 //   res - response object
 //   pat - path object
@@ -78,6 +81,21 @@ const spat_f001 = {
 };
   
 //
+// security definitions object rules
+//
+const wsdf_f001 = {
+  description: 'root spec object should declare a `securityDefinitions` object',
+  recommended: true,
+  type: 'validation',
+  severity: 'warn',
+  given: '$',
+  then: {
+    field: 'securityDefinitions',
+    function: 'truthy'
+  },
+};
+
+//
 // parameter object rules
 //
 const wpar_f001 = {
@@ -116,18 +134,6 @@ const wpar_f002 = {
     function: 'fortellisParamNameFormat'
   }
 }
-
-const wpar_f003 = {
-  description: 'parameters that declare a `schema` property should use references',
-  recommended: true,
-  type: 'style',
-  severity: 'warn',
-  given: '$.parameters[*].schema',
-  then: {
-    field: 'properties',
-    function: 'truthy'
-  }
-};
 
 //
 // response object rules
@@ -185,7 +191,7 @@ const sdef_f002 = {
   description: 'defintion object property names should be camelCase',
   type: 'style',
   severity: 'warn',
-  given: '$.definitions[*]',
+  given: '$.definitions[*].properties',
   then: {
     field: '@key',
     function: 'casing',
@@ -197,12 +203,13 @@ const sdef_f002 = {
 
 module.exports = {
   einf_f001,
-   
+  
+  wsdf_f001,
+  
   spat_f001,
 
   wpar_f001,
   wpar_f002,
-  wpar_f003,
 
   wres_f001,
 

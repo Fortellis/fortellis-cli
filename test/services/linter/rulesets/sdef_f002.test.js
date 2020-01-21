@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 
 const { Spectral } = require('@stoplight/spectral');
-const functions = require('../../../../../src/services/linter/rulesets/oas2-enhanced/functions');
-const rules = require('../../../../../src/services/linter/rulesets/oas2-fortellis');
+const functions = require('../../../../src/services/linter/functions/oas2-enhanced');
+const rules = require('../../../../src/services/linter/rulesets/oas2-fortellis');
 
 describe('rule sdef_f002', () => {
   const s = new Spectral();
@@ -16,13 +16,15 @@ describe('rule sdef_f002', () => {
 
   it("should pass if definiton object properties are `camelCase`", async function() {
     const test = {
-      definitions: {
-        Foo: { 
-          foo: {},
-          fooBar: {},
-          fooBarBaz: {},
-        }
-      }
+      "definitions": {
+        "Foo": {
+          "properties": { 
+            "foo": {},
+            "fooBar": {},
+            "fooBarBaz": {},
+          },
+        },
+      },
     };
 
     const results = await s.run(test);
@@ -31,13 +33,15 @@ describe('rule sdef_f002', () => {
 
   it("should fail if definiton object properties are not `camelCase`", async function() {
     const test = {
-      definitions: {
-        Foo: { 
-          "Foo": {},
-          "foo-bar": {},
-          "Foo-Bar": {},
-        }
-      }
+      "definitions": {
+        "Foo": { 
+          "properties": {
+            "Foo": {},
+            "foo-bar": {},
+            "Foo-Bar": {},
+          },
+        },
+      },
     };
 
     const results = await s.run(test);
