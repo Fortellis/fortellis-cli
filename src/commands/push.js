@@ -8,6 +8,7 @@ const axios = require('axios');
 const constants = require('../utils/constants');
 const path = require('path');
 const { ERRORS, toCommandError } = require('../utils/errors');
+const colors = require('colors');
 
 class PushCommand extends Command {
   async run() {
@@ -54,9 +55,7 @@ class PushCommand extends Command {
           );
         } else {
           configService.loadGlobalConfig();
-          token = {
-            token: configService.token
-          };
+          token = configService.token;
         }
 
         let cliPushUrl = `${constants.fortellisShimURL}`;
@@ -67,9 +66,29 @@ class PushCommand extends Command {
         };
 
         // Send the push request to Fortellis
-        let res = await axios.post(cliPushUrl, payload, config);
+        axios
+          .post(cliPushUrl, payload, config)
+          .then(response => {
+            this.log('File was successfully pushed:', response.data);
+          })
+          .catch(error => {
+            if (error.response.status === 422) {
+              this.log(error.response.data.message.red);
+              this.log('Ressons:');
+              error.response.data.error.forEach(element => {
+                this.log(element);
+              });
+              // this.log(error.response.data.error);
+            } else if (error.response.status === 403) {
+              this.log(
+                'Access denied. Your authentication may have expired. Renew by executing: fortellis-cli configure'
+              );
+            } else {
+              this.log('Error pushing spec file:', error.response);
+            }
+          });
       } catch (error) {
-        this.error(toCommandError(ERRORS.FILE_NOT_ADDED));
+        this.log('Unable to push spec to Fortellis');
       }
     } else {
       this.error(toCommandError(FILE_NOT_ADDED, flags.file));

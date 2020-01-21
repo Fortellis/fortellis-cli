@@ -8,7 +8,7 @@ describe('configure', () => {
       .stdout()
       .command(['configure', '-u=username', '-p=password'])
       .it('runs config -u=username -p=password', ctx => {
-        expect(ctx.stdout).to.contain('Configuration completed.');
+        expect(ctx.stdout).to.be.empty;
       });
   });
 });

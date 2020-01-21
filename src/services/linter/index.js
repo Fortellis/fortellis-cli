@@ -1,6 +1,10 @@
+/* eslint-disable no-console */
 const { Spectral } = require('@stoplight/spectral');
-const { getLocationForJsonPath} = require('@stoplight/yaml')
-const { oas2Functions, rules: oas2Rules } = require('@stoplight/spectral/dist/rulesets/oas2');
+const { getLocationForJsonPath } = require('@stoplight/yaml');
+const {
+  oas2Functions,
+  rules: oas2Rules
+} = require('@stoplight/spectral/dist/rulesets/oas2');
 const oas2EnhancedFunctions = require('./functions/oas2-enhanced');
 const oas2EnhancedRules = require('./rulesets/oas2-enhanced');
 const oas2FortellisFunctions = require('./functions/oas2-fortellis');
@@ -11,9 +15,9 @@ async function lint(parserResult, config) {
     // load functions and rules
     let functions = oas2Functions();
     let rules = await oas2Rules();
-    
+
     // Merge the rulesets and functions since this is not supported by Spectral v5.X.X
-    if(config.rulesets['oas2-enhanced']) {
+    if (config.rulesets['oas2-enhanced']) {
       Object.assign(functions, oas2EnhancedFunctions);
       Object.assign(rules, oas2EnhancedRules);
     }
@@ -31,14 +35,12 @@ async function lint(parserResult, config) {
     spectral.addFunctions(functions); // generates deprecation message
     spectral.addRules(rules); // generates deprecation message
     spectral.mergeRules();
-    
     const results = spectral.run({
       parsed: parserResult,
       getLocationForJsonPath
     });
     return results;
-
-  } catch (err) {
+  } catch (error) {
     console.error({
       message: 'linter error',
       error: error

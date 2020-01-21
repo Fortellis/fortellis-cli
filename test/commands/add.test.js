@@ -64,7 +64,7 @@ describe('add', () => {
 
     test
       .stdout()
-      .command(['add', '-a=sampleApiSpec.yaml'])
+      .command(['add', '-s', 'sampleApiSpec.yaml'])
       .exit(2)
       .it('Exits with status 2 when file is already in the repo');
   });
@@ -89,7 +89,7 @@ describe('add', () => {
 
     test
       .stdout()
-      .command(['add', '-a=testSpec.yaml'])
+      .command(['add', '-s', 'sampleApiSpec.yaml'])
       .it('add a file', ctx => {
         expect(ctx.stdout).to.contain('has been added to the repository');
       });
