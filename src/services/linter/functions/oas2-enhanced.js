@@ -55,53 +55,7 @@ function casing(targetVal, opts) {
     return [];
 }
 
-function pathCasing(targetVal, opts) {
-    /**
-     * This rule verifies that every path segment matches the specified case type.
-     */
-    
-    if(typeof opts.casing !== 'string') {
-        throw "must include 'casing' option";
-    }
-
-    const caseType = caseTypes[opts.casing];
-    if(!casing) {
-        throw "invalid 'casing' option";
-    }
-    
-    let results = [];
-
-    for(const segment of targetVal.split(RegExp('\/|{|}'))) {
-      if(segment && !caseType.regex.test(segment)) {
-        results.push({
-          message: "path segment '" + segment + "' should be " + caseType.prettyName
-        })
-      }
-    }
-  
-    return results;
-  }
-
-  function isReference(targetVal, opts, paths, otherValues) {
-    //const msg = `targetVal: ${Object.keys(targetVal)}, ` +
-    //  "opts: " + Object.keys(opts) + "\n" + 
-    //  "paths.given: [" + paths.given + "]\n" +
-    //  "paths.target: [" + paths.target + "]\n" +
-    //  "otherValues.original: " + Object.keys(otherValues.original.schema) + " \n" +
-    //  "otherValues.given: " + Object.keys(otherValues.given.schema) + " \n";
-    
-    // I think I've found a way to traverse the AST down?  How do examples in specrtal handle refs?
-
-    const originalProps = Object.keys(otherValues.original.properties);
-
-    return [{
-        message: "originalProps: " + originalProps
-    }];
-  }
-
-  module.exports = {
-    caseTypes,
-    casing,
-    pathCasing,
-    isReference,
-  };
+module.exports = {
+  caseTypes,
+  casing,
+};

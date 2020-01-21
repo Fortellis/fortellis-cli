@@ -66,18 +66,17 @@ const einf_f001 = {
 // path object rules
 //
 const spat_f001 = {
-  description: "path key segments should be 'kebab-case'",
+  //
+  // Path key segments should be kebab-case.  Ignores path parameters.
+  //
   recommended: true,
   type: 'style',
   severity: 'warn',
   given: '$.paths',
   then: {
     field: '@key',
-    function: 'pathCasing',
-    functionOptions: {
-      casing: 'kebabCase'
-    }
-  }
+    function: 'fortellisPathCasing',
+  },
 };
   
 //
