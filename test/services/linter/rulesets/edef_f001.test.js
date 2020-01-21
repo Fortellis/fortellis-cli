@@ -4,15 +4,15 @@ const { Spectral } = require('@stoplight/spectral');
 const { oas2Functions } = require('@stoplight/spectral/dist/rulesets/oas2');
 const rules = require('../../../../src/services/linter/rulesets/oas2-fortellis');
 
-describe('rule definitionExampleProp', () => {
+describe('rule edef_f001', () => {
   const s = new Spectral();
   s.addFunctions(oas2Functions());
   s.addRules({
-    definitionExampleProp: rules.definitionExampleProp
+    edef_f001: rules.edef_f001
   });
   s.mergeRules();
 
-  it("should pass if a defintion objects includes an 'example' property", async function() {
+  it("should pass if defintion objects include an `example` property", async function() {
     const results = await s.run({
       definitions: {
         Foo: {
@@ -30,7 +30,7 @@ describe('rule definitionExampleProp', () => {
     expect(results).to.eql([]); 
   });
 
-  it("should return style warnings if defintion objects do not include an 'example' property", async function() {
+  it("should fail if defintion objects do not include an `example` property", async function() {
     const results = await s.run({
       definitions: {
         Foo: {},

@@ -1,21 +1,21 @@
 const { expect } = require('chai');
 
 const { Spectral } = require('@stoplight/spectral');
-const functions = require('../../../../src/services/linter/rulesets/oas2-enhanced/functions');
+const functions = require('../../../../src/services/linter/functions/oas2-enhanced');
 const rules = require('../../../../src/services/linter/rulesets/oas2-fortellis');
 
-describe('rule pathKeyKebabCase', () => {
+describe('rule spat_f001', () => {
   const s = new Spectral();
   s.addFunctions({
     'pathCasing': functions.pathCasing
   });
   s.addRules({
-    'pathKeyKebabCase': rules.pathKeyKebabCase
+    spat_f001: rules.spat_f001
   });
   s.mergeRules();
 
-  it('should return no results for kebab-case path segments', async function() {
-    const results = await s.run({
+  it("should pass for paths with `kebab-case` segments", async function() {
+    const test = {
       'paths': {
         '/foo': {},  
         '/foo-bar': {},
@@ -24,21 +24,22 @@ describe('rule pathKeyKebabCase', () => {
         '/foo/{bar}': {},
         '/foo/{bar}/baz': {}
       }
-    });
-            
+    };
+
+    const results = await s.run(test);     
     expect(results).to.eql([]); 
   });
 
-  it('should return a result for a non kebab-case path segments', async function() {
-    const results = await s.run({
+  it("should fail for paths with non-`kebab-case` segments", async function() {
+    const test = {
       'paths': {
         '/Foo': {},  
         '/fooBar': {},
         '/foo-bar-': {},
       }
-    });
-            
+    };
+
+    const results = await s.run(test);  
     expect(results.length).to.equal(3);
   });
-
 });
