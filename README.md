@@ -45,9 +45,10 @@ USAGE
 
 <!-- commands -->
 * [`fortellis-cli add`](#fortellis-cli-add)
-* [`fortellis-cli api-lint`](#fortellis-cli-api-lint)
+* [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
 * [`fortellis-cli api-template`](#fortellis-cli-api-template)
 * [`fortellis-cli configure`](#fortellis-cli-configure)
+* [`fortellis-cli getauth`](#fortellis-cli-getauth)
 * [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
 * [`fortellis-cli init`](#fortellis-cli-init)
 * [`fortellis-cli status`](#fortellis-cli-status)
@@ -76,21 +77,16 @@ DESCRIPTION
 
 _See code: [src/commands/add.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/add.js)_
 
-## `fortellis-cli api-lint`
+## `fortellis-cli api-lint FILE`
 
-Validates and lints  OpenAPI 2.0 specifications.
+Lints OpenAPI 2.0 specifications for correctness and style.
 
 ```
 USAGE
-  $ fortellis-cli api-lint
+  $ fortellis-cli api-lint FILE
 
-OPTIONS
-  -f, --file=file
-
-DESCRIPTION
-  ...
-  Checks OpenAPI 2.0 specifications for correctness and style according to 
-  the OpenAPI 2.0 standard and fortellis style guide.
+ARGUMENTS
+  FILE  path of an Open API 2.0 specificaton file
 ```
 
 _See code: [src/commands/api-lint.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/api-lint.js)_
@@ -130,6 +126,24 @@ DESCRIPTION
 
 _See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
 
+## `fortellis-cli getauth`
+
+Test fetching an authorization token
+
+```
+USAGE
+  $ fortellis-cli getauth
+
+OPTIONS
+  -n, --name=name  name to print
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/getauth.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/getauth.js)_
+
 ## `fortellis-cli help [COMMAND]`
 
 display help for fortellis-cli
@@ -145,7 +159,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.2/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
 
 ## `fortellis-cli init`
 

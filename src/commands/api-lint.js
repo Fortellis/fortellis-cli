@@ -10,7 +10,7 @@ class ApiLintCommand extends Command {
   
   static args = [
     {
-      name: 'file',               // name of arg to show in help and reference with args[name]
+      name: 'FILE',               // name of arg to show in help and reference with args[name]
       required: true,            // make the arg required with `required: true`
       description: 'path of an Open API 2.0 specificaton file', // help description
     }
@@ -20,11 +20,11 @@ class ApiLintCommand extends Command {
     const {args} = this.parse(ApiLintCommand)
     
     // validate input
-    if(!args.file) {
+    if(!args.FILE) {
       this.error('no specfication file specified', { code: 1});
     }
 
-    const fileName = args.file;
+    const fileName = args.FILE;
     if (!fs.existsSync(fileName)) {
       this.error("file '" + path.resolve(fileName) + "' does not exist", { code: 1});
     } 
