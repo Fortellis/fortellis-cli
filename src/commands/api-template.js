@@ -5,6 +5,8 @@ const ConfigManagementService = require('../services/config.management.service')
 const constants = require('../utils/constants');
 const fs = require('fs');
 const path = require('path');
+const { ERRORS, toCommandError } = require('../utils/errors');
+
 /**
  * Create a template repository, with a sample Spec, Doc, and Permissions file.
  *
@@ -16,9 +18,7 @@ class ApiTemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error(
-        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
-      );
+      this.error(toCommandError(ERRORS.REPO_INVALID));
     }
 
     fs.copyFileSync(
@@ -26,7 +26,12 @@ class ApiTemplateCommand extends Command {
       constants.sampleSpecName,
       err => {
         if (err) {
-          this.error('Error copying template API spec file:', err);
+          this.error(
+            toCommandError(
+              ERRORS.UNEXPECTED_ERROR,
+              `Error copying template API spec file.${err && err.message && err.stack ? `\n${err.message}\n${err.stack}` : '' }`
+            )
+          )
         }
       }
     );

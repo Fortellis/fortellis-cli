@@ -4,19 +4,28 @@ const path = require('path');
 const lint = require('../services/linter');
 const { formatResults } = require('../services/formatters/rusty');
 const { parseWithPointers } = require('@stoplight/yaml');
+const ConfigManagementService = require('../services/config.management.service');
+const { COMMAND_ERRORS, ERRORS, toCommandError } = require('../utils/errors');
 
 class ApiLintCommand extends Command {
   async run() {
     const { flags } = this.parse(ApiLintCommand);
+    const specFileName = flags.file;
+
+    if (flags.safe) {
+      const configService = new ConfigManagementService();
+      configService.loadLocalConfig();
+      if (configService.getSpecFilesFromConfig().indexOf(specFileName) === -1) {
+        this.error(toCommandError(ERRORS.FILE_NOT_ADDED, specFileName));
+      }
+    }
 
     if (!flags.file) {
-      this.error('no specfication file specified', { code: 1 });
+      this.error(toCommandError(ERRORS.SPECIFICATION_NOT_GIVEN))
     }
     if (!fs.existsSync(flags.file)) {
-      this.error("file '" + path.resolve(flags.file) + "' does not exist", {
-        code: 1
-      });
-    }
+      this.error(toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(flags.file)));
+    } 
 
     const spec = fs.readFileSync(flags.file, { encoding: 'utf8' });
     const parserResults = parseWithPointers(spec);
@@ -44,6 +53,9 @@ the OpenAPI 2.0 standard and fortellis style guide.
 ApiLintCommand.flags = {
   file: flags.string({
     char: 'f'
+  }),
+  safe: flags.string({
+    description: 'Check that the API spec has been added and registered to the repository before validating'
   })
 };
 

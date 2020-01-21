@@ -7,6 +7,7 @@ const fs = require('fs');
 const axios = require('axios');
 const constants = require('../utils/constants');
 const path = require('path');
+const { ERRORS, toCommandError } = require('../utils/errors');
 
 class PushCommand extends Command {
   async run() {
@@ -14,13 +15,11 @@ class PushCommand extends Command {
 
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error(
-        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
-      );
+      this.error(toCommandError(ERRORS.REPO_INVALID));
     }
 
     if (!flags.file) {
-      this.error('You must specifiy a file to push.');
+      this.error(toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     // Get local repo config (spec file names and orgId)
@@ -61,12 +60,10 @@ class PushCommand extends Command {
         // Send the push request to Fortellis
         let res = await axios.post(cliPushUrl, payload, config);
       } catch (error) {
-        this.error('Error pushing spec file.');
+        this.error(toCommandError(ERRORS.FILE_NOT_ADDED));
       }
     } else {
-      this.error(
-        `${flags.file} is not in the local repository. Use the 'fortellis-cli add' command to add the spec to the repository.`
-      );
+      this.error(toCommandError(FILE_NOT_ADDED, flags.file));
     }
   }
 }
