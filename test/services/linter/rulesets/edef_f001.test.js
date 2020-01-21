@@ -26,8 +26,8 @@ describe('rule edef_f001', () => {
         }
       }
     });
-            
-    expect(results).to.eql([]); 
+
+    expect(results).to.eql([]);
   });
 
   it("should fail if defintion objects do not include an `example` property", async function() {
@@ -38,8 +38,7 @@ describe('rule edef_f001', () => {
         Baz: {}
       }
     });
-            
+
     expect(results.length).to.equal(3);
   });
-
 });

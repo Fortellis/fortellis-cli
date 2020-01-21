@@ -1,48 +1,100 @@
-const { Command, flags } = require("@oclif/command");
-const fs = require("fs");
-const constants = require("../utils/constants");
-const ConfigManagementService = require("../services/config.management.service");
-const RepositoryService = require("../services/repository.service");
+const { Command, flags } = require('@oclif/command');
+const fs = require('fs');
+const inquirer = require('inquirer');
+const OrganizationService = require('../services/organization.service');
+const constants = require('../utils/constants');
+const ConfigManagementService = require('../services/config.management.service');
+const RepositoryService = require('../services/repository.service');
+const path = require('path');
 
 class InitCommand extends Command {
   async run() {
+    const { flags } = this.parse(InitCommand);
+
     const repoService = new RepositoryService();
 
-    if (repoService.repoIsValid()) {
-      this.error("This directory is already a Fortellis repository.");
+    if (repoService.repoIsValid() && !flags.force) {
+      this.error('This directory is already a Fortellis repository.');
     }
 
-    if (!fs.existsSync(constants.configDir)) {
-      fs.mkdirSync(constants.configDir);
-    }
-
-    if (!fs.existsSync(constants.docsDir)) {
-      fs.mkdirSync(constants.docsDir);
-    }
-
-    if (!fs.existsSync(constants.authDir)) {
-      fs.mkdirSync(constants.authDir);
-    }
-
-    if (!fs.existsSync(constants.specDir)) {
-      fs.mkdirSync(constants.specDir);
-    }
-
-    // Create blank config and save it.
     const configManagementService = new ConfigManagementService();
-    configManagementService.saveConfig();
 
-    this.log(
-      `Initialized empty Fortellis repository in ${process.cwd()}/.fortellis/`
-    );
+    // Global config (credentials) must exist.
+    if (!configManagementService.globalConfigDirExists()) {
+      this.error(
+        'No global configuration exists. Please execute the `fortellis-cli configure` command.'
+      );
+    }
+
+    let configPath = path.join(process.cwd(), constants.configDirName);
+    if (!fs.existsSync(configPath)) {
+      fs.mkdirSync(configPath);
+    }
+
+    // If the values are passed in, just save without prompting
+    if (flags.orgname && flags.orgid) {
+      configManagementService.setOrgName(flags.orgname);
+      configManagementService.setOrgId(flags.orgid);
+      configManagementService.saveLocalConfig();
+
+      this.log(
+        `Initialized empty Fortellis repository in ${process.cwd()}/${
+          constants.configDirName
+        }/`
+      );
+    } else {
+      configManagementService.saveLocalConfig();
+      const orgService = new OrganizationService();
+      orgService.getUserOrganizations().then(userOrgs => {
+        if (userOrgs.length === 0) {
+          this.log('No organizations found');
+          configManagementService.saveLocalConfig();
+        } else {
+          const orgQuestion = [
+            {
+              type: 'list',
+              name: 'organization',
+              message: 'Select Organization:',
+              choices: userOrgs
+            }
+          ];
+
+          inquirer.prompt(orgQuestion).then(orgAnswers => {
+            // Find the organization ID (from userOrgs) that
+            // matches the name selected in the prompt.
+            let theValue = userOrgs.find(
+              x => x.name === orgAnswers.organization
+            );
+            // Create a new configuration object.
+            configManagementService.setOrgId(theValue.id);
+            configManagementService.setOrgName(theValue.name);
+            configManagementService.saveLocalConfig();
+
+            this.log(
+              `Initialized Fortellis repository: ${process.cwd()}/${
+                constants.configDirName
+              }/`
+            );
+          });
+        }
+      });
+    }
   }
 }
 
 InitCommand.description = `Create a Fortellis repository in the current directory.
 ...
-A fortellis repository is a directory containing a spec, docs, permissions, and .fortellis sub-directory. 
-In the .fortellis sub-directory will be a config.yaml file which will contain the configuration data
-for the repository.
+A fortellis repository is a directory containing API Specs and a config directory
+(/.fortellis) that holds the repo configuration file.
 `;
+
+InitCommand.flags = {
+  orgname: flags.string({ char: 'n', description: 'Organization name' }),
+  orgid: flags.string({ char: 'i', description: 'Organizatino ID' }),
+  force: flags.boolean({
+    char: 'f',
+    description: 'Initialize directory even if it is already a repository.'
+  })
+};
 
 module.exports = InitCommand;

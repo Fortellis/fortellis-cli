@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-escape */
 
 const REGEX_EXP = {
-  cameCase: RegExp('[a-z]+((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?'),
-  httpSuccessCode: RegExp('^[23][0-9][0-9]$'),
-  httpFailureCode: RegExp('^[45][0-9][0-9]$')
+  cameCase: new RegExp('[a-z]+((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?'),
+  httpSuccessCode: new RegExp('^[23]\\dd$'),
+  httpFailureCode: new RegExp('^[45]\\dd$')
 };
 
 function isCamelCase(input) {

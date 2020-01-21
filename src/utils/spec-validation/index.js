@@ -1,12 +1,13 @@
-const { Spectral } = require("@stoplight/spectral");
+/* eslint-disable no-console */
+const { Spectral } = require('@stoplight/spectral');
 const {
   oas2Functions,
   rules: oas2Rules
-} = require("@stoplight/spectral/dist/rulesets/oas2");
-const whitelistedRulesSet = require("./default-rule-whitelist");
-const defaultRuleOverrides = require("./default-rule-overrides");
-const customValidationFunctions = require("./custom-validation-functions");
-const customValidationRules = require("./custom-validation-rules");
+} = require('@stoplight/spectral/dist/rulesets/oas2');
+const whitelistedRulesSet = require('./default-rule-whitelist');
+const defaultRuleOverrides = require('./default-rule-overrides');
+const customValidationFunctions = require('./custom-validation-functions');
+const customValidationRules = require('./custom-validation-rules');
 const spectral = new Spectral();
 let isRulesetConfigured = false;
 
@@ -22,7 +23,7 @@ function filterRules({ defaultRuleSet, whitelistedRulesSet }) {
 async function validate(APISpecInJSON) {
   try {
     if (!APISpecInJSON) {
-      throw Error("Bad Input.");
+      throw new Error('Bad Input.');
     }
     if (!isRulesetConfigured) {
       await oas2Rules().then(rules => {
@@ -39,12 +40,12 @@ async function validate(APISpecInJSON) {
       isRulesetConfigured = true;
     }
     return await spectral.run(APISpecInJSON);
-  } catch (err) {
+  } catch (error) {
     console.error({
-      message: "Spectral API Spec validation failed.",
-      error: err
+      message: 'Spectral API Spec validation failed.',
+      error: error
     });
-    throw { message: "Spectral API Spec validation failed.", error: err };
+    throw { message: 'Spectral API Spec validation failed.', error: error };
   }
 }
 

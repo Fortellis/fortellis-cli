@@ -1,8 +1,10 @@
-const { Command, flags } = require("@oclif/command");
-const RepositoryService = require("../services/repository.service");
-const ConfigManagementService = require("../services/config.management.service");
-const fs = require("fs");
-
+/* eslint-disable node/no-unsupported-features/node-builtins */
+const { Command } = require('@oclif/command');
+const RepositoryService = require('../services/repository.service');
+const ConfigManagementService = require('../services/config.management.service');
+const constants = require('../utils/constants');
+const fs = require('fs');
+const path = require('path');
 /**
  * Create a template repository, with a sample Spec, Doc, and Permissions file.
  *
@@ -14,60 +16,27 @@ class ApiTemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error("This is not a Fortellis repository.");
-    }
-
-    // Check that the repo is empty
-    if (
-      repoService.getSpecInDirectory() ||
-      repoService.getAuthInDirectory() ||
-      repoService.getDocsInDirectory()
-    ) {
       this.error(
-        "Files are already saved in this repo. Create an empty repo for a template."
+        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
       );
     }
 
-    fs.copyFile(
-      `${__dirname}/../resources/sampleApiSpec.yaml`,
-      "./specs/sampleApiSpec.yaml",
+    fs.copyFileSync(
+      path.resolve(`${__dirname}/../resources/${constants.sampleSpecName}`),
+      constants.sampleSpecName,
       err => {
         if (err) {
-          this.error("Error copying template API spec file");
-        }
-      }
-    );
-
-    fs.copyFile(
-      `${__dirname}/../resources/sampleDocumentation.md`,
-      "./docs/sampleDocumentation.md",
-      err => {
-        if (err) {
-          this.error("error copying template documentation file.");
-        }
-      }
-    );
-
-    fs.copyFile(
-      `${__dirname}/../resources/samplePermissions.txt`,
-      "./permissions/samplePermissions.txt",
-      err => {
-        if (err) {
-          this.err("error copying template permissions file.");
+          this.error('Error copying template API spec file:', err);
         }
       }
     );
 
     const configService = new ConfigManagementService();
-    configService.loadConfig();
-    configService.setAuthFile("samplePermissions.txt");
-    configService.setDocFile("sampleDocumentation.md");
-    configService.setSpecFile("sampleApiSpec.yaml");
-    configService.saveConfig();
+    configService.loadLocalConfig();
+    configService.addSpecFile(constants.sampleSpecName);
+    configService.saveLocalConfig();
 
-    this.log(
-      "Template Created: [sampleApiSpec.yaml, sampleDocumentation.md, samplePermissions.txt]"
-    );
+    this.log(`Template spec created: ${constants.sampleSpecName}`);
   }
 }
 

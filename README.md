@@ -20,14 +20,16 @@ Command Line for Fortellis API Specs
 [![License](https://img.shields.io/npm/l/fortellis-cli.svg)](https://github.com/deastland/fortellis-cli/blob/master/package.json)
 
 <!-- toc -->
-* [fortellis-cli](#fortellis-cli)
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [fortellis-cli](#fortellis-cli)
+- [Usage](#usage)
+- [Commands](#commands)
+  <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g fortellis-cli
 $ fortellis-cli COMMAND
@@ -39,19 +41,40 @@ USAGE
   $ fortellis-cli COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`fortellis-cli add`](#fortellis-cli-add)
-* [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
-* [`fortellis-cli api-template`](#fortellis-cli-api-template)
-* [`fortellis-cli configure`](#fortellis-cli-configure)
-* [`fortellis-cli getauth`](#fortellis-cli-getauth)
-* [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
-* [`fortellis-cli init`](#fortellis-cli-init)
-* [`fortellis-cli status`](#fortellis-cli-status)
+
+- [`fortellis-cli add`](#fortellis-cli-add)
+- [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+- [`fortellis-cli api-template`](#fortellis-cli-api-template)
+- [`fortellis-cli configure`](#fortellis-cli-configure)
+- [`fortellis-cli push`](#fortellis-cli-push)
+- [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+- [`fortellis-cli init`](#fortellis-cli-init)
+- [`fortellis-cli status`](#fortellis-cli-status)
+
+## `fortellis-cli push`
+
+Push an item to Fortellis platform
+...
+USAGE
+\$ fortellis-cli push
+
+OPTIONS
+-u, --username Fortellis username
+-p, --password Fortellis password
+-s, --apispec File to be pushed is a spec file
+
+DESCRIPTION
+...
+Push a file to fortellis.
+...
+
+_See code: [src/commands/push.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/push.js)_
 
 ## `fortellis-cli add`
 
@@ -71,7 +94,7 @@ DESCRIPTION
   Add either an API Spec, API Docs, or Permissions file to the repository.
 
   The file name can be specified, or if '*' is entered as a file name the
-  file which is in the proper diretory (specs/docs/permissions) will be added 
+  file which is in the proper diretory (specs/docs/permissions) will be added
   to the repository.
 ```
 
@@ -126,24 +149,6 @@ DESCRIPTION
 
 _See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
 
-## `fortellis-cli getauth`
-
-Test fetching an authorization token
-
-```
-USAGE
-  $ fortellis-cli getauth
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/getauth.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/getauth.js)_
-
 ## `fortellis-cli help [COMMAND]`
 
 display help for fortellis-cli
@@ -171,7 +176,7 @@ USAGE
 
 DESCRIPTION
   ...
-  A fortellis repository is a directory containing a spec, docs, permissions, and .fortellis sub-directory. 
+  A fortellis repository is a directory containing a spec, docs, permissions, and .fortellis sub-directory.
   In the .fortellis sub-directory will be a config.yaml file which will contain the configuration data
   for the repository.
 ```
@@ -192,4 +197,5 @@ DESCRIPTION
 ```
 
 _See code: [src/commands/status.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/status.js)_
+
 <!-- commandsstop -->

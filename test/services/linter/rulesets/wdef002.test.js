@@ -24,8 +24,8 @@ describe('rule wdef002', () => {
         }
       }
     });
-            
-    expect(results).to.eql([]); 
+
+    expect(results).to.eql([]);
   });
 
   it("should fail if definition objects do not declare a `required` property", async function() {
@@ -36,8 +36,7 @@ describe('rule wdef002', () => {
         Baz: {}
       }
     });
-            
+
     expect(results.length).to.equal(3);
   });
-
 });

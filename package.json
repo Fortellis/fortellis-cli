@@ -21,14 +21,23 @@
     "stoplight": "0.0.7"
   },
   "devDependencies": {
+    "@fortellis/eslint-config": "^1.0.4",
     "@oclif/dev-cli": "^1.22.2",
     "@oclif/test": "^1.2.5",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
+    "eslint-config-fortellis-platform": "^1.0.3",
     "eslint-config-oclif": "^3.1.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-json": "^2.0.1",
+    "eslint-plugin-promise": "^4.2.1",
     "globby": "^10.0.1",
+    "husky": "^4.0.6",
+    "lint-staged": "^9.5.0",
     "mocha": "^5.2.0",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "prettier": "^1.19.1",
+    "prettier-eslint-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -57,6 +66,20 @@
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
+    "lint": "eslint '**/*.{js,json}' --fix",
+    "format": "prettier-eslint '**/*.{js,json}' --write",
     "version": "oclif-dev readme && git add README.md"
+  },
+  "lint-staged": {
+    "**/*.{js,json}": [
+      "eslint --fix",
+      "prettier-eslint --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git secrets --pre_commit_hook -- $@ && npm upgrade @fortellis/eslint-config && lint-staged"
+    }
   }
 }

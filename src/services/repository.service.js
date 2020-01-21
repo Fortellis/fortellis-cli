@@ -1,23 +1,23 @@
-const fs = require("fs");
-const constants = require("../utils/constants");
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+const fs = require('fs');
+const constants = require('../utils/constants');
+const path = require('path');
 
 class RepositoryService {
   repoIsValid() {
-    if (!fs.existsSync(constants.configDir)) {
+    let localConfigDir = path.join(process.cwd(), constants.configDirName);
+    // Make sure the config directory is there.
+    if (!fs.existsSync(localConfigDir)) {
       return false;
     }
 
-    if (!fs.existsSync(constants.specDir)) {
+    // Make sure the config file is there.
+    let configFile = this.getFileFromDirectory(localConfigDir);
+    if (configFile != `${constants.configFileName}`) {
       return false;
     }
 
-    if (!fs.existsSync(constants.docsDir)) {
-      return false;
-    }
-
-    if (!fs.existsSync(constants.authDir)) {
-      return false;
-    }
     return true;
   }
 
@@ -27,41 +27,28 @@ class RepositoryService {
     if (files.length > 0) {
       return files[0];
     } else {
-      return "";
+      return '';
     }
   }
 
-  deleteFolderRecursive(path) {
-    if (fs.existsSync(path)) {
-      fs.readdirSync(path).forEach((file, index) => {
-        let curPath = path + "/" + file;
+  deleteFolderRecursive(folderPath) {
+    if (fs.existsSync(folderPath)) {
+      fs.readdirSync(folderPath).forEach((file, index) => {
+        let curPath = path.join(folderPath, file);
         if (fs.lstatSync(curPath).isDirectory()) {
           deleteFolderRecursive(curPath);
         } else {
           fs.unlinkSync(curPath);
         }
       });
-      fs.rmdirSync(path);
+      fs.rmdirSync(folderPath);
     }
   }
 
-  getSpecInDirectory() {
-    return this.getFileFromDirectory(constants.specDir);
-  }
-
-  getDocsInDirectory() {
-    return this.getFileFromDirectory(constants.docsDir);
-  }
-
-  getAuthInDirectory() {
-    return this.getFileFromDirectory(constants.authDir);
-  }
-
-  deleteRepositoy() {
-    this.deleteFolderRecursive(constants.specDir);
-    this.deleteFolderRecursive(constants.docsDir);
-    this.deleteFolderRecursive(constants.authDir);
-    this.deleteFolderRecursive(constants.configDir);
+  deleteLocalRepository() {
+    this.deleteFolderRecursive(
+      path.join(process.cwd(), constants.configDirName)
+    );
   }
 }
 
