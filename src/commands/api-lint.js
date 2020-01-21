@@ -1,35 +1,46 @@
-const { Command, flags } = require('@oclif/command');
+const { Command } = require("@oclif/command");
 const fs = require('fs');
 const path = require('path');
-const lint = require('../services/linter');
-const { formatResults } = require('../services/formatters/rusty');
+const lint = require("../services/linter");
+const { formatResults } = require('../services/linter/formatters/rusty');
 const { parseWithPointers } = require('@stoplight/yaml');
 const ConfigManagementService = require('../services/config.management.service');
 const { COMMAND_ERRORS, ERRORS, toCommandError } = require('../utils/errors');
 
 class ApiLintCommand extends Command {
+  static description = `Lints OpenAPI 2.0 specifications for correctness and style.`;
+  
+  static args = [
+    {
+      name: 'FILE',               // name of arg to show in help and reference with args[name]
+      required: true,            // make the arg required with `required: true`
+      description: 'path of an Open API 2.0 specificaton file', // help description
+    }
+  ];
+  
   async run() {
-    const { flags } = this.parse(ApiLintCommand);
-    const specFileName = flags.file;
+    const {args} = this.parse(ApiLintCommand)
+    
+    // validate input
+    if(!args.FILE) {
+      this.error('no specfication file specified', { code: 1});
+    }
 
     if (flags.safe) {
       const configService = new ConfigManagementService();
       configService.loadLocalConfig();
       if (configService.getSpecFilesFromConfig().indexOf(specFileName) === -1) {
-        this.error(toCommandError(ERRORS.FILE_NOT_ADDED, specFileName));
+        this.error(toCommandError(ERRORS.FILE_NOT_ADDED, args.FILE));
       }
     }
 
-    if (!flags.file) {
-      this.error(toCommandError(ERRORS.SPECIFICATION_NOT_GIVEN))
-    }
-    if (!fs.existsSync(flags.file)) {
-      this.error(toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(flags.file)));
+    const fileName = args.FILE;
+    if (!fs.existsSync(fileName)) {
+      this.error("file '" + path.resolve(fileName) + "' does not exist", { code: 1});
     } 
-
-    const spec = fs.readFileSync(flags.file, { encoding: 'utf8' });
-    const parserResults = parseWithPointers(spec);
-
+    
+    const spec = fs.readFileSync(fileName, { encoding: 'utf8'})
+    const parserResults = parseWithPointers(spec);  
     const srcMap = spec.split('\n');
 
     const config = {
@@ -39,21 +50,12 @@ class ApiLintCommand extends Command {
       }
     };
 
-    let linterResults = await lint(parserResults, config);
-    this.log(formatResults(linterResults, srcMap, flags.file));
+    const linterResults = await lint(parserResults, config);
+    this.log(formatResults(linterResults, srcMap, fileName));
   }
 }
 
-ApiLintCommand.description = `Validates and lints  OpenAPI 2.0 specifications.
-...
-Checks OpenAPI 2.0 specifications for correctness and style according to 
-the OpenAPI 2.0 standard and fortellis style guide.
-`;
-
 ApiLintCommand.flags = {
-  file: flags.string({
-    char: 'f'
-  }),
   safe: flags.string({
     description: 'Check that the API spec has been added and registered to the repository before validating'
   })
