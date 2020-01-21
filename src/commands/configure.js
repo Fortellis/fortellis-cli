@@ -24,15 +24,23 @@ class ConfigureCommand extends Command {
     if (flags.username && flags.password) {
       // If username/password are given in flags, simply use them and accept the values.
 
-      let authToken = await authService(flags.username, flags.password);
-
-      configManagementService.loadGlobalConfig();
-      configManagementService.setToken(authToken);
-      configManagementService.saveGlobalConfig();
-
-      this.log(
-        'Configuration completed. See [$home/.fortellis/config.yaml] file for stored values.'
-      );
+      authService
+        .getAuthToken(flags.username, flags.password)
+        .then(authToken => {
+          if (authToken.token) {
+            configManagementService.loadGlobalConfig();
+            configManagementService.setToken(authToken);
+            configManagementService.saveGlobalConfig();
+            this.log(
+              'Configuration completed. See [$home/.fortellis/config.yaml] file for stored values.'
+            );
+          } else {
+            throw new Error('No auth token value found');
+          }
+        })
+        .catch(error => {
+          this.log('Unable to fetch authorization token');
+        });
     } else {
       const authQuestions = [
         {
@@ -55,11 +63,10 @@ class ConfigureCommand extends Command {
           configManagementService.loadGlobalConfig();
           configManagementService.setToken(authToken);
           configManagementService.saveGlobalConfig();
+          this.log(
+            'Configuration completed. See [$HOME/.fortellis/config.yaml] file for stored values.'
+          );
         });
-
-        this.log(
-          'Configuration completed. See [$HOME/.fortellis/config.yaml] file for stored values.'
-        );
       });
     }
   }

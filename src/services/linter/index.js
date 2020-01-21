@@ -1,14 +1,12 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-const { Spectral, isOpenApiv2 } = require('@stoplight/spectral');
+const { Spectral } = require('@stoplight/spectral');
 const { getLocationForJsonPath } = require('@stoplight/yaml');
 const {
   oas2Functions,
   rules: oas2Rules
 } = require('@stoplight/spectral/dist/rulesets/oas2');
-const oas2EnhancedFunctions = require('./rulesets/oas2-enhanced/functions');
+const oas2EnhancedFunctions = require('./functions/oas2-enhanced');
 const oas2EnhancedRules = require('./rulesets/oas2-enhanced');
-const oas2FortellisFunctions = require('./rulesets/oas2-fortellis/functions');
+const oas2FortellisFunctions = require('./functions/oas2-fortellis');
 const oas2FortellisRules = require('./rulesets/oas2-fortellis');
 
 async function lint(parserResult, config) {
@@ -17,6 +15,7 @@ async function lint(parserResult, config) {
     let functions = oas2Functions();
     let rules = await oas2Rules();
 
+    // Merge the rulesets and functions since this is not supported by Spectral v5.X.X
     if (config.rulesets['oas2-enhanced']) {
       Object.assign(functions, oas2EnhancedFunctions);
       Object.assign(rules, oas2EnhancedRules);
@@ -26,19 +25,22 @@ async function lint(parserResult, config) {
       Object.assign(rules, oas2FortellisRules);
     }
 
-    // TODO: Need to devise on the fly ruleset generation as a workaround for Spectral v5.0.0
+    // TODO: Need to devise on the fly ruleset generation as a workaround for Spectral v5.X.X
     //       only allowing loadRuleset().  Using addFunctions() and addRules results in
     //       deprecation messages being printed to stdout.
-    const spectral = new Spectral();
+    const spectral = new Spectral({
+      ignoreUnknownFormat: true
+    });
     spectral.addFunctions(functions); // generates deprecation message
     spectral.addRules(rules); // generates deprecation message
     spectral.mergeRules();
 
-    return spectral.run({
+    const results = spectral.run({
       parsed: parserResult,
       getLocationForJsonPath
     });
-  } catch (error) {
+    return results;
+  } catch (err) {
     console.error({
       message: 'linter error',
       error: error

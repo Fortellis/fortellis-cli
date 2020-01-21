@@ -3,14 +3,14 @@ const { expect } = require('chai');
 const { Spectral } = require('@stoplight/spectral');
 const rules = require('../../../../src/services/linter/rulesets/oas2-enhanced');
 
-describe('rule definitionRequiredProp', () => {
+describe('rule wdef002', () => {
   const s = new Spectral();
   s.addRules({
-    definitionRequiredProp: rules.definitionRequiredProp
+    wdef002: rules.wdef002
   });
   s.mergeRules();
 
-  it("shouldn't return style warnings if defintion objects include a 'required' property", async function() {
+  it("should pass if definition objects declare a `required` property", async function() {
     const results = await s.run({
       definitions: {
         Foo: {
@@ -28,7 +28,7 @@ describe('rule definitionRequiredProp', () => {
     expect(results).to.eql([]);
   });
 
-  it("should return style warnings if defintion objects do not include a 'required' property", async function() {
+  it("should fail if definition objects do not declare a `required` property", async function() {
     const results = await s.run({
       definitions: {
         Foo: {},
