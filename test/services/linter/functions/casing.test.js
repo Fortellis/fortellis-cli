@@ -35,6 +35,14 @@ describe('caseTypes', async function () {
         targetVal: '-foo-bar',
         expected: { message: "`-foo-bar` should be `kebab-case`" },
       },
+      {
+        targetVal: 'FooBar',
+        expected: { message: "`FooBar` should be `kebab-case`" },
+      },
+      {
+        targetVal: 'Foo-Bar',
+        expected: { message: "`Foo-Bar` should be `kebab-case`" },
+      },
     ];
 
     for(const t of test) {

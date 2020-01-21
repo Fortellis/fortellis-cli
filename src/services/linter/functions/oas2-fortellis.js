@@ -8,6 +8,28 @@ const parameterNameCasing = {
   'body': caseTypes.pascalCase
 };
 
+function isPathParam(segment) {
+  return RegExp('{.*?}').test(segment);
+}
+
+function fortellisPathCasing(targetVal) {
+  const path = targetVal || "";
+  const kebabCase = caseTypes.kebabCase;
+  let results = []
+
+  // test each segment for casing
+  const segments = path.split('/');
+  for(const seg of segments) {
+    if(seg && !isPathParam(seg) && !kebabCase.regex.test(seg)) {
+      results.push({
+        message: "path segment `" + seg + "` should be `" + kebabCase.prettyName + "`"
+      })
+    }
+  }
+
+  return results;
+}
+
 function fortellisParamKeyFormat(targetVal) {
   const key = targetVal;
 
@@ -69,7 +91,9 @@ function fortellisParamNameFormat(targetVal) {
   
 module.exports = {
   parameterNameCasing,
+  isPathParam,
+  fortellisPathCasing,
   fortellisParamKeyFormat,
-  fortellisParamNameFormat
+  fortellisParamNameFormat,
 }
   
