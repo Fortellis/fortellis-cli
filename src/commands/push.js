@@ -70,7 +70,7 @@ class PushCommand extends Command {
         axios
           .post(cliPushUrl, payload, config)
           .then(response => {
-            this.log('Response:', response.message);
+            this.log('File was successfully pushed:', response.data);
           })
           .catch(error => {
             if (error.response.status === 422) {

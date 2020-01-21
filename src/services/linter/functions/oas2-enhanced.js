@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable unicorn/new-for-builtins */
 const caseTypes = {
   flatCase: {
     regex: RegExp('^[a-z][a-zA-Z0-9]+$'),

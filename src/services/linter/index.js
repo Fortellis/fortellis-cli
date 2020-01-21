@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { Spectral } = require('@stoplight/spectral');
 const { getLocationForJsonPath } = require('@stoplight/yaml');
 const {
@@ -40,7 +41,7 @@ async function lint(parserResult, config) {
       getLocationForJsonPath
     });
     return results;
-  } catch (err) {
+  } catch (error) {
     console.error({
       message: 'linter error',
       error: error

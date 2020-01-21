@@ -38,6 +38,7 @@ class ConfigureCommand extends Command {
             throw new Error('No auth token value found');
           }
         })
+        // eslint-disable-next-line no-unused-vars
         .catch(error => {
           this.log('Unable to fetch authorization token');
         });
