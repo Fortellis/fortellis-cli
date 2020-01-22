@@ -13,7 +13,7 @@ class AddCommand extends Command {
 
     // Verify that this is a Fortellis repo
     if (!repositoryService.repoIsValid()) {
-      this.error(toCommandError(ERRORS.REPO_INVALID));
+      this.error(...toCommandError(ERRORS.REPO_INVALID));
     }
 
     const configManagementService = new ConfigManagementService();
@@ -33,16 +33,16 @@ class AddCommand extends Command {
       // Don't add a file if it isn't in the directory
       let addFile = path.join(process.cwd(), fileName);
       if (!fs.existsSync(addFile)) {
-        this.error(toCommandError(ERRORS.FILE_NOT_EXIST, fileName));
+        this.error(...toCommandError(ERRORS.FILE_NOT_EXIST, fileName));
       }
 
       // Don't add the same spec twice
       if (configManagementService.specFiles.indexOf(`${fileName}`) > -1) {
-        this.error(toCommandError(ERRORS.FILE_ALREADY_EXISTS), fileName);
+        this.error(...toCommandError(ERRORS.FILE_ALREADY_EXISTS), fileName);
       }
       configManagementService.addSpecFile(fileName);
     } else {
-      this.error(toCommandError(ERRORS.FILE_NOT_GIVEN));
+      this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     configManagementService.saveLocalConfig();

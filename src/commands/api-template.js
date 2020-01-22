@@ -18,7 +18,7 @@ class ApiTemplateCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error(toCommandError(ERRORS.REPO_INVALID));
+      this.error(...toCommandError(ERRORS.REPO_INVALID));
     }
 
     fs.copyFileSync(
@@ -27,7 +27,7 @@ class ApiTemplateCommand extends Command {
       err => {
         if (err) {
           this.error(
-            toCommandError(
+            ...toCommandError(
               ERRORS.UNEXPECTED_ERROR,
               `Error copying template API spec file.${err && err.message && err.stack ? `\n${err.message}\n${err.stack}` : '' }`
             )

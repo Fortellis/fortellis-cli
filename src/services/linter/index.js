@@ -35,6 +35,7 @@ async function lint(parserResult, config) {
     spectral.addFunctions(functions); // generates deprecation message
     spectral.addRules(rules); // generates deprecation message
     spectral.mergeRules();
+
     const results = spectral.run({
       parsed: parserResult,
       getLocationForJsonPath

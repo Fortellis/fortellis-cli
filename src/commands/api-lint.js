@@ -13,22 +13,20 @@ class ApiLintCommand extends Command {
     
     // validate input
     if(!args.FILE) {
-      this.error('no specfication file specified', { code: 1 });
+      this.error(...toCommandError(ERRORS.SPECIFICATION_NOT_GIVEN));
     }
 
     if (flags.safe) {
       const configService = new ConfigManagementService();
       configService.loadLocalConfig();
       if (configService.getSpecFilesFromConfig().indexOf(specFileName) === -1) {
-        this.error(toCommandError(ERRORS.FILE_NOT_ADDED, args.FILE));
+        this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, args.FILE));
       }
     }
 
     const fileName = args.FILE;
     if (!fs.existsSync(fileName)) {
-      this.error("file '" + path.resolve(fileName) + "' does not exist", {
-        code: 1
-      });
+      this.error(...toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(fileName)));
     }
 
     const spec = fs.readFileSync(fileName, { encoding: 'utf8' });

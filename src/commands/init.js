@@ -15,14 +15,14 @@ class InitCommand extends Command {
     const repoService = new RepositoryService();
 
     if (repoService.repoIsValid() && !flags.force) {
-      this.error(toCommandError(ERRORS.REPO_ALREADY_EXISTS));
+      this.error(...toCommandError(ERRORS.REPO_ALREADY_EXISTS));
     }
 
     const configManagementService = new ConfigManagementService();
 
     // Global config (credentials) must exist.
     if (!configManagementService.globalConfigDirExists()) {
-      this.error(toCommandError(ERRORS.CONFIG_NOT_EXIST));
+      this.error(...toCommandError(ERRORS.CONFIG_NOT_EXIST));
     }
 
     let configPath = path.join(process.cwd(), constants.configDirName);

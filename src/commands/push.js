@@ -16,11 +16,11 @@ class PushCommand extends Command {
 
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error(toCommandError(ERRORS.REPO_INVALID));
+      this.error(...toCommandError(ERRORS.REPO_INVALID));
     }
 
     if (!flags.file) {
-      this.error(toCommandError(ERRORS.FILE_NOT_GIVEN));
+      this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     if (!flags.apispec) {
@@ -91,7 +91,7 @@ class PushCommand extends Command {
         this.log('Unable to push spec to Fortellis');
       }
     } else {
-      this.error(toCommandError(FILE_NOT_ADDED, flags.file));
+      this.error(...toCommandError(FILE_NOT_ADDED, flags.file));
     }
   }
 }

@@ -11,7 +11,7 @@ class StatusCommand extends Command {
   async run() {
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error(toCommandError(ERRORS.REPO_INVALID));
+      this.error(...toCommandError(ERRORS.REPO_INVALID));
     }
 
     const configManagementService = new ConfigManagementService();
