@@ -99,7 +99,7 @@ DESCRIPTION
   ...
   Add an API Spec file to the local repository.
 
-  Once in the repository, the file will be eligable to be pushed to fortellis.
+  Once in the repository, the file will be eligible to be pushed to fortellis.
 ```
 
 _See code: [src/commands/add.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/add.js)_
