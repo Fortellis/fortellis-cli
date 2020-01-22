@@ -37,33 +37,27 @@ const caseTypes = {
 
 function casing(targetVal, opts) {
   /**
-   * This rule verifies that the value matches the specified case type.
-   */
+     * This rule verifies that the value matches the specified case type.
+     */
+    
+    const { casing } = opts;
+    if(casing === void 0)
+        throw "must include 'casing' option";
 
-  const { casing } = opts;
-  if (casing === void 0) throw "must include 'casing' option";
+    const caseType = caseTypes[casing];
+    if(casing === void 0)
+        throw "invalid 'casing' option";
 
-  const caseType = caseTypes[casing];
-  if (!caseType.regex.test(targetVal)) {
-    return [
-      {
-        message: '`' + targetVal + '` should be `' + caseType.prettyName + '`'
-      }
-    ];
-  }
+    if(!caseType.regex.test(targetVal)) {
+        return [{
+            message: "`" + targetVal + "` should be `" + caseType.prettyName + "`"
+        }];
+    }
 
-  if (!caseType.regex.test(targetVal)) {
-    return [
-      {
-        message: "'" + targetVal + "' should be " + caseType.prettyName
-      }
-    ];
-  }
-
-  return [];
+    return [];
 }
 
 module.exports = {
   caseTypes,
-  casing
+  casing,
 };
