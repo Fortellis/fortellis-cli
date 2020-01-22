@@ -72,9 +72,8 @@ OPTIONS
 
 DESCRIPTION
 ...
-Publish a file to fortellis: either an update of an
-existing file in DRAFT status, or a new version of
-and API Spec that is in FINAL status in Fortellis.
+Publish a file to Fortellis: either an update of an
+existing file in DRAFT status, or a new file.
 
 Pass in a username/password to explicitly publish with a given
 Fortellis user. Otherwise the credentials configured in the global
