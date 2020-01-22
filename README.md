@@ -67,11 +67,18 @@ USAGE
 OPTIONS
 -u, --username Fortellis username
 -p, --password Fortellis password
--s, --apispec File to be pushed is a spec file
+-s, --apispec Specify file type as API Spec
+-f, --file Path to file to be pushed.
 
 DESCRIPTION
 ...
-Push a file to fortellis.
+Publish a file to fortellis: either an update of an
+existing file in DRAFT status, or a new version of
+and API Spec that is in FINAL status in Fortellis.
+
+Pass in a username/password to explicitly publish with a given
+Fortellis user. Otherwise the credentials configured in the global
+settings will be used to communicate with Fortellis.
 ...
 
 _See code: [src/commands/push.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/push.js)_
@@ -82,7 +89,7 @@ Add an item to the Fortellis repository.
 
 ```
 USAGE
-  $ fortellis-cli add
+  $ fortellis-cli add FILE
 
 OPTIONS
   -a, --apispec=apispec              Add Spec file to the repostory
@@ -91,11 +98,9 @@ OPTIONS
 
 DESCRIPTION
   ...
-  Add either an API Spec, API Docs, or Permissions file to the repository.
+  Add an API Spec file to the local repository.
 
-  The file name can be specified, or if '*' is entered as a file name the
-  file which is in the proper diretory (specs/docs/permissions) will be added
-  to the repository.
+  Once in the repository, the file will be eligable to be pushed to fortellis.
 ```
 
 _See code: [src/commands/add.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/add.js)_
@@ -124,7 +129,7 @@ USAGE
 
 DESCRIPTION
   ...
-  This creates sample spec, documentaiton, and permissions documents that the user can then modify for API development.
+  This creates a sample API Spec that the user can have as a template further development.
 ```
 
 _See code: [src/commands/api-template.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/api-template.js)_
@@ -144,7 +149,7 @@ OPTIONS
 DESCRIPTION
   ...
   Set up the repository so it can communicate with Fortellis. This command will edit the
-  config.yaml file, reflecting the data entered during configuration.
+  global config.yaml file, reflecting the permissions granted by the provided credentials.
 ```
 
 _See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
@@ -168,7 +173,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3
 
 ## `fortellis-cli init`
 
-Create a Fortellis repository in the current directory.
+Initialize (create) a Fortellis repository in the current directory.
 
 ```
 USAGE
@@ -176,7 +181,10 @@ USAGE
 
 DESCRIPTION
   ...
-  A fortellis repository is a directory containing a spec, docs, permissions, and .fortellis sub-directory.
+  This command will set up a fortellis repositry and associated it with one of the
+  organizations linked to the credentials used in the global config.
+
+  A fortellis repository is a directory containing API Specs and the .fortellis/ sub-directory.
   In the .fortellis sub-directory will be a config.yaml file which will contain the configuration data
   for the repository.
 ```
@@ -193,7 +201,7 @@ USAGE
 
 DESCRIPTION
   ...
-  List all of the repository files and their status.
+  List the repository organization name, organization ID, and all API Spec files registered in the directory.
 ```
 
 _See code: [src/commands/status.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/status.js)_
