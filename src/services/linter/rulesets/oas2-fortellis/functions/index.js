@@ -1,4 +1,4 @@
-const { caseTypes } = require('../../oas2-enhanced/functions');
+const { caseTypes } = require('../../../functions/oas2-enhanced');
 
 // parameters
 const parameterNameCasing = {
