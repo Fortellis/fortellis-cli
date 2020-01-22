@@ -25,8 +25,4 @@ describe('rule ws003', () => {
 
     expect(results.length).to.equal(1);
   });
-<<<<<<< HEAD:test/services/rulesets/oas2-enhanced/definitions-object.test.js
 });
-=======
-});
->>>>>>> a745e4e2ada3fd47a73519ab2a00f868808c71ed:test/services/linter/rulesets/ws003.test.js
