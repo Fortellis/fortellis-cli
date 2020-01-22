@@ -1,6 +1,6 @@
 # fortellis-cli
 
-## Geting started
+## Getting started
 
 `git clone ssh://git@stash.cdk.com/cexchng/fortellis-cli.git`
 
@@ -91,7 +91,7 @@ USAGE
   $ fortellis-cli add FILE
 
 OPTIONS
-  -a, --apispec=apispec              Add Spec file to the repostory
+  -a, --apispec=apispec              Add Spec file to the repository
   -d, --documentation=documentation  Add Documentation file to the repository
   -p, --permission=permission        Add Permissions file to the repository
 
@@ -99,7 +99,7 @@ DESCRIPTION
   ...
   Add an API Spec file to the local repository.
 
-  Once in the repository, the file will be eligible to be pushed to fortellis.
+  Once in the repository, the file will be eligible to be pushed to Fortellis.
 ```
 
 _See code: [src/commands/add.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/add.js)_
@@ -113,7 +113,7 @@ USAGE
   $ fortellis-cli api-lint FILE
 
 ARGUMENTS
-  FILE  path of an Open API 2.0 specificaton file
+  FILE  path of an Open API 2.0 specification file
 ```
 
 _See code: [src/commands/api-lint.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/api-lint.js)_
@@ -180,10 +180,10 @@ USAGE
 
 DESCRIPTION
   ...
-  This command will set up a fortellis repositry and associated it with one of the
+  This command will set up a Fortellis repository and associated it with one of the
   organizations linked to the credentials used in the global config.
 
-  A fortellis repository is a directory containing API Specs and the .fortellis/ sub-directory.
+  A Fortellis repository is a directory containing API Specs and the .fortellis/ sub-directory.
   In the .fortellis sub-directory will be a config.yaml file which will contain the configuration data
   for the repository.
 ```
@@ -192,7 +192,7 @@ _See code: [src/commands/init.js](https://github.com/deastland/fortellis-cli/blo
 
 ## `fortellis-cli status`
 
-List the status of the fortellis repository.
+List the status of the Fortellis repository.
 
 ```
 USAGE
