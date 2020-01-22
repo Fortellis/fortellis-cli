@@ -128,7 +128,7 @@ USAGE
 
 DESCRIPTION
   ...
-  This creates a sample API Spec that the user can have as a template further development.
+  This creates a sample API Spec that the user can have as a template for further development.
 ```
 
 _See code: [src/commands/api-template.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/api-template.js)_
