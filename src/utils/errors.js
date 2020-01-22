@@ -49,6 +49,5 @@ const toCommandError = (error, ...args) => {
 
 module.exports = {
     ERRORS: Object.freeze(ERRORS),
-    COMMAND_ERRORS: Object.freeze(COMMAND_ERRORS),
     toCommandError
 };
