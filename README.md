@@ -2,7 +2,7 @@
 
 ## Getting started
 
-`git clone ssh://git@stash.cdk.com/cexchng/fortellis-cli.git`
+`git clone https://github.com/Fortellis/fortellis-cli.git`
 
 `cd fortellis-cli`
 
@@ -22,8 +22,17 @@ Command Line for Fortellis API Specs
 <!-- toc -->
 
 - [fortellis-cli](#fortellis-cli)
+  - [Getting started](#getting-started)
 - [Usage](#usage)
 - [Commands](#commands)
+  - [`fortellis-cli push`](#fortellis-cli-push)
+  - [`fortellis-cli add`](#fortellis-cli-add)
+  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
+  - [`fortellis-cli configure`](#fortellis-cli-configure)
+  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+  - [`fortellis-cli init`](#fortellis-cli-init)
+  - [`fortellis-cli status`](#fortellis-cli-status)
   <!-- tocstop -->
 
 # Usage
@@ -48,14 +57,18 @@ USAGE
 
 <!-- commands -->
 
-- [`fortellis-cli add`](#fortellis-cli-add)
-- [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
-- [`fortellis-cli api-template`](#fortellis-cli-api-template)
-- [`fortellis-cli configure`](#fortellis-cli-configure)
-- [`fortellis-cli push`](#fortellis-cli-push)
-- [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
-- [`fortellis-cli init`](#fortellis-cli-init)
-- [`fortellis-cli status`](#fortellis-cli-status)
+- [fortellis-cli](#fortellis-cli)
+  - [Getting started](#getting-started)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`fortellis-cli push`](#fortellis-cli-push)
+  - [`fortellis-cli add`](#fortellis-cli-add)
+  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
+  - [`fortellis-cli configure`](#fortellis-cli-configure)
+  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+  - [`fortellis-cli init`](#fortellis-cli-init)
+  - [`fortellis-cli status`](#fortellis-cli-status)
 
 ## `fortellis-cli push`
 
