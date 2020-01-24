@@ -1,12 +1,12 @@
 {
   "name": "fortellis-cli",
   "description": "Command Line for Fortellis API Specs",
-  "version": "0.0.0",
-  "author": "Daniel Eastland @deastland",
+  "version": "0.0.1-alpha.0",
+  "author": "Fortellis",
   "bin": {
     "fortellis-cli": "./bin/run"
   },
-  "bugs": "https://github.com/deastland/fortellis-cli/issues",
+  "bugs": "https://github.com/Fortellis/fortellis-cli/issues",
   "dependencies": {
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.13.3",
@@ -21,12 +21,10 @@
     "stoplight": "0.0.7"
   },
   "devDependencies": {
-    "@fortellis/eslint-config": "^1.0.4",
     "@oclif/dev-cli": "^1.22.2",
     "@oclif/test": "^1.2.5",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "eslint-config-fortellis-platform": "^1.0.3",
     "eslint-config-oclif": "^3.1.0",
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-json": "^2.0.1",
@@ -48,7 +46,7 @@
     "/oclif.manifest.json",
     "/src"
   ],
-  "homepage": "https://github.com/deastland/fortellis-cli",
+  "homepage": "https://github.com/Fortellis/fortellis-cli",
   "keywords": [
     "oclif"
   ],
@@ -61,7 +59,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "deastland/fortellis-cli",
+  "repository": "https://github.com/Fortellis/fortellis-cli.git",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest && oclif-dev readme",
@@ -79,7 +77,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git secrets --pre_commit_hook -- $@ && npm upgrade @fortellis/eslint-config && lint-staged"
+      "pre-commit": "git secrets --pre_commit_hook -- $@ && lint-staged"
     }
   }
 }

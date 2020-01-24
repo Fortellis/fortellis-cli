@@ -2,13 +2,13 @@
 
 ## Getting started
 
-`git clone ssh://git@stash.cdk.com/cexchng/fortellis-cli.git`
+`git clone https://github.com/Fortellis/fortellis-cli.git`
 
 `cd fortellis-cli`
 
 `npm install`
 
-In order for the "fortellis-cli" command to work on a machine where it is installed, you need to link the command with the follwoing command.
+In order for the "fortellis-cli" command to work on a machine where it is installed, you need to link the command with the following command.
 
 `npm link`
 
@@ -17,13 +17,22 @@ Command Line for Fortellis API Specs
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/fortellis-cli.svg)](https://npmjs.org/package/fortellis-cli)
 [![Downloads/week](https://img.shields.io/npm/dw/fortellis-cli.svg)](https://npmjs.org/package/fortellis-cli)
-[![License](https://img.shields.io/npm/l/fortellis-cli.svg)](https://github.com/deastland/fortellis-cli/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/fortellis-cli.svg)](https://github.com/Fortellis/fortellis-cli/blob/master/package.json)
 
 <!-- toc -->
 
 - [fortellis-cli](#fortellis-cli)
+  - [Getting started](#getting-started)
 - [Usage](#usage)
 - [Commands](#commands)
+  - [`fortellis-cli push`](#fortellis-cli-push)
+  - [`fortellis-cli add`](#fortellis-cli-add)
+  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
+  - [`fortellis-cli configure`](#fortellis-cli-configure)
+  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+  - [`fortellis-cli init`](#fortellis-cli-init)
+  - [`fortellis-cli status`](#fortellis-cli-status)
   <!-- tocstop -->
 
 # Usage
@@ -48,14 +57,18 @@ USAGE
 
 <!-- commands -->
 
-- [`fortellis-cli add`](#fortellis-cli-add)
-- [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
-- [`fortellis-cli api-template`](#fortellis-cli-api-template)
-- [`fortellis-cli configure`](#fortellis-cli-configure)
-- [`fortellis-cli push`](#fortellis-cli-push)
-- [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
-- [`fortellis-cli init`](#fortellis-cli-init)
-- [`fortellis-cli status`](#fortellis-cli-status)
+- [fortellis-cli](#fortellis-cli)
+  - [Getting started](#getting-started)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`fortellis-cli push`](#fortellis-cli-push)
+  - [`fortellis-cli add`](#fortellis-cli-add)
+  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
+  - [`fortellis-cli configure`](#fortellis-cli-configure)
+  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+  - [`fortellis-cli init`](#fortellis-cli-init)
+  - [`fortellis-cli status`](#fortellis-cli-status)
 
 ## `fortellis-cli push`
 
@@ -80,7 +93,7 @@ Fortellis user. Otherwise the credentials configured in the global
 settings will be used to communicate with Fortellis.
 ...
 
-_See code: [src/commands/push.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/push.js)_
+_See code: [src/commands/push.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/push.js)_
 
 ## `fortellis-cli add`
 
@@ -102,7 +115,7 @@ DESCRIPTION
   Once in the repository, the file will be eligible to be pushed to Fortellis.
 ```
 
-_See code: [src/commands/add.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/add.js)_
+_See code: [src/commands/add.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/add.js)_
 
 ## `fortellis-cli api-lint FILE`
 
@@ -116,7 +129,7 @@ ARGUMENTS
   FILE  path of an Open API 2.0 specification file
 ```
 
-_See code: [src/commands/api-lint.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/api-lint.js)_
+_See code: [src/commands/api-lint.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/api-lint.js)_
 
 ## `fortellis-cli api-template`
 
@@ -131,7 +144,7 @@ DESCRIPTION
   This creates a sample API Spec that the user can have as a template for further development.
 ```
 
-_See code: [src/commands/api-template.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/api-template.js)_
+_See code: [src/commands/api-template.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/api-template.js)_
 
 ## `fortellis-cli configure`
 
@@ -151,7 +164,7 @@ DESCRIPTION
   global config.yaml file, reflecting the permissions granted by the provided credentials.
 ```
 
-_See code: [src/commands/configure.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/configure.js)_
+_See code: [src/commands/configure.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/configure.js)_
 
 ## `fortellis-cli help [COMMAND]`
 
@@ -188,7 +201,7 @@ DESCRIPTION
   for the repository.
 ```
 
-_See code: [src/commands/init.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/init.js)_
+_See code: [src/commands/init.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/init.js)_
 
 ## `fortellis-cli status`
 
@@ -203,6 +216,6 @@ DESCRIPTION
   List the repository organization name, organization ID, and all API Spec files registered in the directory.
 ```
 
-_See code: [src/commands/status.js](https://github.com/deastland/fortellis-cli/blob/v0.0.0/src/commands/status.js)_
+_See code: [src/commands/status.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/status.js)_
 
 <!-- commandsstop -->
