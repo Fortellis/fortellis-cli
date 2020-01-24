@@ -1,12 +1,12 @@
 {
   "name": "fortellis-cli",
   "description": "Command Line for Fortellis API Specs",
-  "version": "0.0.0",
-  "author": "Daniel Eastland @deastland",
+  "version": "0.0.1-alpha.0",
+  "author": "Fortellis",
   "bin": {
     "fortellis-cli": "./bin/run"
   },
-  "bugs": "https://github.com/deastland/fortellis-cli/issues",
+  "bugs": "https://github.com/Fortellis/fortellis-cli/issues",
   "dependencies": {
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.13.3",
@@ -48,7 +48,7 @@
     "/oclif.manifest.json",
     "/src"
   ],
-  "homepage": "https://github.com/deastland/fortellis-cli",
+  "homepage": "https://github.com/Fortellis/fortellis-cli",
   "keywords": [
     "oclif"
   ],
@@ -61,7 +61,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "deastland/fortellis-cli",
+  "repository": "https://github.com/Fortellis/fortellis-cli.git",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest && oclif-dev readme",
