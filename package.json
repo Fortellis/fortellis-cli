@@ -1,12 +1,14 @@
 {
-  "name": "fortellis-cli",
+  "name": "@fortellis/fortellis-cli",
   "description": "Command Line for Fortellis API Specs",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "author": "Fortellis",
   "bin": {
     "fortellis-cli": "./bin/run"
   },
-  "bugs": "https://github.com/Fortellis/fortellis-cli/issues",
+  "bugs": {
+    "url": "https://github.com/Fortellis/fortellis-cli/issues"
+  },
   "dependencies": {
     "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.13.3",
@@ -15,6 +17,7 @@
     "@stoplight/yaml": "3.5.0",
     "axios": "^0.19.0",
     "colors": "^1.4.0",
+    "globby": "^10.0.1",
     "inquirer": "^7.0.1",
     "js-yaml": "^3.13.1",
     "request": "^2.88.0",
@@ -29,7 +32,6 @@
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-json": "^2.0.1",
     "eslint-plugin-promise": "^4.2.1",
-    "globby": "^10.0.1",
     "husky": "^4.0.6",
     "lint-staged": "^9.5.0",
     "mocha": "^5.2.0",
@@ -48,7 +50,8 @@
   ],
   "homepage": "https://github.com/Fortellis/fortellis-cli",
   "keywords": [
-    "oclif"
+    "oclif",
+    "fortellis"
   ],
   "license": "MIT",
   "main": "src/index.js",
@@ -59,10 +62,11 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "https://github.com/Fortellis/fortellis-cli.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fortellis/fortellis-cli.git"
+  },
   "scripts": {
-    "postpack": "rm -f oclif.manifest.json",
-    "prepack": "oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
     "lint": "eslint '**/*.{js,json}' --fix",
     "format": "prettier-eslint '**/*.{js,json}' --write",
