@@ -8,7 +8,7 @@
 
 `npm install`
 
-In order for the "fortellis-cli" command to work on a machine where it is installed, you need to link the command with the follwoing command.
+In order for the "fortellis-cli" command to work on a machine where it is installed, you need to link the command with the following command.
 
 `npm link`
 
