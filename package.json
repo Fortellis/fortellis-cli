@@ -61,8 +61,6 @@
   },
   "repository": "https://github.com/Fortellis/fortellis-cli.git",
   "scripts": {
-    "postpack": "rm -f oclif.manifest.json",
-    "prepack": "oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
     "lint": "eslint '**/*.{js,json}' --fix",
     "format": "prettier-eslint '**/*.{js,json}' --write",

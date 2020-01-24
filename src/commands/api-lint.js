@@ -43,7 +43,7 @@ ApiLintCommand.args = [
   {
     name: 'FILE', // name of arg to show in help and reference with args[name]
     required: true, // make the arg required with `required: true`
-    description: 'path of an Open API 2.0 specificaton file' // help description
+    description: 'path of an Open API 2.0 specification file' // help description
   }
 ];
 
