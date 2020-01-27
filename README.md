@@ -15,8 +15,8 @@ In order for the "fortellis-cli" command to work on a machine where it is instal
 Command Line for Fortellis API Specs
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/fortellis-cli.svg)](https://npmjs.org/package/fortellis-cli)
-[![Downloads/week](https://img.shields.io/npm/dw/fortellis-cli.svg)](https://npmjs.org/package/fortellis-cli)
+[![Version](https://img.shields.io/npm/v/fortellis-cli.svg)](https://npmjs.org/package/@fortellis/fortellis-cli)
+[![Downloads/week](https://img.shields.io/npm/dw/fortellis-cli.svg)](https://npmjs.org/package/@fortellis/fortellis-cli)
 [![License](https://img.shields.io/npm/l/fortellis-cli.svg)](https://github.com/Fortellis/fortellis-cli/blob/master/package.json)
 
 <!-- toc -->
