@@ -9,7 +9,7 @@ const { ERRORS, toCommandError } = require('../utils/errors');
 
 class ApiLintCommand extends Command {
   async run() {
-    const { args } = this.parse(ApiLintCommand)
+    const { flags, args } = this.parse(ApiLintCommand)
     
     // validate input
     if(!args.FILE) {
@@ -19,7 +19,7 @@ class ApiLintCommand extends Command {
     if (flags.safe) {
       const configService = new ConfigManagementService();
       configService.loadLocalConfig();
-      if (configService.getSpecFilesFromConfig().indexOf(specFileName) === -1) {
+      if (configService.getSpecFilesFromConfig().indexOf(args.FILE) === -1) {
         this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, args.FILE));
       }
     }
@@ -46,7 +46,7 @@ class ApiLintCommand extends Command {
 }
 
 ApiLintCommand.flags = {
-  safe: flags.string({
+  safe: flags.boolean({
     description: 'Check that the API spec has been added and registered to the repository before validating'
   })
 };
