@@ -3,6 +3,7 @@
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const fs = require('fs');
+const { ERRORS } = require('../../src/utils/errors');
 
 describe('add', () => {
   after(() => {
@@ -18,8 +19,8 @@ describe('add', () => {
     test
       .stdout()
       .command(['add', '-a=*'])
-      .exit(2)
-      .it('exits with status 2 when repo does not exist');
+      .exit(ERRORS.REPO_INVALID.exit)
+      .it('exits with correct status when repo does not exist');
   });
 
   describe('- Add a file that does not exist', () => {
@@ -37,9 +38,9 @@ describe('add', () => {
 
     test
       .stdout()
-      .command(['add', '-a=testSpec.yaml'])
-      .exit(2)
-      .it('Exits with status 2 when file does not exist');
+      .command(['add', '-s', 'testSpec.yaml'])
+      .exit(ERRORS.FILE_NOT_EXIST.exit)
+      .it('Exits with correct status when file does not exist');
   });
 
   describe('- Add a file that is already in the repo', () => {
@@ -65,8 +66,8 @@ describe('add', () => {
     test
       .stdout()
       .command(['add', '-s', 'sampleApiSpec.yaml'])
-      .exit(2)
-      .it('Exits with status 2 when file is already in the repo');
+      .exit(ERRORS.FILE_ALREADY_EXISTS.exit)
+      .it('Exits with correct status when file is already in the repo');
   });
 
   describe('- Add a file', () => {

@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
+const { ERRORS } = require('../../src/utils/errors');
 
 describe('api-template command', () => {
   after(() => {
@@ -14,8 +15,8 @@ describe('api-template command', () => {
     test
       .stdout()
       .command(['api-template'])
-      .exit(2)
-      .it('exits with status 2 when repo does not exist');
+      .exit(ERRORS.REPO_INVALID.exit)
+      .it('exits with correct status when repo does not exist');
   });
 
   describe('Create template in a fresh repo', () => {

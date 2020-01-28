@@ -25,23 +25,23 @@ class ConfigureCommand extends Command {
     if (flags.username && flags.password) {
       // If username/password are given in flags, simply use them and accept the values.
 
-      authService
-        .getAuthToken(flags.username, flags.password)
-        .then(authToken => {
-          if (authToken.token) {
-            configManagementService.loadGlobalConfig();
-            configManagementService.setToken(authToken);
-            configManagementService.saveGlobalConfig();
-            this.log(
-              'Configuration completed. See [$home/.fortellis/config.yaml] file for stored values.'
-            );
-          } else {
-            throw new Error('No auth token value found');
-          }
-        })
-        .catch(error => {
-          this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to fetch authorization token: ${error.message}`));
-        });
+      let authToken;
+      try {
+        authToken = authService.getAuthToken(flags.username, flags.password);
+      } catch (err) {
+        this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to fetch authorization token: ${error.message}`));
+      }
+
+      if (!authToken || !authToken.token) {
+        this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, 'No token value found in auth response.'));
+      }
+
+      configManagementService.loadGlobalConfig();
+      configManagementService.setToken(authToken);
+      configManagementService.saveGlobalConfig();
+      this.log(
+        'Configuration completed. See [$home/.fortellis/config.yaml] file for stored values.'
+      );
     } else {
       const authQuestions = [
         {

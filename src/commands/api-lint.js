@@ -16,17 +16,17 @@ class ApiLintCommand extends Command {
       this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
-    if (flags.safe) {
-      const configService = new ConfigManagementService();
-      configService.loadLocalConfig();
-      if (configService.getSpecFilesFromConfig().indexOf(args.FILE) === -1) {
-        this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, args.FILE));
-      }
-    }
-
     const fileName = args.FILE;
     if (!fs.existsSync(fileName)) {
       this.error(...toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(fileName)));
+    }
+
+    if (flags.safe) {
+      const configService = new ConfigManagementService();
+      configService.loadLocalConfig();
+      if (configService.getSpecFilesFromConfig().indexOf(fileName) === -1) {
+        this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, fileName));
+      }
     }
 
     const spec = fs.readFileSync(fileName, { encoding: 'utf8' });

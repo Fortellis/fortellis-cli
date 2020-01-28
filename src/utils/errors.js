@@ -27,22 +27,22 @@ const ERRORS = {
   },
   FILE_NOT_GIVEN: {
     message: () => 'No file specified or given.',
-    error: 107
+    exit: 107
   },
   CONFIG_NOT_EXIST: {
     message: () => 'No global configuration exists. Please execute the \'fortellis-cli configure\' command.',
-    error: 108
+    exit: 108
   },
   AUTH_ERROR: {
     message: () => 'Access denied. Your authentication may have expired. Renew by executing: \'fortellis-cli\' configure.',
-    error: 109
+    exit: 109
   },
   UNEXPECTED_AXIOS_ERROR: {
     message: (msg, axiosErr) =>
       `An unexpected error has occurred. Please email support@fortellis.io for more help.
                 ${msg && `\n${msg}`}
                 ${axiosErr && `\n${formatAxiosError(err)}`}`,
-    error: 198
+    exit: 198
   },
   UNEXPECTED_ERROR: {
     message: (errDetails) => `An unexpected error has occurred. Please email support@fortellis.io for more help.\n${errDetails}`,
