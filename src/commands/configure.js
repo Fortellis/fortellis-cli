@@ -2,6 +2,7 @@ const { Command, flags } = require('@oclif/command');
 const inquirer = require('inquirer');
 const ConfigManagementService = require('../services/config.management.service');
 const AuthorizationService = require('../services/authorization.service');
+const { toCommandError, ERRORS } = require('../utils/errors');
 
 /**
  * This globally configures fortellis-cli with a temporary access token.
@@ -38,9 +39,8 @@ class ConfigureCommand extends Command {
             throw new Error('No auth token value found');
           }
         })
-        // eslint-disable-next-line no-unused-vars
         .catch(error => {
-          this.log('Unable to fetch authorization token');
+          this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to fetch authorization token: ${error.message}`));
         });
     } else {
       const authQuestions = [

@@ -38,7 +38,7 @@ class AddCommand extends Command {
 
       // Don't add the same spec twice
       if (configManagementService.specFiles.indexOf(`${fileName}`) > -1) {
-        this.error(...toCommandError(ERRORS.FILE_ALREADY_EXISTS), fileName);
+        this.error(...toCommandError(ERRORS.FILE_ALREADY_EXISTS, fileName));
       }
       configManagementService.addSpecFile(fileName);
     } else {
