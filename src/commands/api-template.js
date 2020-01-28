@@ -29,7 +29,7 @@ class ApiTemplateCommand extends Command {
           this.error(
             ...toCommandError(
               ERRORS.UNEXPECTED_ERROR,
-              `Error copying template API spec file.${err && err.message && err.stack ? `\n${err.message}\n${err.stack}` : '' }`
+              `Error copying template API spec file.${err.message ? `\n${err.message}` : '' }`
             )
           )
         }

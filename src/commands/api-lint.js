@@ -9,11 +9,11 @@ const { ERRORS, toCommandError } = require('../utils/errors');
 
 class ApiLintCommand extends Command {
   async run() {
-    const { flags, args } = this.parse(ApiLintCommand)
-    
+    const { flags, args } = this.parse(ApiLintCommand);
+
     // validate input
-    if(!args.FILE) {
-      this.error(...toCommandError(ERRORS.SPECIFICATION_NOT_GIVEN));
+    if (!args.FILE) {
+      this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     if (flags.safe) {
@@ -47,7 +47,7 @@ class ApiLintCommand extends Command {
 
 ApiLintCommand.flags = {
   safe: flags.boolean({
-    description: 'Check that the API spec has been added and registered to the repository before validating'
+    description: 'Check that the API spec has been added to the Fortellis repository before linting'
   })
 };
 
@@ -55,9 +55,9 @@ ApiLintCommand.description = `Lints OpenAPI 2.0 specifications for correctness a
 
 ApiLintCommand.args = [
   {
-    name: 'FILE', // name of arg to show in help and reference with args[name]
-    required: true, // make the arg required with `required: true`
-    description: 'path of an Open API 2.0 specificaton file' // help description
+    name: 'FILE',
+    required: true,
+    description: 'Path of an Open API 2.0 specificaton file'
   }
 ];
 

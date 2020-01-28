@@ -23,9 +23,7 @@ class PushCommand extends Command {
     }
 
     if (!flags.apispec) {
-      this.error(
-        'You must specify the type of file to push (--apispec, etc.).'
-      );
+      this.error(...toCommandError(ERRORS.FILE_TYPE_NOT_GIVEN));
     }
 
     // Get local repo config (spec file names and orgId)
@@ -68,7 +66,7 @@ class PushCommand extends Command {
         axios
           .post(cliPushUrl, payload, config)
           .then(response => {
-            this.log(`File was successfully pushed: ${response.data}`);
+            this.log('File was successfully pushed', response.data);
           })
           .catch(error => {
             if (error.response.status === 422) {
