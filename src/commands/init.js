@@ -6,6 +6,7 @@ const constants = require('../utils/constants');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
 const path = require('path');
+const { ERRORS, toCommandError } = require('../utils/errors');
 
 class InitCommand extends Command {
   async run() {
@@ -14,16 +15,14 @@ class InitCommand extends Command {
     const repoService = new RepositoryService();
 
     if (repoService.repoIsValid() && !flags.force) {
-      this.error('This directory is already a Fortellis repository.');
+      this.error(...toCommandError(ERRORS.REPO_ALREADY_EXISTS));
     }
 
     const configManagementService = new ConfigManagementService();
 
     // Global config (credentials) must exist.
     if (!configManagementService.globalConfigDirExists()) {
-      this.error(
-        'No global configuration exists. Please execute the `fortellis-cli configure` command.'
-      );
+      this.error(...toCommandError(ERRORS.CONFIG_NOT_EXIST));
     }
 
     let configPath = path.join(process.cwd(), constants.configDirName);

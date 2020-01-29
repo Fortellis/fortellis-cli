@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
+const { ERRORS } = require('../../src/utils/errors');
 
 describe('init', () => {
   after(() => {
@@ -23,7 +24,7 @@ describe('init', () => {
     test
       .stdout()
       .command(['init', '-n=MyOrg', '-i=1234'])
-      .exit(2)
+      .exit(ERRORS.REPO_ALREADY_EXISTS.exit)
       .it('exit with status 2 if repo already exists');
   });
 });

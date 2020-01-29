@@ -7,7 +7,7 @@ const fs = require('fs');
 const axios = require('axios');
 const constants = require('../utils/constants');
 const path = require('path');
-const colors = require('colors');
+const { ERRORS, toCommandError } = require('../utils/errors');
 
 class PushCommand extends Command {
   async run() {
@@ -15,19 +15,15 @@ class PushCommand extends Command {
 
     const repoService = new RepositoryService();
     if (!repoService.repoIsValid()) {
-      this.error(
-        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
-      );
+      this.error(...toCommandError(ERRORS.REPO_INVALID));
     }
 
     if (!flags.file) {
-      this.error('You must specifiy a file to push.');
+      this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     if (!flags.apispec) {
-      this.error(
-        'You must specifiy the type of file to push (--apispec, etc.).'
-      );
+      this.error(...toCommandError(ERRORS.FILE_TYPE_NOT_GIVEN));
     }
 
     // Get local repo config (spec file names and orgId)
@@ -70,31 +66,22 @@ class PushCommand extends Command {
         axios
           .post(cliPushUrl, payload, config)
           .then(response => {
-            this.log('File was successfully pushed:', response.data);
+            this.log('File was successfully pushed', response.data);
           })
           .catch(error => {
             if (error.response.status === 422) {
-              this.log(error.response.data.message.red);
-              this.log('Ressons:');
-              error.response.data.error.forEach(element => {
-                this.log(element);
-              });
-              // this.log(error.response.data.error);
+              this.error(...toCommandError(ERRORS.UNEXPECTED_AXIOS_ERROR, 'Malformed push spec request', error));
             } else if (error.response.status === 403) {
-              this.log(
-                'Access denied. Your authentication may have expired. Renew by executing: fortellis-cli configure'
-              );
+              this.error(...toCommandError(ERRORS.AUTH_ERROR));
             } else {
-              this.log('Error pushing spec file:', error.response);
+              this.error(...toCommandError(ERRORS.UNEXPECTED_AXIOS_ERROR, 'Error pushing spec file'));
             }
           });
       } catch (error) {
-        this.log('Unable to push spec to Fortellis');
+        this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to push spec to Fortellis: ${error.message}`));
       }
     } else {
-      this.error(
-        `${flags.file} is not in the local repository. Use the 'fortellis-cli add' command to add the spec to the repository.`
-      );
+      this.error(...toCommandError(FILE_NOT_ADDED, flags.file));
     }
   }
 }
@@ -109,7 +96,7 @@ Pass in a username/password to explicitly publish with a given user. Otherwise
 the username/password configured in the enviromment (see fortellis-cli configure)
 will be used.
 
-A flag must be used to specifiy the kind of file to be pushed.
+A flag must be used to specify the kind of file to be pushed.
  -s --apispec
 `;
 

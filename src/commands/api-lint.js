@@ -1,24 +1,32 @@
-const { Command } = require('@oclif/command');
+const { Command, flags } = require('@oclif/command');
 const fs = require('fs');
 const path = require('path');
 const lint = require('../services/linter');
 const { formatResults } = require('../services/linter/formatters/rusty');
 const { parseWithPointers } = require('@stoplight/yaml');
+const ConfigManagementService = require('../services/config.management.service');
+const { ERRORS, toCommandError } = require('../utils/errors');
 
 class ApiLintCommand extends Command {
   async run() {
-    const { args } = this.parse(ApiLintCommand);
+    const { flags, args } = this.parse(ApiLintCommand);
 
     // validate input
     if (!args.FILE) {
-      this.error('no specfication file specified', { code: 1 });
+      this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     const fileName = args.FILE;
     if (!fs.existsSync(fileName)) {
-      this.error("file '" + path.resolve(fileName) + "' does not exist", {
-        code: 1
-      });
+      this.error(...toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(fileName)));
+    }
+
+    if (flags.safe) {
+      const configService = new ConfigManagementService();
+      configService.loadLocalConfig();
+      if (configService.getSpecFilesFromConfig().indexOf(fileName) === -1) {
+        this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, fileName));
+      }
     }
 
     const spec = fs.readFileSync(fileName, { encoding: 'utf8' });
@@ -37,13 +45,19 @@ class ApiLintCommand extends Command {
   }
 }
 
+ApiLintCommand.flags = {
+  safe: flags.boolean({
+    description: 'Check that the API spec has been added to the Fortellis repository before linting'
+  })
+};
+
 ApiLintCommand.description = `Lints OpenAPI 2.0 specifications for correctness and style.`;
 
 ApiLintCommand.args = [
   {
-    name: 'FILE', // name of arg to show in help and reference with args[name]
-    required: true, // make the arg required with `required: true`
-    description: 'path of an Open API 2.0 specificaton file' // help description
+    name: 'FILE',
+    required: true,
+    description: 'Path of an Open API 2.0 specificaton file'
   }
 ];
 
