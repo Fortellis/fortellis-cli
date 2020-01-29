@@ -27,7 +27,7 @@ class ConfigureCommand extends Command {
 
       let authToken;
       try {
-        authToken = authService.getAuthToken(flags.username, flags.password);
+        authToken = await authService.getAuthToken(flags.username, flags.password);
       } catch (err) {
         this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to fetch authorization token: ${error.message}`));
       }
