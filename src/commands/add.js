@@ -3,6 +3,7 @@ const fs = require('fs');
 const ConfigManagementService = require('../services/config.management.service');
 const RepositoryService = require('../services/repository.service');
 const path = require('path');
+const { ERRORS, toCommandError } = require('../utils/errors');
 
 class AddCommand extends Command {
   async run() {
@@ -12,9 +13,7 @@ class AddCommand extends Command {
 
     // Verify that this is a Fortellis repo
     if (!repositoryService.repoIsValid()) {
-      this.error(
-        `This is not a Fortellis repository. Run 'fortellis-cli init' to create a new repository.`
-      );
+      this.error(...toCommandError(ERRORS.REPO_INVALID));
     }
 
     const configManagementService = new ConfigManagementService();
@@ -34,18 +33,16 @@ class AddCommand extends Command {
       // Don't add a file if it isn't in the directory
       let addFile = path.join(process.cwd(), fileName);
       if (!fs.existsSync(addFile)) {
-        this.error(`${fileName} does not exist in this directory.`);
+        this.error(...toCommandError(ERRORS.FILE_NOT_EXIST, fileName));
       }
 
       // Don't add the same spec twice
       if (configManagementService.specFiles.indexOf(`${fileName}`) > -1) {
-        this.error(`${fileName} is already in the repository`);
+        this.error(...toCommandError(ERRORS.FILE_ALREADY_EXISTS, fileName));
       }
       configManagementService.addSpecFile(fileName);
     } else {
-      this.error(
-        'You must specify the type of flie to be added to the repository'
-      );
+      this.error(...toCommandError(ERRORS.FILE_NOT_GIVEN));
     }
 
     configManagementService.saveLocalConfig();

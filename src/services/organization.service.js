@@ -3,6 +3,7 @@
 const axios = require('axios');
 const constants = require('../utils/constants');
 const ConfigManagementService = require('../services/config.management.service');
+const { ERRORS } = require('../utils/errors');
 const colors = require('colors');
 
 // Returns a list of Organization objects { name: <org name>, id: <orgId>}
@@ -40,10 +41,7 @@ class OrganizationService {
       return this.orgList;
     } catch (error) {
       if (error.response.status === 403) {
-        console.log(
-          'Access token has expired. Refresh the token by executing: fortellis-cli configure'
-            .red
-        );
+        console.log(ERRORS.AUTH_ERROR);
         return [];
       } else {
         console.log('Error fetching organization list from fortellis.'.red);

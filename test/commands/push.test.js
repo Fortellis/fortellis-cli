@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
+const { ERRORS } = require('../../src/utils/errors');
 
 describe('push', () => {
   after(() => {
@@ -14,11 +15,11 @@ describe('push', () => {
     test
       .stdout()
       .command(['push', '-p=myPass', '-u=myUser', '-f=testFile.yaml'])
-      .exit(2)
-      .it('exits with status 2 if repo does not exist');
+      .exit(ERRORS.REPO_INVALID.exit)
+      .it('exits with correct status if repo does not exist');
   });
 
-  describe('- push with a repo, but no file', () => {
+  describe('- push with a repo, but no file type', () => {
     test
       .stdout()
       .command(['init', '-n=MyOrg', '-i=1234'])
@@ -29,7 +30,7 @@ describe('push', () => {
     test
       .stdout()
       .command(['push', '-p=myPass', '-u=myUser', '-f=testFile.yaml'])
-      .exit(2)
-      .it('exit with status 2 if file does not exist');
+      .exit(ERRORS.FILE_TYPE_NOT_GIVEN.exit)
+      .it('exit with status 2 if file type not specified');
   });
 });

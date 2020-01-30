@@ -42,7 +42,7 @@ class ConfigManagementService {
         this.orgName = data.organization.orgName;
         this.specFiles = data.specifications;
       } catch (error) {
-        console.error('Error loading configuraiton: ', error);
+        console.error('Error loading configuration: ', error);
       }
     }
   }

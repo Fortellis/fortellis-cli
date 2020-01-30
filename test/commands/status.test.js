@@ -3,6 +3,7 @@
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const fs = require('fs');
+const { ERRORS } = require('../../src/utils/errors');
 
 describe('status', () => {
   // Once all tests are done, clear out the repo artifacts
@@ -19,8 +20,8 @@ describe('status', () => {
     test
       .stdout()
       .command(['status'])
-      .exit(2)
-      .it('exits with status 2 when repo does not exist');
+      .exit(ERRORS.REPO_INVALID.exit)
+      .it('exits with correct status when repo does not exist');
   });
 
   describe('- status with a created directory', () => {
