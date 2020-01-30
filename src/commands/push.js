@@ -81,7 +81,7 @@ class PushCommand extends Command {
         this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to push spec to Fortellis: ${error.message}`));
       }
     } else {
-      this.error(...toCommandError(FILE_NOT_ADDED, flags.file));
+      this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, flags.file));
     }
   }
 }

@@ -37,6 +37,10 @@ const ERRORS = {
     message: () => 'Access denied. Your authentication may have expired. Renew by executing: \'fortellis-cli\' configure.',
     exit: 109
   },
+  SPEC_INVALID: {
+    message: () => 'Spec invalid',
+    exit: 110
+  },
   UNEXPECTED_AXIOS_ERROR: {
     message: (msg, axiosErr) =>
       `An unexpected error has occurred. Please email support@fortellis.io for more help.
