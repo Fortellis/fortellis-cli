@@ -45,7 +45,7 @@ const ERRORS = {
     message: (msg, axiosErr) =>
       `An unexpected error has occurred. Please email support@fortellis.io for more help.
                 ${msg && `\n${msg}`}
-                ${axiosErr && `\n${formatAxiosError(err)}`}`,
+                ${axiosErr && `\n${formatAxiosError(axiosErr)}`}`,
     exit: 198
   },
   UNEXPECTED_ERROR: {
