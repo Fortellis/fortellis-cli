@@ -37,8 +37,7 @@
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
     "prettier": "^1.19.1",
-    "prettier-eslint-cli": "^5.0.0",
-    "sinon": "^8.1.1"
+    "prettier-eslint-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=8.0.0"
