@@ -46,6 +46,8 @@ class ApiLintCommand extends Command {
     const resultsHasErrorSeverity = linterResults.some(result => result && result.severity === 0);
     if (resultsHasErrorSeverity) {
       this.exit(ERRORS.SPEC_INVALID.exit);
+    } else {
+      this.exit(0);
     }
   }
 }

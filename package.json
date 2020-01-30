@@ -1,7 +1,7 @@
 {
   "name": "@fortellis/fortellis-cli",
   "description": "Command Line for Fortellis API Specs",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "author": "Fortellis",
   "bin": {
     "fortellis-cli": "./bin/run"
@@ -37,8 +37,7 @@
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
     "prettier": "^1.19.1",
-    "prettier-eslint-cli": "^5.0.0",
-    "sinon": "^8.1.1"
+    "prettier-eslint-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=8.0.0"
