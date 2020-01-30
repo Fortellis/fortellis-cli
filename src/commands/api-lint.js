@@ -42,6 +42,11 @@ class ApiLintCommand extends Command {
 
     const linterResults = await lint(parserResults, config);
     this.log(formatResults(linterResults, srcMap, fileName));
+
+    const resultsHasErrorSeverity = linterResults.some(result => result && result.severity === 0);
+    if (resultsHasErrorSeverity) {
+      this.exit(ERRORS.SPEC_INVALID.exit);
+    }
   }
 }
 
