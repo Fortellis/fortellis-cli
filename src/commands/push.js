@@ -74,7 +74,7 @@ class PushCommand extends Command {
             } else if (error.response.status === 403) {
               this.error(...toCommandError(ERRORS.AUTH_ERROR));
             } else {
-              this.error(...toCommandError(ERRORS.UNEXPECTED_AXIOS_ERROR, 'Error pushing spec file'));
+              this.error(...toCommandError(ERRORS.UNEXPECTED_AXIOS_ERROR, 'Error pushing spec file', error));
             }
           });
       } catch (error) {
