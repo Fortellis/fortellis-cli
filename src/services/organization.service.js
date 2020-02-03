@@ -41,7 +41,7 @@ class OrganizationService {
       return this.orgList;
     } catch (error) {
       if (error.response.status === 403) {
-        console.log(ERRORS.AUTH_ERROR);
+        console.log(ERRORS.AUTH_ERROR.message().red);
         return [];
       } else {
         console.log('Error fetching organization list from fortellis.'.red);
