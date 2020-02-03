@@ -25,6 +25,7 @@ class ConfigManagementService {
       this.token = credData.token;
     } catch (error) {
       console.error('Error loading credentials:', error);
+      throw error;
     }
   }
 
@@ -43,6 +44,7 @@ class ConfigManagementService {
         this.specFiles = data.specifications;
       } catch (error) {
         console.error('Error loading configuration: ', error);
+        throw error;
       }
     }
   }

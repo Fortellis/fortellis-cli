@@ -56,10 +56,8 @@ async function getSessionId(authUsername, authPassword) {
 
     return returnValue;
   } catch (error) {
-    if (error.response.status === 404) {
-      return '';
-    }
     console.error(error);
+    throw error;
   }
 }
 
@@ -102,6 +100,7 @@ async function getToken(sessionToken, entityId) {
     return queries['#access_token'];
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 
