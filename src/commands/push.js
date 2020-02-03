@@ -70,15 +70,32 @@ class PushCommand extends Command {
           })
           .catch(error => {
             if (error.response.status === 422) {
-              this.error(...toCommandError(ERRORS.UNEXPECTED_AXIOS_ERROR, 'Malformed push spec request', error));
+              this.error(
+                ...toCommandError(
+                  ERRORS.UNEXPECTED_AXIOS_ERROR,
+                  'Malformed push spec request',
+                  error
+                )
+              );
             } else if (error.response.status === 403) {
               this.error(...toCommandError(ERRORS.AUTH_ERROR));
             } else {
-              this.error(...toCommandError(ERRORS.UNEXPECTED_AXIOS_ERROR, 'Error pushing spec file', error));
+              this.error(
+                ...toCommandError(
+                  ERRORS.UNEXPECTED_AXIOS_ERROR,
+                  'Error pushing spec file',
+                  error
+                )
+              );
             }
           });
       } catch (error) {
-        this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to push spec to Fortellis: ${error.message}`));
+        this.error(
+          ...toCommandError(
+            ERRORS.UNEXPECTED_ERROR,
+            `Unable to push spec to Fortellis: ${error.message}`
+          )
+        );
       }
     } else {
       this.error(...toCommandError(ERRORS.FILE_NOT_ADDED, flags.file));
