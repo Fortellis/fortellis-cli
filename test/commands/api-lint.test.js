@@ -4,7 +4,7 @@ const { /*expect,*/ test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const path = require('path');
 const { ERRORS } = require('../../src/utils/errors');
-const { Spectral } = require('@stoplight/spectral');
+//const { Spectral } = require('@stoplight/spectral');
 
 describe('api-lint', () => {
   after(() => {
@@ -24,40 +24,23 @@ describe('api-lint', () => {
   describe('- run api-lint command with no validation errors', () => {
     test
       .stdout()
-      .stub(Spectral.prototype, 'run', async () => ([]))
-      .command(['api-lint', path.join(__dirname, '../data/petstore.yaml')])
+      .command([
+        'api-lint',
+        path.join(__dirname, '../data/pet-adoption-v1.0.0.yaml')
+      ])
       .exit(0)
-      .it('Exits with a successful exit code when there are no validation errors');
+      .it(
+        'Exits with a successful exit code when there are no validation errors'
+      );
   });
 
   describe('- run api-lint command with validation errors', () => {
-    const spectralError = {
-      code: 'error123',
-      message: 'some error has occured',
-      path:
-        [
-          'paths',
-          '/',
-          'get',
-        ],
-      severity: 0,
-      source: undefined,
-      range: {
-        start: {
-          line: 0,
-          character: 0,
-        },
-        end: {
-          line: 1,
-          character: 0
-        }
-      }
-    };
-
     test
       .stdout()
-      .stub(Spectral.prototype, 'run', async () => ([ spectralError ]))
-      .command(['api-lint', path.join(__dirname, '../data/petstore.yaml')])
+      .command([
+        'api-lint',
+        path.join(__dirname, '../data/pet-adoption-v1.0.0.error.yaml')
+      ])
       .exit(ERRORS.SPEC_INVALID.exit)
       .it('Exits with a correct exit code when there are validation errors');
   });

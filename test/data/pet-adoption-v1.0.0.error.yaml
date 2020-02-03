@@ -1,0 +1,300 @@
+#swagger: '2.0'
+
+info:
+  version: '1.0.0'
+  title: Pet Adoption
+  description: A pet adoption API.
+  contact: 
+    name: John Doe
+    url: https://example.com/john-doe
+    email: john.doe@example.com
+
+host: api.fortellis.io
+basePath: /pet-adoption/v1
+
+securityDefinitions: 
+  permission-model:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: https://identity.fortellis.io/oauth2/
+    scopes:
+      pets.adopt: permission to search for, read, and adopt pets
+      pets.manage: permission to add, modify, and remove pets from the service
+
+schemes:
+  - https
+
+paths:
+  /pets:
+    get:
+      summary: Query pets available for adoption
+      description: Query pets available for adoption
+      operationId: queryPets
+      tags: 
+        - adopt
+      parameters:
+        - $ref: '#/parameters/query.name'
+        - $ref: '#/parameters/query.breed'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/PetCollection'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+    post:
+      summary: Adds a pet to the store
+      description: Adds a pet to the store
+      operationId: addPet
+      tags:
+        - manage
+      parameters:
+        - $ref: '#/parameters/body.AddUpdatePet'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Pet'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+
+  /pets/{petId}:
+    get:
+      summary: Get the description of a pet available for adoption
+      description:  Get the description of a pet available for adoption
+      operationId: readPets
+      tags: 
+        - adopt
+      parameters:
+        - $ref: '#/parameters/path.petId'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Pet'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+
+parameters:
+  query.name:
+    name: name
+    in: query
+    type: string
+    description: Allows pet searches to be filtered by name 
+  query.breed:
+    name: breed
+    in: query
+    type: string
+    description: Allows pet searches to be filtered by breed 
+  path.petId:
+    name: petId
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of a pet adoption record
+  body.AddUpdatePet:
+    name: AddPet
+    in: body
+    description: A request body to add or update a pet
+    required: true
+    schema:
+      $ref: '#/definitions/Pet'
+
+responses:
+  Pet:
+    description: OK
+    schema:
+      $ref: '#/definitions/Pet'
+    
+  PetCollection:
+    description: OK
+    schema:
+      $ref: '#/definitions/PetCollection'
+  
+  # These are common responses when building RESTful APIs
+  Deleted:
+    description: 204 - No Content
+    headers:
+      Request-Id:
+        type: string
+  
+  BadRequest:
+    description: 400 - Bad Request
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+      
+  Unauthorized:
+    description: 401 - Unauthorized
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+      
+  Forbidden:
+    description: 403 - Forbidden
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  
+  NotFound:
+    description: 404 - Not Found
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+definitions:
+  Pet:
+    description: A pet record
+    properties:
+      petId:
+        type: string
+        description: The record identifier of the pet
+      name:
+        type: string
+        description: The name of the pet
+      type:
+        type: string
+        enum:
+          - dog
+          - cat
+        description: The type of pet
+    required:
+      - petId
+      - name
+      - type
+    example:
+      petId: ABC123
+      name: Fido
+      type: dog
+
+  # PetCollection demonstrates paginated responses for search results that 
+  # may include more items than a client can recieve in a reasonable time.
+  PetCollection:
+    description: A search result collection of Pet records.
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Pet'
+        description: Pet search results.
+      totalItems:
+        type: number
+        description: The total number of items contained in the collection
+      totalPages:
+        type: number
+        description: The total number of pages given the requested page size
+      links:
+        $ref: '#/definitions/CollectionNavigationObject'
+        description: The hypermedia links describing the posible resource actions
+    required:
+      - items
+      - totalItems
+      - totalPages
+      - links
+    example:
+      items:
+        - petId: ABC123
+          name: Fido
+          type: dog
+        - petId: DEF456
+          name: Fluffy
+          type: cat
+        - petId: GHI789
+          name: Rex
+          type: dog
+      totalItems: 10
+      totalPages: 4
+      links:
+        firstPage: https://api.fortellis.io/pet-adoption/v1/pets?page=1&pageSize=3
+        nextPage: https://api.fortellis.io/pet-adoption/v1/pets?page=2&pageSize=3
+        prevPage: https://api.fortellis.io/pet-adoption/v1/pets?page=1&pageSize=3
+
+  # CollectionLinkSectionObject demonstrates how collection naviagtion links can be 
+  # standardized for collection responses.     
+  CollectionNavigationObject:
+    description: The standard set of links to navigate a resource collection
+    type: object
+    properties:
+      firstPage:
+        type: string
+        description: The URL to the first page of query results
+      nextPage:
+        type: string
+        description: The URL to the next page of query results
+      prevPage:
+        type: string
+        description: The URL to the previous page of query results
+    required:
+      - firstPage
+      - nextPage
+      - prevPage
+    example:
+      firstPage: https://api.fortellis.io/pet-adoption/v1/pets?page=1&pageSize=20
+      nextPage: https://api.fortellis.io/pet-adoption/v1/pets?page=3&pageSize=20
+      prevPage: https://api.fortellis.io/pet-adoption/v1/pets?page=2&pageSize=20
+
+  # Often when creating or updating a resource, a seperate defintion is declared
+  # that omits properties assigned by the service.  In this case the petId 
+  # property is omitted as it is assigned by the service implementation.
+  AddUpdatePet:
+    description: The payload to create or update a pet's adoption record 
+    properties:
+      name:
+        type: string
+        description: The name of the pet
+      type:
+        type: string
+        enum:
+          - dog
+          - cat
+        description: The type of pet
+    required:
+      - name
+    example:
+      name: Fido
+      type: dog
+
+  # This is a standard error object for 4XX and 5XX responses.
+  ErrorResponse:
+    description: Common error response object.
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string 
+    required:
+      - code
+      - message
+    example:
+      code: 400
+      message: Bad Request
+      

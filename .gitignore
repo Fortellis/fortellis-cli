@@ -1,10 +1,12 @@
-package-lock.json
-.gitignore
-# Dependency directories
+# node dependency directories
 node_modules/
 
 # nyc test coverage
 .nyc_output
+
+# visual studio code
+.vscode
+.editorconfig
 
 # output 
 bin
