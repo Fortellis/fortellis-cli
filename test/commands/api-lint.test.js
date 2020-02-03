@@ -4,7 +4,6 @@ const { /*expect,*/ test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const path = require('path');
 const { ERRORS } = require('../../src/utils/errors');
-//const { Spectral } = require('@stoplight/spectral');
 
 describe('api-lint', () => {
   after(() => {
