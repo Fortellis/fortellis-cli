@@ -1,7 +1,7 @@
 const { Command, flags } = require('@oclif/command');
 const fs = require('fs');
 const path = require('path');
-const lint = require('../services/linter');
+const { lint } = require('../services/linter');
 const { formatResults } = require('../services/linter/formatters/rusty');
 const { parseWithPointers } = require('@stoplight/yaml');
 const ConfigManagementService = require('../services/config.management.service');
@@ -18,7 +18,9 @@ class ApiLintCommand extends Command {
 
     const fileName = args.FILE;
     if (!fs.existsSync(fileName)) {
-      this.error(...toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(fileName)));
+      this.error(
+        ...toCommandError(ERRORS.FILE_NOT_EXIST, path.resolve(fileName))
+      );
     }
 
     if (flags.safe) {
@@ -30,31 +32,38 @@ class ApiLintCommand extends Command {
     }
 
     const spec = fs.readFileSync(fileName, { encoding: 'utf8' });
-    const parserResults = parseWithPointers(spec);
-    const srcMap = spec.split('\n');
+    const parsedSpec = parseWithPointers(spec);
+    const specSrc = spec.split('\n');
 
     const config = {
       rulesets: {
         'oas2-enhanced': true,
         'oas2-fortellis': true
-      }
+      },
+      severity: flags['display-severity']
     };
 
-    const linterResults = await lint(parserResults, config);
-    this.log(formatResults(linterResults, srcMap, fileName));
+    const results = await lint(parsedSpec, config);
+    this.log(formatResults(results, specSrc, fileName));
 
-    const resultsHasErrorSeverity = linterResults.some(result => result && result.severity === 0);
+    const resultsHasErrorSeverity = results.some(r => r && r.severity === 0);
     if (resultsHasErrorSeverity) {
       this.exit(ERRORS.SPEC_INVALID.exit);
-    } else {
-      this.exit(0);
     }
+
+    this.exit(0);
   }
 }
 
 ApiLintCommand.flags = {
   safe: flags.boolean({
-    description: 'Check that the API spec has been added to the Fortellis repository before linting'
+    description:
+      'Check that the API spec has been added to the Fortellis repository before linting'
+  }),
+  'display-severity': flags.string({
+    description: 'Show only output greater than the specified severity level',
+    options: ['error', 'warn', 'info', 'hint'],
+    default: 'warn'
   })
 };
 
