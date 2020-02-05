@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
+const constants = require('../../src/utils/constants');
 const fs = require('fs');
 const { ERRORS } = require('../../src/utils/errors');
 
@@ -9,8 +10,8 @@ describe('add', () => {
   after(() => {
     const repoService = new RepositoryService();
     repoService.deleteLocalRepository();
-    if (fs.existsSync('./sampleApiSpec.yaml')) {
-      fs.unlinkSync('./sampleApiSpec.yaml');
+    if (fs.existsSync(constants.sampleSpecName)) {
+      fs.unlinkSync(constants.sampleSpecName);
     }
     console.log('Cleaning up repository');
   });
@@ -65,7 +66,8 @@ describe('add', () => {
 
     test
       .stdout()
-      .command(['add', '-s', 'sampleApiSpec.yaml'])
+      .command(['add', '-s', constants.sampleSpecName])
+      .command(['add', '-s', constants.sampleSpecName])
       .exit(ERRORS.FILE_ALREADY_EXISTS.exit)
       .it('Exits with correct status when file is already in the repo');
   });
@@ -90,7 +92,7 @@ describe('add', () => {
 
     test
       .stdout()
-      .command(['add', '-s', 'sampleApiSpec.yaml'])
+      .command(['add', '-s', constants.sampleSpecName])
       .it('add a file', ctx => {
         expect(ctx.stdout).to.contain('has been added to the repository');
       });
