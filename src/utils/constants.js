@@ -1,7 +1,8 @@
 module.exports = Object.freeze({
   configDirName: '.fortellis',
   configFileName: 'config.yaml',
-  sampleSpecName: 'sampleApiSpec.yaml',
+  sampleSpecName: 'pet-adoption-v1.0.0.yaml',
+  sampleErrorSpecName: 'pet-adoption-v1.0.0.error.yaml',
   orgListUrl: 'https://organizations-dev.fortellis.io/v1/organizations',
   getSessionUrl: 'https://api.accounts-dev.fortellis.io/api/v1/authn',
   authTokenUrl:

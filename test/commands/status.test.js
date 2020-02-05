@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
+const constants = require('../../src/utils/constants');
 const fs = require('fs');
 const { ERRORS } = require('../../src/utils/errors');
 
@@ -10,8 +11,8 @@ describe('status', () => {
   after(() => {
     const repoService = new RepositoryService();
     repoService.deleteLocalRepository();
-    if (fs.existsSync('./sampleApiSpec.yaml')) {
-      fs.unlinkSync('./sampleApiSpec.yaml');
+    if (fs.existsSync(constants.sampleSpecName)) {
+      fs.unlinkSync(constants.sampleSpecName);
     }
     console.log('Cleaning up repository');
   });
@@ -58,20 +59,6 @@ describe('status', () => {
       .command(['init', '-n=MyOrg', '-i=1234'])
       .it('creating repo', ctx => {
         expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
-      });
-
-    test
-      .stdout()
-      .command(['api-template'])
-      .it('create template files', ctx => {
-        expect(ctx.stdout).to.contain('Template spec created');
-      });
-
-    test
-      .stdout()
-      .command(['status'])
-      .it('runs status', ctx => {
-        expect(ctx.stdout).to.contain('sampleApiSpec.yaml');
       });
   });
 });

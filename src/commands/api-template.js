@@ -1,53 +1,32 @@
 /* eslint-disable node/no-unsupported-features/node-builtins */
 const { Command } = require('@oclif/command');
-const RepositoryService = require('../services/repository.service');
-const ConfigManagementService = require('../services/config.management.service');
 const constants = require('../utils/constants');
 const fs = require('fs');
 const path = require('path');
-const { ERRORS, toCommandError } = require('../utils/errors');
 
-/**
- * Create a template repository, with a sample Spec, Doc, and Permissions file.
- *
- * This command should not be able to override files that have already been saved to the repository.
- * In fact, it should only be usable on an empty repo.
- *
- */
+//
+// Writes a template Open API 2.0 document to the current directory.
+//
 class ApiTemplateCommand extends Command {
   async run() {
-    const repoService = new RepositoryService();
-    if (!repoService.repoIsValid()) {
-      this.error(...toCommandError(ERRORS.REPO_INVALID));
+    try {
+      const src = path.resolve(
+        `${__dirname}/../resources/${constants.sampleSpecName}`
+      );
+      const dst = path.resolve(process.cwd(), constants.sampleSpecName);
+      fs.copyFileSync(src, dst);
+      this.log(`Template spec created: ${constants.sampleSpecName}`);
+    } catch (error) {
+      this.error(
+        `Error copying template API specification file: ${error.message}`
+      );
     }
-
-    fs.copyFileSync(
-      path.resolve(`${__dirname}/../resources/${constants.sampleSpecName}`),
-      constants.sampleSpecName,
-      err => {
-        if (err) {
-          this.error(
-            ...toCommandError(
-              ERRORS.UNEXPECTED_ERROR,
-              `Error copying template API spec file.${err.message ? `\n${err.message}` : '' }`
-            )
-          )
-        }
-      }
-    );
-
-    const configService = new ConfigManagementService();
-    configService.loadLocalConfig();
-    configService.addSpecFile(constants.sampleSpecName);
-    configService.saveLocalConfig();
-
-    this.log(`Template spec created: ${constants.sampleSpecName}`);
   }
 }
 
-ApiTemplateCommand.description = `Put example template documents into an empty repository.
+ApiTemplateCommand.description = `Writes a template Open API 2.0 document to the current directory.
 ...
-This creates sample spec, documentaiton, and permissions documents that the user can then modify for API development.
+Writes a template Open API 2.0 document to the current directory that the user can then modify for API development.
 `;
 
 module.exports = ApiTemplateCommand;

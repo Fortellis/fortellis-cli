@@ -3,6 +3,7 @@
 const { /*expect,*/ test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const path = require('path');
+const constants = require('../../src/utils/constants');
 const { ERRORS } = require('../../src/utils/errors');
 
 describe('api-lint', () => {
@@ -25,7 +26,7 @@ describe('api-lint', () => {
       .stdout()
       .command([
         'api-lint',
-        path.join(__dirname, '../data/pet-adoption-v1.0.0.yaml')
+        path.join(__dirname, '../../src/resources', constants.sampleSpecName)
       ])
       .exit(0)
       .it(
@@ -38,27 +39,13 @@ describe('api-lint', () => {
       .stdout()
       .command([
         'api-lint',
-        path.join(__dirname, '../data/pet-adoption-v1.0.0.error.yaml')
+        path.join(
+          __dirname,
+          '../../src/resources',
+          constants.sampleErrorSpecName
+        )
       ])
       .exit(ERRORS.SPEC_INVALID.exit)
       .it('Exits with a correct exit code when there are validation errors');
   });
-
-  // describe(" - run api-lint command with the '--file' argument", () => {
-  //   test
-  //     .stdout()
-  //     .command(["api-lint"])
-  //     .it("runs api-lint --file petstore.yaml", ctx => {
-  //       expect(ctx.stdout).to.contain("results:");
-  //     });
-  // });
-
-  // describe(" - run api-lint command with the '-f' argument", () => {
-  //   test
-  //     .stdout()
-  //     .command(["api-lint"])
-  //     .it("runs api-lint -f petstore.yaml", ctx => {
-  //       expect(ctx.stdout).to.contain("results:");
-  //     });
-  // });
 });
