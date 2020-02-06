@@ -33,7 +33,7 @@ $ npm install -g @fortellis/fortellis-cli
 $ fortellis-cli COMMAND
 running command...
 $ fortellis-cli (-v|--version|version)
-@fortellis/fortellis-cli/0.0.1-alpha.7 darwin-x64 node-v12.13.0
+@fortellis/fortellis-cli/0.0.1-alpha.8 darwin-x64 node-v12.13.0
 $ fortellis-cli --help [COMMAND]
 USAGE
   $ fortellis-cli COMMAND
@@ -44,19 +44,14 @@ USAGE
 # Commands
 
 <!-- commands -->
-- [fortellis-cli](#fortellis-cli)
-  - [Getting started](#getting-started)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`fortellis-cli add FILE`](#fortellis-cli-add-file)
-  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
-  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
-  - [`fortellis-cli configure`](#fortellis-cli-configure)
-  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
-  - [`fortellis-cli init`](#fortellis-cli-init)
-  - [`fortellis-cli push`](#fortellis-cli-push)
-  - [`fortellis-cli status`](#fortellis-cli-status)
-  - [`fortellis-cli version`](#fortellis-cli-version)
+* [`fortellis-cli add FILE`](#fortellis-cli-add-file)
+* [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+* [`fortellis-cli api-template`](#fortellis-cli-api-template)
+* [`fortellis-cli configure`](#fortellis-cli-configure)
+* [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+* [`fortellis-cli init`](#fortellis-cli-init)
+* [`fortellis-cli push`](#fortellis-cli-push)
+* [`fortellis-cli status`](#fortellis-cli-status)
 
 ## `fortellis-cli add FILE`
 
@@ -79,7 +74,7 @@ DESCRIPTION
     - API spec files (-s)
 ```
 
-_See code: [src/commands/add.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/add.js)_
+_See code: [src/commands/add.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/add.js)_
 
 ## `fortellis-cli api-lint FILE`
 
@@ -99,7 +94,7 @@ OPTIONS
                                            linting
 ```
 
-_See code: [src/commands/api-lint.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/api-lint.js)_
+_See code: [src/commands/api-lint.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/api-lint.js)_
 
 ## `fortellis-cli api-template`
 
@@ -114,7 +109,7 @@ DESCRIPTION
   Writes a template Open API 2.0 document to the current directory that the user can then modify for API development.
 ```
 
-_See code: [src/commands/api-template.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/api-template.js)_
+_See code: [src/commands/api-template.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/api-template.js)_
 
 ## `fortellis-cli configure`
 
@@ -135,7 +130,7 @@ DESCRIPTION
   communicate with Fortellis Platform.
 ```
 
-_See code: [src/commands/configure.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/configure.js)_
+_See code: [src/commands/configure.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/configure.js)_
 
 ## `fortellis-cli help [COMMAND]`
 
@@ -173,7 +168,7 @@ DESCRIPTION
   (/.fortellis) that holds the repo configuration file.
 ```
 
-_See code: [src/commands/init.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/init.js)_
+_See code: [src/commands/init.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/init.js)_
 
 ## `fortellis-cli push`
 
@@ -203,7 +198,7 @@ DESCRIPTION
     -s --apispec
 ```
 
-_See code: [src/commands/push.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/push.js)_
+_See code: [src/commands/push.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/push.js)_
 
 ## `fortellis-cli status`
 
@@ -218,20 +213,5 @@ DESCRIPTION
   List all of the repository files and their status.
 ```
 
-_See code: [src/commands/status.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/status.js)_
-
-## `fortellis-cli version`
-
-Outputs the version of the fortellis cli.
-
-```
-USAGE
-  $ fortellis-cli version
-
-DESCRIPTION
-  ...
-  Outputs the version of the fortellis cli.
-```
-
-_See code: [src/commands/version.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.7/src/commands/version.js)_
+_See code: [src/commands/status.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/status.js)_
 <!-- commandsstop -->

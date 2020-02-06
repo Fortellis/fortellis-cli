@@ -1,9 +1,4 @@
 module.exports = Object.freeze({
-  version: {
-    major: 0,
-    minor: 3,
-    patch: 0
-  },
   configDirName: '.fortellis',
   configFileName: 'config.yaml',
   sampleSpecName: 'pet-adoption-v1.0.0.yaml',
