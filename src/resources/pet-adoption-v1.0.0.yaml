@@ -11,6 +11,8 @@ info:
 
 host: api.fortellis.io
 basePath: /pet-adoption/v1
+schemes:
+  - https
 
 securityDefinitions: 
   permission-model:
@@ -21,9 +23,6 @@ securityDefinitions:
       pets.adopt: permission to search for, read, and adopt pets
       pets.manage: permission to add, modify, and remove pets from the service
 
-schemes:
-  - https
-
 paths:
   /pets:
     get:
@@ -33,6 +32,7 @@ paths:
       tags: 
         - adopt
       parameters:
+        - $ref: '#/parameters/header.Request-Id'
         - $ref: '#/parameters/query.name'
         - $ref: '#/parameters/query.breed'
       consumes:
@@ -55,6 +55,7 @@ paths:
       tags:
         - manage
       parameters:
+        - $ref: '#/parameters/header.Request-Id'
         - $ref: '#/parameters/body.AddUpdatePet'
       consumes:
         - application/json
@@ -78,6 +79,7 @@ paths:
       tags: 
         - adopt
       parameters:
+        - $ref: '#/parameters/header.Request-Id'
         - $ref: '#/parameters/path.petId'
       consumes:
         - application/json
@@ -96,22 +98,31 @@ paths:
           $ref: '#/responses/NotFound'
 
 parameters:
+  header.Request-Id:
+    name: Request-Id
+    in: header
+    type: string
+    description: A globally unique request identifier that assists with tracing requests across system boundaries
+
   query.name:
     name: name
     in: query
     type: string
     description: Allows pet searches to be filtered by name 
+
   query.breed:
     name: breed
     in: query
     type: string
     description: Allows pet searches to be filtered by breed 
+
   path.petId:
     name: petId
     in: path
     type: string
     required: true
     description: The unique identifier of a pet adoption record
+
   body.AddUpdatePet:
     name: AddPet
     in: body
@@ -121,6 +132,7 @@ parameters:
       $ref: '#/definitions/Pet'
 
 responses:
+  # These are explicity declared resources and resource collection responses
   Pet:
     description: OK
     schema:

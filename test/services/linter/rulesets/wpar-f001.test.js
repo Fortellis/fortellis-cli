@@ -11,44 +11,44 @@ describe('rule wpar_f001', () => {
   });
   s.mergeRules();
 
-  it("should pass if parameter key suffix casing matches prefix type", async function() {
+  it('should pass if parameter key suffix casing matches prefix type', async function() {
     const results = await s.run({
       parameters: {
-        "header.Foo-Bar": {},
-        "path.fooBar": {},
-        "query.fooBar": {},
-        "body.FooBar": {}
+        'header.Foo-Bar': {},
+        'path.fooBar': {},
+        'query.fooBar': {},
+        'body.FooBar': {}
       }
     });
 
-    expect(results).to.eql([]); 
+    expect(results).to.eql([]);
   });
 
-  it("should fail if parameter key suffix casing does not match prefix type", async function() {
+  it('should fail if parameter key suffix casing does not match prefix type', async function() {
     const tests = [
       {
         parameters: {
-          "header.foobar": {},
-        },
-      },
-      {
-        parameters: {
-          "path.FooBar": {},
-        },
-      },
-      {
-        parameters: {
-          "query.foo-bar": {},
-        },
-      },
-      {
-        parameters: {
-          "body.foobar": {}
+          'header.foobar': {}
         }
       },
+      {
+        parameters: {
+          'path.FooBar': {}
+        }
+      },
+      {
+        parameters: {
+          'query.foo-bar': {}
+        }
+      },
+      {
+        parameters: {
+          'body.foobar': {}
+        }
+      }
     ];
-    
-    for(const t of tests) {
+
+    for (const t of tests) {
       const results = await s.run(t);
       expect(results).to.have.lengthOf(1);
     }

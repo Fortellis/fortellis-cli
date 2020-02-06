@@ -9,7 +9,7 @@
 //
 // {type}: must be one of the following values:
 //   s   - root spec object
-//   inf - info object 
+//   inf - info object
 //   con - contact object
 //   lic - license object
 //   par - parameter object
@@ -24,7 +24,7 @@
 // root spec object rules
 //
 const ws001 = {
-  description: "root spec object should declare a `parameters` property",
+  description: 'root spec object should declare a `parameters` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -39,7 +39,7 @@ const ws001 = {
 // Verify the root object declares a `definitions` object
 //
 const ws002 = {
-  description: "root object should declare a `responses` property",
+  description: 'root object should declare a `responses` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -54,7 +54,7 @@ const ws002 = {
 // Verify the root object declares a `definitions` property
 //
 const ws003 = {
-  description: "root object should declare a `definitions` property",
+  description: 'root object should declare a `definitions` property',
   recommended: true,
   severity: 'warn',
   type: 'style',
@@ -65,18 +65,18 @@ const ws003 = {
   }
 };
 
-// 
+//
 // info object rules
-// 
+//
 const winf001 = {
-  description: "the info object should declare a `description` property",
+  description: 'the info object should declare a `description` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
   given: '$.info',
   then: {
     field: 'description',
-    function: 'truthy',
+    function: 'truthy'
   }
 };
 
@@ -92,11 +92,11 @@ const winf001 = {
 // pathItem object rules
 //
 
-// 
+//
 // operationObject rules
-// 
+//
 const eop001 = {
-  description: "operation objects should declare a `produces` property.",
+  description: 'operation objects should declare a `produces` property.',
   recommended: true,
   type: 'verification',
   severity: 'error',
@@ -108,7 +108,7 @@ const eop001 = {
 };
 
 const eop002 = {
-  description: "operation objects should declare a `consumes` property.",
+  description: 'operation objects should declare a `consumes` property.',
   recommended: true,
   type: 'verification',
   severity: 'error',
@@ -120,7 +120,7 @@ const eop002 = {
 };
 
 const wop001 = {
-  description: "operation objects should declare a `operationId` property",
+  description: 'operation objects should declare a `operationId` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -132,7 +132,7 @@ const wop001 = {
 };
 
 const wop002 = {
-  description: "operation objects should declare a `summary` property",
+  description: 'operation objects should declare a `summary` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -144,7 +144,7 @@ const wop002 = {
 };
 
 const wop003 = {
-  description: "operation objects should declare a `description` property.",
+  description: 'operation objects should declare a `description` property.',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -159,7 +159,7 @@ const wop003 = {
 // parameter object rules
 //
 const wpar001 = {
-  description: "parameters should declare a `description` property",
+  description: 'parameters should declare a `description` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -174,7 +174,7 @@ const wpar001 = {
 // response object rules
 //
 const wres001 = {
-  description: "responses should declare a `description` property",
+  description: 'responses should declare a `description` property',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -189,7 +189,7 @@ const wres001 = {
 // defintion object rules
 //
 const wdef001 = {
-  description: "definition objects should declare a `description` property.",
+  description: 'definition objects should declare a `description` property.',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -201,7 +201,7 @@ const wdef001 = {
 };
 
 const wdef002 = {
-  description: "defintion objects should declare a `required` property.",
+  description: 'defintion objects should declare a `required` property.',
   recommended: true,
   type: 'style',
   severity: 'warn',
@@ -220,22 +220,18 @@ const wdef002 = {
 // externalDocs object rules
 //
 
-module.exports = {  
+module.exports = {
   ws001,
   ws002,
   ws003,
-
   winf001,
-
   eop001,
   eop002,
   wop001,
   wop002,
   wop003,
-
   wpar001,
   wres001,
-
   wdef001,
-  wdef002,
+  wdef002
 };

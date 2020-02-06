@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 //
 // rule naming scheme: {severity}{type}_f{id}
 //
@@ -9,8 +11,8 @@
 //
 // {type}: must be one of the following values:
 //   s   - root spec object
-//   inf - info object 
-//   sdf - security defintion object 
+//   inf - info object
+//   sdf - security defintion object
 //   sch - security scheme object
 //   scp - security scope object
 //   par - parameter object
@@ -39,9 +41,10 @@
 // todo:
 //   - title?
 //   - description -> see oas2_enhanced
-//   - termsOfService? 
+//   - termsOfService?
 const einf_f001 = {
-  description: "the version should follow semantic versioning: {major-nnumber}.{minor-number}.{patch-number}",
+  description:
+    'the version should follow semantic versioning: {major-nnumber}.{minor-number}.{patch-number}',
   recommended: true,
   type: 'validation',
   severity: 'error',
@@ -49,7 +52,7 @@ const einf_f001 = {
   then: {
     function: 'pattern',
     functionOptions: {
-      match: '^[0-9]+\.[0-9]+\.[0-9]+$'
+      match: '^[0-9]+.[0-9]+.[0-9]+$'
     }
   }
 };
@@ -75,10 +78,10 @@ const spat_f001 = {
   given: '$.paths',
   then: {
     field: '@key',
-    function: 'fortellisPathCasing',
-  },
+    function: 'fortellisPathCasing'
+  }
 };
-  
+
 //
 // security definitions object rules
 //
@@ -91,7 +94,27 @@ const wsdf_f001 = {
   then: {
     field: 'securityDefinitions',
     function: 'truthy'
-  },
+  }
+};
+
+//
+// operationObject rules
+//
+const wop_f001 = {
+  //
+  // Operation objects must declare a `Request-Id` header parameter.
+  // This rule can be simplified when spectral's JSON pointer implementation
+  // supports conditional matching on property values:
+  //
+  // $.paths[*][*].parameters[?(@.name == 'Request-Id' && @.in == 'header')]
+  //
+  recommended: true,
+  type: 'validation',
+  severity: 'error',
+  given: '$.paths[*][*].parameters',
+  then: {
+    function: 'fortellisRequestIdHeader'
+  }
 };
 
 //
@@ -100,7 +123,7 @@ const wsdf_f001 = {
 const wpar_f001 = {
   //
   // This rule validates that parameter object keys match:
-  // 
+  //
   //  'header.Upper-Kebab-Case',
   //  'path.kebab-case',
   //  'query.flatcase',
@@ -114,12 +137,12 @@ const wpar_f001 = {
     field: '@key',
     function: 'fortellisParamKeyFormat'
   }
-}
+};
 
 const wpar_f002 = {
   //
   // This rule validates that parameter object name casing matches the type:
-  // 
+  //
   //  header => `Upper-Kebab-Case',
   //  path => `kebab-case`,
   //  query => `flatcase`,
@@ -132,13 +155,13 @@ const wpar_f002 = {
   then: {
     function: 'fortellisParamNameFormat'
   }
-}
+};
 
 //
 // response object rules
 //
 const wres_f001 = {
-  description: "responses should include a `Request-Id` header",
+  description: 'responses should include a `Request-Id` header',
   recommended: true,
   type: 'validation',
   severity: 'warn',
@@ -161,7 +184,7 @@ const wres_f001 = {
 // defintion object rules
 //
 const edef_f001 = {
-  description: "defintion objects should include an `example` property",
+  description: 'defintion objects should include an `example` property',
   recommended: true,
   type: 'validation',
   severity: 'error',
@@ -202,18 +225,13 @@ const sdef_f002 = {
 
 module.exports = {
   einf_f001,
-  
   wsdf_f001,
-  
   spat_f001,
-
+  wop_f001,
   wpar_f001,
   wpar_f002,
-
   wres_f001,
-
   edef_f001,
   sdef_f001,
-  sdef_f002,
+  sdef_f002
 };
-  
