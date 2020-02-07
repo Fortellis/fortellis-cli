@@ -18,8 +18,8 @@ securityDefinitions:
     flow: implicit
     authorizationUrl: https://identity.fortellis.io/oauth2/
     scopes:
-      pets.adopt: permission to search for, read, and adopt pets
-      pets.manage: permission to add, modify, and remove pets from the service
+      pets.adopt: permission to query, read, and adopt pets
+      pets.manage: permission to add, modify, and remove pets
 
 schemes:
   - https
@@ -33,8 +33,11 @@ paths:
       tags: 
         - adopt
       parameters:
+        - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/query.name'
         - $ref: '#/parameters/query.breed'
+        - $ref: '#/parameters/query.page'
+        - $ref: '#/parameters/query.pageSize'
       consumes:
         - application/json
       produces:
@@ -48,6 +51,9 @@ paths:
           $ref: '#/responses/Unauthorized'
         403:
           $ref: '#/responses/Forbidden'
+        503: 
+          $ref: '#/responses/ServiceUnavailable'
+
     post:
       summary: Adds a pet to the store
       description: Adds a pet to the store
@@ -55,6 +61,7 @@ paths:
       tags:
         - manage
       parameters:
+        - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/body.AddUpdatePet'
       consumes:
         - application/json
@@ -69,6 +76,8 @@ paths:
           $ref: '#/responses/Unauthorized'
         403:
           $ref: '#/responses/Forbidden'
+        503: 
+          $ref: '#/responses/ServiceUnavailable'
 
   /pets/{petId}:
     get:
@@ -78,6 +87,7 @@ paths:
       tags: 
         - adopt
       parameters:
+        - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/path.petId'
       consumes:
         - application/json
@@ -94,31 +104,65 @@ paths:
           $ref: '#/responses/Forbidden'
         404:
           $ref: '#/responses/NotFound'
+        503: 
+          $ref: '#/responses/ServiceUnavailable'
 
 parameters:
+  header.Authorization:
+    name: Authorization
+    in: header
+    type: string
+    description: | 
+      Contains credentials that allows the caller to authenicate itself with the 
+      API. See RFC 7235 and RFC 7617 for more details.
+
   query.name:
     name: name
     in: query
     type: string
-    description: Allows pet searches to be filtered by name 
+    description: Allows pet searches to be filtered by name
+    
   query.breed:
     name: breed
     in: query
     type: string
     description: Allows pet searches to be filtered by breed 
+
+  query.page:
+    name: page
+    in: query
+    type: number
+    minimum: 1
+    description: | 
+      This is a pagination control for the request page of query result items
+      to return in the respomnse. It must be greater than or equal to one.  If 
+      greater than the total number of available pages, the returned page will 
+      be the last available page.
+
+  query.pageSize:
+    name: pageSize
+    in: query
+    type: number
+    minimum: 1
+    description: | 
+      This is a pagination control for the requested number of items returned
+      per page. It must be greater than or equal to one. This may be overriden
+      and clamped to a maxium value by the resource owner. 
+
   path.petId:
     name: petId
     in: path
     type: string
     required: true
-    description: The unique identifier of a pet adoption record
+    description: The unique identifier of a pet adoption record.
+
   body.AddUpdatePet:
     name: AddPet
     in: body
-    description: A request body to add or update a pet
     required: true
     schema:
       $ref: '#/definitions/AddUpdatePet'
+    description: A request body to add or update a pet.
 
 responses:
   Pet:
@@ -131,7 +175,7 @@ responses:
     schema:
       $ref: '#/definitions/PetCollection'
   
-  # These are common responses when building RESTful APIs
+  # These are common responses when creating RESTful APIs
   Deleted:
     description: 204 - No Content
     headers:
@@ -170,6 +214,22 @@ responses:
     schema:
       $ref: '#/definitions/ErrorResponse'
 
+  InternalServerError:
+    description: 500 - Internal Server Error
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+  ServiceUnavailable:
+    description: 503 - Service Unavailable
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
 definitions:
   Pet:
     description: A pet record
@@ -195,8 +255,8 @@ definitions:
       name: Fido
       type: dog
 
-  # PetCollection demonstrates paginated responses for search results that 
-  # may include more items than a client can receive in a reasonable time.
+  # PetCollection demonstrates how to return a paginated collection of 
+  # resources for a search query.
   PetCollection:
     description: A search result collection of Pet records.
     properties:
