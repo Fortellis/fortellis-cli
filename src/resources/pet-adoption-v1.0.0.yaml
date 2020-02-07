@@ -118,7 +118,7 @@ parameters:
     description: A request body to add or update a pet
     required: true
     schema:
-      $ref: '#/definitions/Pet'
+      $ref: '#/definitions/AddUpdatePet'
 
 responses:
   Pet:
@@ -196,7 +196,7 @@ definitions:
       type: dog
 
   # PetCollection demonstrates paginated responses for search results that 
-  # may include more items than a client can recieve in a reasonable time.
+  # may include more items than a client can receive in a reasonable time.
   PetCollection:
     description: A search result collection of Pet records.
     properties:
@@ -213,7 +213,7 @@ definitions:
         description: The total number of pages given the requested page size
       links:
         $ref: '#/definitions/CollectionNavigationObject'
-        description: The hypermedia links describing the posible resource actions
+        description: The hypermedia links describing the possible resource actions
     required:
       - items
       - totalItems
@@ -237,7 +237,7 @@ definitions:
         nextPage: https://api.fortellis.io/pet-adoption/v1/pets?page=2&pageSize=3
         prevPage: https://api.fortellis.io/pet-adoption/v1/pets?page=1&pageSize=3
 
-  # CollectionLinkSectionObject demonstrates how collection naviagtion links can be 
+  # CollectionLinkSectionObject demonstrates how collection navigation links can be 
   # standardized for collection responses.     
   CollectionNavigationObject:
     description: The standard set of links to navigate a resource collection
@@ -261,7 +261,7 @@ definitions:
       nextPage: https://api.fortellis.io/pet-adoption/v1/pets?page=3&pageSize=20
       prevPage: https://api.fortellis.io/pet-adoption/v1/pets?page=2&pageSize=20
 
-  # Often when creating or updating a resource, a seperate defintion is declared
+  # Often when creating or updating a resource, a separate definition is declared
   # that omits properties assigned by the service.  In this case the petId 
   # property is omitted as it is assigned by the service implementation.
   AddUpdatePet:
