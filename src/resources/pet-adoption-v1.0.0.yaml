@@ -20,8 +20,8 @@ securityDefinitions:
     flow: implicit
     authorizationUrl: https://identity.fortellis.io/oauth2/
     scopes:
-      pets.adopt: permission to search for, read, and adopt pets
-      pets.manage: permission to add, modify, and remove pets from the service
+      pets.adopt: permission to query, read, and adopt pets
+      pets.manage: permission to add, modify, and remove pets
 
 paths:
   /pets:
@@ -33,8 +33,11 @@ paths:
         - adopt
       parameters:
         - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/query.name'
         - $ref: '#/parameters/query.breed'
+        - $ref: '#/parameters/query.page'
+        - $ref: '#/parameters/query.pageSize'
       consumes:
         - application/json
       produces:
@@ -48,6 +51,9 @@ paths:
           $ref: '#/responses/Unauthorized'
         403:
           $ref: '#/responses/Forbidden'
+        503: 
+          $ref: '#/responses/ServiceUnavailable'
+
     post:
       summary: Adds a pet to the store
       description: Adds a pet to the store
@@ -56,6 +62,7 @@ paths:
         - manage
       parameters:
         - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/body.AddUpdatePet'
       consumes:
         - application/json
@@ -70,6 +77,8 @@ paths:
           $ref: '#/responses/Unauthorized'
         403:
           $ref: '#/responses/Forbidden'
+        503: 
+          $ref: '#/responses/ServiceUnavailable'
 
   /pets/{petId}:
     get:
@@ -80,6 +89,7 @@ paths:
         - adopt
       parameters:
         - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/path.petId'
       consumes:
         - application/json
@@ -96,40 +106,135 @@ paths:
           $ref: '#/responses/Forbidden'
         404:
           $ref: '#/responses/NotFound'
+        503: 
+          $ref: '#/responses/ServiceUnavailable'
+
+    post:
+      summary: Update the description of a pet available for adoption
+      description:  Update the description of a pet available for adoption
+      operationId: updatePets
+      tags:
+        - adopt update
+      parameters:
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
+        - $ref: '#/parameters/path.petId'
+        - $ref: '#/parameters/body.AddUpdatePet'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Pet'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+        423:
+          $ref: '#/responses/Locked'
+        503:
+          $ref: '#/responses/ServiceUnavailable'
+
+    delete:
+      summary: Delete a pet so they are no longer available for adoption
+      description:  Delete a pet so they are no longer available for adoption
+      operationId: deletePets
+      tags:
+        - adopt delete
+      parameters:
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
+        - $ref: '#/parameters/path.petId'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        204:
+          $ref: '#/responses/Deleted'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+        423:
+          $ref: '#/responses/Locked'
+        503:
+          $ref: '#/responses/ServiceUnavailable'
 
 parameters:
   header.Request-Id:
     name: Request-Id
     in: header
     type: string
-    description: A globally unique request identifier that assists with tracing requests across system boundaries
+    format: uuid
+    description: |
+      A correlation ID that should be returned back to the caller to 
+      indicate the return of the given request
+  
+  header.Authorization:
+    name: Authorization
+    in: header
+    type: string
+    description: | 
+      Contains credentials that allows the caller to authenticate itself with the 
+      API. See RFC 7235 and RFC 7617 for more details.
 
   query.name:
     name: name
     in: query
     type: string
-    description: Allows pet searches to be filtered by name 
-
+    description: Allows pet searches to be filtered by name
+    
   query.breed:
     name: breed
     in: query
     type: string
     description: Allows pet searches to be filtered by breed 
 
+  query.page:
+    name: page
+    in: query
+    type: number
+    minimum: 1
+    description: | 
+      This is a pagination control for the request page of query result items
+      to return in the response. It must be greater than or equal to one.  If 
+      greater than the total number of available pages, the returned page will 
+      be the last available page.
+
+  query.pageSize:
+    name: pageSize
+    in: query
+    type: number
+    minimum: 1
+    description: | 
+      This is a pagination control for the requested number of items returned
+      per page. It must be greater than or equal to one. This may be overridden
+      and clamped to a maximum value by the resource owner.
+
   path.petId:
     name: petId
     in: path
     type: string
     required: true
-    description: The unique identifier of a pet adoption record
+    description: The unique identifier of a pet adoption record.
 
   body.AddUpdatePet:
     name: AddPet
     in: body
-    description: A request body to add or update a pet
     required: true
     schema:
-      $ref: '#/definitions/Pet'
+      $ref: '#/definitions/AddUpdatePet'
+    description: A request body to add or update a pet.
 
 responses:
   # These are explicity declared resources and resource collection responses
@@ -143,7 +248,7 @@ responses:
     schema:
       $ref: '#/definitions/PetCollection'
   
-  # These are common responses when building RESTful APIs
+  # These are common responses when creating RESTful APIs
   Deleted:
     description: 204 - No Content
     headers:
@@ -182,6 +287,30 @@ responses:
     schema:
       $ref: '#/definitions/ErrorResponse'
 
+  Locked:
+    description: 423 - Locked
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+  InternalServerError:
+    description: 500 - Internal Server Error
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+  ServiceUnavailable:
+    description: 503 - Service Unavailable
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
 definitions:
   Pet:
     description: A pet record
@@ -207,8 +336,8 @@ definitions:
       name: Fido
       type: dog
 
-  # PetCollection demonstrates paginated responses for search results that 
-  # may include more items than a client can recieve in a reasonable time.
+  # PetCollection demonstrates how to return a paginated collection of 
+  # resources for a search query.
   PetCollection:
     description: A search result collection of Pet records.
     properties:
@@ -225,7 +354,7 @@ definitions:
         description: The total number of pages given the requested page size
       links:
         $ref: '#/definitions/CollectionNavigationObject'
-        description: The hypermedia links describing the posible resource actions
+        description: The hypermedia links describing the possible resource actions
     required:
       - items
       - totalItems
@@ -249,7 +378,7 @@ definitions:
         nextPage: https://api.fortellis.io/pet-adoption/v1/pets?page=2&pageSize=3
         prevPage: https://api.fortellis.io/pet-adoption/v1/pets?page=1&pageSize=3
 
-  # CollectionLinkSectionObject demonstrates how collection naviagtion links can be 
+  # CollectionLinkSectionObject demonstrates how collection navigation links can be 
   # standardized for collection responses.     
   CollectionNavigationObject:
     description: The standard set of links to navigate a resource collection
@@ -273,7 +402,7 @@ definitions:
       nextPage: https://api.fortellis.io/pet-adoption/v1/pets?page=3&pageSize=20
       prevPage: https://api.fortellis.io/pet-adoption/v1/pets?page=2&pageSize=20
 
-  # Often when creating or updating a resource, a seperate defintion is declared
+  # Often when creating or updating a resource, a separate definition is declared
   # that omits properties assigned by the service.  In this case the petId 
   # property is omitted as it is assigned by the service implementation.
   AddUpdatePet:
