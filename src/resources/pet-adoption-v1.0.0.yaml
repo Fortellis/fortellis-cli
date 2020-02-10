@@ -11,6 +11,8 @@ info:
 
 host: api.fortellis.io
 basePath: /pet-adoption/v1
+schemes:
+  - https
 
 securityDefinitions: 
   permission-model:
@@ -20,9 +22,6 @@ securityDefinitions:
     scopes:
       pets.adopt: permission to query, read, and adopt pets
       pets.manage: permission to add, modify, and remove pets
-
-schemes:
-  - https
 
 paths:
   /pets:
@@ -238,6 +237,7 @@ parameters:
     description: A request body to add or update a pet.
 
 responses:
+  # These are explicity declared resources and resource collection responses
   Pet:
     description: OK
     schema:

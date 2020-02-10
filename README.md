@@ -20,82 +20,40 @@ Command Line for Fortellis API Specs
 [![License](https://img.shields.io/npm/l/fortellis-cli.svg)](https://github.com/Fortellis/fortellis-cli/blob/master/package.json)
 
 <!-- toc -->
-
-- [fortellis-cli](#fortellis-cli)
-  - [Getting started](#getting-started)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`fortellis-cli push`](#fortellis-cli-push)
-  - [`fortellis-cli add`](#fortellis-cli-add)
-  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
-  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
-  - [`fortellis-cli configure`](#fortellis-cli-configure)
-  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
-  - [`fortellis-cli init`](#fortellis-cli-init)
-  - [`fortellis-cli status`](#fortellis-cli-status)
-  <!-- tocstop -->
+* [fortellis-cli](#fortellis-cli)
+* [Usage](#usage)
+* [Commands](#commands)
+<!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
-
 ```sh-session
-$ npm install -g fortellis-cli
+$ npm install -g @fortellis/fortellis-cli
 $ fortellis-cli COMMAND
 running command...
 $ fortellis-cli (-v|--version|version)
-fortellis-cli/0.0.0 darwin-x64 node-v12.13.0
+@fortellis/fortellis-cli/0.0.1-alpha.8 darwin-x64 node-v12.13.0
 $ fortellis-cli --help [COMMAND]
 USAGE
   $ fortellis-cli COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
+* [`fortellis-cli add FILE`](#fortellis-cli-add-file)
+* [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
+* [`fortellis-cli api-template`](#fortellis-cli-api-template)
+* [`fortellis-cli configure`](#fortellis-cli-configure)
+* [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
+* [`fortellis-cli init`](#fortellis-cli-init)
+* [`fortellis-cli push`](#fortellis-cli-push)
+* [`fortellis-cli status`](#fortellis-cli-status)
 
-- [fortellis-cli](#fortellis-cli)
-  - [Getting started](#getting-started)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`fortellis-cli push`](#fortellis-cli-push)
-  - [`fortellis-cli add`](#fortellis-cli-add)
-  - [`fortellis-cli api-lint FILE`](#fortellis-cli-api-lint-file)
-  - [`fortellis-cli api-template`](#fortellis-cli-api-template)
-  - [`fortellis-cli configure`](#fortellis-cli-configure)
-  - [`fortellis-cli help [COMMAND]`](#fortellis-cli-help-command)
-  - [`fortellis-cli init`](#fortellis-cli-init)
-  - [`fortellis-cli status`](#fortellis-cli-status)
-
-## `fortellis-cli push`
-
-Push an item to Fortellis platform
-...
-USAGE
-\$ fortellis-cli push
-
-OPTIONS
--u, --username Fortellis username
--p, --password Fortellis password
--s, --apispec Specify file type as API Spec
--f, --file Path to file to be pushed.
-
-DESCRIPTION
-...
-Publish a file to Fortellis: either an update of an
-existing file in DRAFT status, or a new file.
-
-Pass in a username/password to explicitly publish with a given
-Fortellis user. Otherwise the credentials configured in the global
-settings will be used to communicate with Fortellis.
-...
-
-_See code: [src/commands/push.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/push.js)_
-
-## `fortellis-cli add`
+## `fortellis-cli add FILE`
 
 Add an item to the Fortellis repository.
 
@@ -103,19 +61,20 @@ Add an item to the Fortellis repository.
 USAGE
   $ fortellis-cli add FILE
 
+ARGUMENTS
+  FILE  Path of file to be pushed.
+
 OPTIONS
-  -a, --apispec=apispec              Add Spec file to the repository
-  -d, --documentation=documentation  Add Documentation file to the repository
-  -p, --permission=permission        Add Permissions file to the repository
+  -s, --apispec  Add API Spec file to the repostory
 
 DESCRIPTION
   ...
-  Add an API Spec file to the local repository.
-
-  Once in the repository, the file will be eligible to be pushed to Fortellis.
+  Add a file to the repository.
+  Currently supported file types:
+    - API spec files (-s)
 ```
 
-_See code: [src/commands/add.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/add.js)_
+_See code: [src/commands/add.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/add.js)_
 
 ## `fortellis-cli api-lint FILE`
 
@@ -126,14 +85,20 @@ USAGE
   $ fortellis-cli api-lint FILE
 
 ARGUMENTS
-  FILE  path of an Open API 2.0 specification file
+  FILE  Path of an Open API 2.0 specificaton file
+
+OPTIONS
+  --display-severity=error|warn|info|hint  [default: warn] Show only output greater than the specified severity level
+
+  --safe                                   Check that the API spec has been added to the Fortellis repository before
+                                           linting
 ```
 
-_See code: [src/commands/api-lint.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/api-lint.js)_
+_See code: [src/commands/api-lint.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/api-lint.js)_
 
 ## `fortellis-cli api-template`
 
-Put example template documents into an empty repository.
+Writes a template Open API 2.0 document to the current directory.
 
 ```
 USAGE
@@ -141,14 +106,14 @@ USAGE
 
 DESCRIPTION
   ...
-  This creates a sample API Spec that the user can have as a template for further development.
+  Writes a template Open API 2.0 document to the current directory that the user can then modify for API development.
 ```
 
-_See code: [src/commands/api-template.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/api-template.js)_
+_See code: [src/commands/api-template.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/api-template.js)_
 
 ## `fortellis-cli configure`
 
-Configure the Fortellis repository.
+Configure Fortellis CLI.
 
 ```
 USAGE
@@ -160,11 +125,12 @@ OPTIONS
 
 DESCRIPTION
   ...
-  Set up the repository so it can communicate with Fortellis. This command will edit the
-  global config.yaml file, reflecting the permissions granted by the provided credentials.
+  Set up the credentials and other global settings for 
+  the Fortellis CLI in this environment. This will allow it to 
+  communicate with Fortellis Platform.
 ```
 
-_See code: [src/commands/configure.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/configure.js)_
+_See code: [src/commands/configure.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/configure.js)_
 
 ## `fortellis-cli help [COMMAND]`
 
@@ -185,27 +151,58 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3
 
 ## `fortellis-cli init`
 
-Initialize (create) a Fortellis repository in the current directory.
+Create a Fortellis repository in the current directory.
 
 ```
 USAGE
   $ fortellis-cli init
 
+OPTIONS
+  -f, --force            Initialize directory even if it is already a repository.
+  -i, --orgid=orgid      Organizatino ID
+  -n, --orgname=orgname  Organization name
+
 DESCRIPTION
   ...
-  This command will set up a Fortellis repository and associated it with one of the
-  organizations linked to the credentials used in the global config.
-
-  A Fortellis repository is a directory containing API Specs and the .fortellis/ sub-directory.
-  In the .fortellis sub-directory will be a config.yaml file which will contain the configuration data
-  for the repository.
+  A fortellis repository is a directory containing API Specs and a config directory
+  (/.fortellis) that holds the repo configuration file.
 ```
 
-_See code: [src/commands/init.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/init.js)_
+_See code: [src/commands/init.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/init.js)_
+
+## `fortellis-cli push`
+
+Push specified file to fortellis.
+
+```
+USAGE
+  $ fortellis-cli push
+
+OPTIONS
+  -f, --file=file
+  -p, --password=password  Fortellis password
+  -s, --apispec            Push API Spec file to Fortellis
+  -u, --username=username  Fortellis username
+
+DESCRIPTION
+  ...
+  Publish the file (spec, documentation, etc.) to Fortellis: either 
+  an update of an existing file in DRAFT status, or a new version 
+  in FINAL status.
+
+  Pass in a username/password to explicitly publish with a given user. Otherwise
+  the username/password configured in the enviromment (see fortellis-cli configure)
+  will be used.
+
+  A flag must be used to specify the kind of file to be pushed.
+    -s --apispec
+```
+
+_See code: [src/commands/push.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/push.js)_
 
 ## `fortellis-cli status`
 
-List the status of the Fortellis repository.
+Output the status of the fortellis repository.
 
 ```
 USAGE
@@ -213,9 +210,8 @@ USAGE
 
 DESCRIPTION
   ...
-  List the repository organization name, organization ID, and all API Spec files registered in the directory.
+  List all of the repository files and their status.
 ```
 
-_See code: [src/commands/status.js](https://github.com/Fortellis/fortellis-cli/blob/master/src/commands/status.js)_
-
+_See code: [src/commands/status.js](https://github.com/Fortellis/fortellis-cli/blob/v0.0.1-alpha.8/src/commands/status.js)_
 <!-- commandsstop -->

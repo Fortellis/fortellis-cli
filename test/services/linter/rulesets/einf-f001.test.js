@@ -12,40 +12,39 @@ describe('rule einf_f001', () => {
   });
   s.mergeRules();
 
-  it("should pass if the version is in semantic versioning format", async function() {
+  it('should pass if the version is in semantic versioning format', async function() {
     const test = {
       info: {
-        version: "1.0.0"        
+        version: '1.0.0'
       }
-    }
-    
+    };
+
     const results = await s.run(test);
-    expect(results).to.eql([]); 
+    expect(results).to.eql([]);
   });
 
-  it("should fail if the version is not in semantic versioning format", async function() {
+  it('should fail if the version is not in semantic versioning format', async function() {
     const tests = [
       {
         info: {
-          version: "1"        
+          version: '1'
         }
       },
       {
         info: {
-          version: "1.0"        
+          version: '1.0'
         }
       },
       {
         info: {
-          version: "beta"        
+          version: 'beta'
         }
-      },
+      }
     ];
-    
-    for(const t of tests) {
-        const results = await s.run(t);
-        expect(results).to.have.lengthOf(1); 
+
+    for (const t of tests) {
+      const results = await s.run(t);
+      expect(results).to.have.lengthOf(1);
     }
   });
-
 });
