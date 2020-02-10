@@ -33,6 +33,7 @@ paths:
       tags: 
         - adopt
       parameters:
+        - $ref: '#/parameters/header.Request-Id'
         - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/query.name'
         - $ref: '#/parameters/query.breed'
@@ -61,6 +62,7 @@ paths:
       tags:
         - manage
       parameters:
+        - $ref: '#/parameters/header.Request-Id'
         - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/body.AddUpdatePet'
       consumes:
@@ -87,6 +89,7 @@ paths:
       tags: 
         - adopt
       parameters:
+        - $ref: '#/parameters/header.Request-Id'
         - $ref: '#/parameters/header.Authorization'
         - $ref: '#/parameters/path.petId'
       consumes:
@@ -107,13 +110,83 @@ paths:
         503: 
           $ref: '#/responses/ServiceUnavailable'
 
+    post:
+      summary: Update the description of a pet available for adoption
+      description:  Update the description of a pet available for adoption
+      operationId: updatePets
+      tags:
+        - adopt update
+      parameters:
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
+        - $ref: '#/parameters/path.petId'
+        - $ref: '#/parameters/body.AddUpdatePet'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          $ref: '#/responses/Pet'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+        423:
+          $ref: '#/responses/Locked'
+        503:
+          $ref: '#/responses/ServiceUnavailable'
+
+    delete:
+      summary: Delete a pet so they are no longer available for adoption
+      description:  Delete a pet so they are no longer available for adoption
+      operationId: deletePets
+      tags:
+        - adopt delete
+      parameters:
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
+        - $ref: '#/parameters/path.petId'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        204:
+          $ref: '#/responses/Deleted'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+        423:
+          $ref: '#/responses/Locked'
+        503:
+          $ref: '#/responses/ServiceUnavailable'
+
 parameters:
+  header.Request-Id:
+    name: Request-Id
+    in: header
+    type: string
+    format: uuid
+    description: |
+      A correlation ID that should be returned back to the caller to 
+      indicate the return of the given request
+  
   header.Authorization:
     name: Authorization
     in: header
     type: string
     description: | 
-      Contains credentials that allows the caller to authenicate itself with the 
+      Contains credentials that allows the caller to authenticate itself with the 
       API. See RFC 7235 and RFC 7617 for more details.
 
   query.name:
@@ -135,7 +208,7 @@ parameters:
     minimum: 1
     description: | 
       This is a pagination control for the request page of query result items
-      to return in the respomnse. It must be greater than or equal to one.  If 
+      to return in the response. It must be greater than or equal to one.  If 
       greater than the total number of available pages, the returned page will 
       be the last available page.
 
@@ -146,8 +219,8 @@ parameters:
     minimum: 1
     description: | 
       This is a pagination control for the requested number of items returned
-      per page. It must be greater than or equal to one. This may be overriden
-      and clamped to a maxium value by the resource owner. 
+      per page. It must be greater than or equal to one. This may be overridden
+      and clamped to a maximum value by the resource owner.
 
   path.petId:
     name: petId
@@ -208,6 +281,14 @@ responses:
   
   NotFound:
     description: 404 - Not Found
+    headers:
+      Request-Id:
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+  Locked:
+    description: 423 - Locked
     headers:
       Request-Id:
         type: string
