@@ -141,6 +141,36 @@ paths:
         503:
           $ref: '#/responses/ServiceUnavailable'
 
+    delete:
+      summary: Delete a pet so they are no longer available for adoption
+      description:  Delete a pet so they are no longer available for adoption
+      operationId: deletePets
+      tags:
+        - adopt delete
+      parameters:
+        - $ref: '#/parameters/header.Request-Id'
+        - $ref: '#/parameters/header.Authorization'
+        - $ref: '#/parameters/path.petId'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        204:
+          $ref: '#/responses/Deleted'
+        400:
+          $ref: '#/responses/BadRequest'
+        401:
+          $ref: '#/responses/Unauthorized'
+        403:
+          $ref: '#/responses/Forbidden'
+        404:
+          $ref: '#/responses/NotFound'
+        423:
+          $ref: '#/responses/Locked'
+        503:
+          $ref: '#/responses/ServiceUnavailable'
+
 parameters:
   header.Request-Id:
     name: Request-Id
