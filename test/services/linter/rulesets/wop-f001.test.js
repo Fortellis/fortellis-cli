@@ -12,7 +12,7 @@ describe('rule wop_f001', () => {
   });
   s.mergeRules();
 
-  it('should pass if operation declares a header parameter named `Request-Id`', async function() {
+  it('should pass if operation declares a required header parameter named `Request-Id`', async function() {
     const test = {
       paths: {
         '/': {
@@ -20,7 +20,8 @@ describe('rule wop_f001', () => {
             parameters: [
               {
                 name: 'Request-Id',
-                in: 'header'
+                in: 'header',
+                required: true
               }
             ]
           }
@@ -50,6 +51,32 @@ describe('rule wop_f001', () => {
 
     const expected = {
       message: 'operation objects must declare a `Request-Id` header parameter'
+    };
+
+    const results = await s.run(test);
+    expect(results).to.have.lengthOf(1);
+    expect(results[0]).to.contain(expected);
+  });
+
+  it('should fail if operation does not declare the `Request-Id` header parameter as required', async function() {
+    const test = {
+      paths: {
+        '/': {
+          get: {
+            parameters: [
+              {
+                name: 'Request-Id',
+                in: 'header',
+                required: false
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    const expected = {
+      message: 'operation objects must require the Request-Id header'
     };
 
     const results = await s.run(test);
