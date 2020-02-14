@@ -121,9 +121,17 @@ function fortellisRequestIdHeader(targetVal) {
   for (const p of parameters) {
     const name = (p.name || '').toLowerCase();
     const type = (p.in || '').toLowerCase();
+    const required = p.required || false;
 
     // return no results if found
     if (name === 'request-id' && type === 'header') {
+      if (required === false) {
+        return [
+          {
+            message: 'operation objects must require the Request-Id header'
+          }
+        ];
+      }
       return [];
     }
   }
