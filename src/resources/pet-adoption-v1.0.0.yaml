@@ -176,6 +176,7 @@ parameters:
     in: header
     type: string
     format: uuid
+    required: true
     description: |
       A correlation ID that should be returned back to the caller to 
       indicate the return of the given request
