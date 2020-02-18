@@ -27,13 +27,26 @@ class ConfigureCommand extends Command {
 
       let authToken;
       try {
-        authToken = await authService.getAuthToken(flags.username, flags.password);
-      } catch (err) {
-        this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, `Unable to fetch authorization token: ${error.message}`));
+        authToken = await authService.getAuthToken(
+          flags.username,
+          flags.password
+        );
+      } catch (error) {
+        this.error(
+          ...toCommandError(
+            ERRORS.UNEXPECTED_ERROR,
+            `Unable to fetch authorization token: ${error.message}`
+          )
+        );
       }
 
       if (!authToken || !authToken.token) {
-        this.error(...toCommandError(ERRORS.UNEXPECTED_ERROR, 'No token value found in auth response.'));
+        this.error(
+          ...toCommandError(
+            ERRORS.UNEXPECTED_ERROR,
+            'No token value found in auth response.'
+          )
+        );
       }
 
       configManagementService.loadGlobalConfig();
@@ -60,14 +73,19 @@ class ConfigureCommand extends Command {
         let u = authAnswers.fortellisUsername;
         let p = authAnswers.fortellisPassword;
 
-        authService.getAuthToken(u, p).then(authToken => {
-          configManagementService.loadGlobalConfig();
-          configManagementService.setToken(authToken);
-          configManagementService.saveGlobalConfig();
-          this.log(
-            'Configuration completed. See [$HOME/.fortellis/config.yaml] file for stored values.'
-          );
-        });
+        authService
+          .getAuthToken(u, p)
+          .then(authToken => {
+            configManagementService.loadGlobalConfig();
+            configManagementService.setToken(authToken);
+            configManagementService.saveGlobalConfig();
+            this.log(
+              'Configuration completed. See [$HOME/.fortellis/config.yaml] file for stored values.'
+            );
+          })
+          .catch(error => {
+            this.log('Error: ', error);
+          });
       });
     }
   }

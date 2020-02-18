@@ -56,8 +56,17 @@ async function getSessionId(authUsername, authPassword) {
 
     return returnValue;
   } catch (error) {
-    console.error(error);
-    throw error;
+    let message = '';
+    if (error.response.status === 404) {
+      // Username not found.
+      message = 'Username/password incorrect.';
+    } else if (error.response.status === 401) {
+      // Password for user is incorrect.
+      message = 'Username/password incorrect.';
+    } else {
+      message = error.response.status + ': ' + error.response.statusText;
+    }
+    throw message;
   }
 }
 
@@ -116,7 +125,11 @@ class AuthorizationService {
     // Get the okta sessionID
     let userSession = '';
     if (username && password) {
-      userSession = await getSessionId(username, password);
+      try {
+        userSession = await getSessionId(username, password);
+      } catch (error) {
+        throw error;
+      }
     } else {
       configManagementService.loadGlobalConfig();
       userSession = await getSessionId(
