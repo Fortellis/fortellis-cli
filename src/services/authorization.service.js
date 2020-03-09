@@ -95,6 +95,7 @@ async function getToken(sessionToken, entityId) {
       .get(tokenUrl, config)
       .then(response => {
         if (response.status === 302) {
+          return response.headers.location;
         }
       })
       .catch(error => {
