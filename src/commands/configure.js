@@ -84,7 +84,7 @@ class ConfigureCommand extends Command {
             );
           })
           .catch(error => {
-            this.log('Error: ', error);
+            this.error('Error: ', error);
           });
       });
     }
