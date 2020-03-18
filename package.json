@@ -17,7 +17,6 @@
     "@stoplight/types": "^11.4.0",
     "@stoplight/yaml": "3.5.0",
     "axios": "^0.19.0",
-    "chai": "^4.2.0",
     "colors": "^1.4.0",
     "globby": "^10.0.1",
     "inquirer": "^7.0.1",
@@ -35,6 +34,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "husky": "^4.0.6",
     "jest": "^24.8.0",
+    "chai": "^4.2.0",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
     "prettier-eslint-cli": "^5.0.0"
