@@ -17,6 +17,7 @@
     "@stoplight/types": "^11.4.0",
     "@stoplight/yaml": "3.5.0",
     "axios": "^0.19.0",
+    "chai": "^4.2.0",
     "colors": "^1.4.0",
     "globby": "^10.0.1",
     "inquirer": "^7.0.1",
@@ -27,8 +28,6 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
-    "@oclif/test": "^1.2.5",
-    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
     "eslint-plugin-import": "^2.20.0",
@@ -37,8 +36,6 @@
     "husky": "^4.0.6",
     "jest": "^24.8.0",
     "lint-staged": "^9.5.0",
-    "mocha": "^5.2.0",
-    "nyc": "^14.1.1",
     "prettier": "^1.19.1",
     "prettier-eslint-cli": "^5.0.0"
   },
@@ -70,8 +67,7 @@
     "url": "git+https://github.com/Fortellis/fortellis-cli.git"
   },
   "scripts": {
-    "jest-test": "jest",
-    "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
+    "test": "jest --runInBand",
     "lint": "eslint '**/*.{js,json}' --fix",
     "format": "prettier-eslint '**/*.{js,json}' --write",
     "version": "oclif-dev readme && git add README.md"
@@ -80,7 +76,8 @@
     "collectCoverage": true,
     "coverageReporters": [
       "lcov"
-    ]
+    ],
+    "testEnvironment": "node"
   },
   "lint-staged": {
     "**/*.{js,json}": [
@@ -91,7 +88,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git secrets --pre_commit_hook -- $@ && lint-staged"
+      "pre-commit": "git secrets --pre_commit_hook -- $@ && lint-staged && npm test"
     }
   }
 }
