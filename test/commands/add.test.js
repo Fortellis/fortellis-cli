@@ -1,100 +1,89 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
-const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const constants = require('../../src/utils/constants');
 const fs = require('fs');
 const { ERRORS } = require('../../src/utils/errors');
+let stdout;
+const addCommand = require('../../src/commands/add');
+const initCommand = require('../../src/commands/init');
+const apiTemplateCommand = require('../../src/commands/api-template');
 
 describe('add', () => {
-  after(() => {
+  afterEach(() => {
     const repoService = new RepositoryService();
     repoService.deleteLocalRepository();
     if (fs.existsSync(constants.sampleSpecName)) {
       fs.unlinkSync(constants.sampleSpecName);
     }
     console.log('Cleaning up repository');
+    jest.restoreAllMocks();
+  });
+
+  beforeEach(() => {
+    stdout = [];
+    jest
+      .spyOn(process.stdout, 'write')
+      .mockImplementation(val => stdout.push(val));
   });
 
   describe('- Add file with no repository...', () => {
-    test
-      .stdout()
-      .command(['add', '-a=*'])
-      .exit(ERRORS.REPO_INVALID.exit)
-      .it('exits with correct status when repo does not exist');
+    it('exits with correct status when repo does not exist', async () => {
+      try {
+        await addCommand.run(['-a=*']);
+      } catch (error) {
+        expect(error.oclif.exit).toBe(ERRORS.REPO_INVALID.exit);
+      }
+    });
   });
 
   describe('- Add a file that does not exist', () => {
-    after(() => {
-      const repoService = new RepositoryService();
-      repoService.deleteLocalRepository();
+    it('should initialize and exit with correct status when file does not exist', async () => {
+      await initCommand.run(['-n=MyOrg', '-i=1234']);
+      expect(stdout[0]).toMatch('Initialized empty Fortellis repository');
+
+      try {
+        await addCommand.run(['-s', 'testSpec.yaml']);
+      } catch (error) {
+        expect(error.oclif.exit).toBe(ERRORS.FILE_NOT_EXIST.exit);
+      }
     });
-
-    test
-      .stdout()
-      .command(['init', '-n=MyOrg', '-i=1234'])
-      .it('init repo', ctx => {
-        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
-      });
-
-    test
-      .stdout()
-      .command(['add', '-s', 'testSpec.yaml'])
-      .exit(ERRORS.FILE_NOT_EXIST.exit)
-      .it('Exits with correct status when file does not exist');
   });
 
   describe('- Add a file that is already in the repo', () => {
-    after(() => {
-      const repoService = new RepositoryService();
-      repoService.deleteLocalRepository();
+    it('Exits with correct status when file is already in the repo', async () => {
+      await initCommand.run(['-n=MyOrg', '-i=1234']);
+      expect(stdout[0]).toMatch('Initialized empty Fortellis repository');
+
+      await apiTemplateCommand.run([]);
+      expect(stdout[1]).toMatch('Template spec created');
+
+      try {
+        await addCommand.run(['-s', constants.sampleSpecName]);
+        await addCommand.run(['-s', constants.sampleSpecName]);
+      } catch (error) {
+        expect(error.oclif.exit).toBe(ERRORS.FILE_ALREADY_EXISTS.exit);
+      }
     });
-
-    test
-      .stdout()
-      .command(['init', '-n=MyOrg', '-i=1234'])
-      .it('init repo', ctx => {
-        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
-      });
-
-    test
-      .stdout()
-      .command(['api-template'])
-      .it('create template files', ctx => {
-        expect(ctx.stdout).to.contain('Template spec created');
-      });
-
-    test
-      .stdout()
-      .command(['add', '-s', constants.sampleSpecName])
-      .command(['add', '-s', constants.sampleSpecName])
-      .exit(ERRORS.FILE_ALREADY_EXISTS.exit)
-      .it('Exits with correct status when file is already in the repo');
   });
 
   describe('- Add a file', () => {
-    before(() => {
-      fs.closeSync(fs.openSync('./testSpec.yaml', 'w'));
+    beforeEach(() => {
+      fs.closeSync(fs.openSync(`./${constants.sampleSpecName}`, 'w'));
     });
 
-    after(() => {
+    afterEach(() => {
       const repoService = new RepositoryService();
       repoService.deleteLocalRepository();
-      fs.unlinkSync('./testSpec.yaml');
+      fs.unlinkSync(`./${constants.sampleSpecName}`);
     });
 
-    test
-      .stdout()
-      .command(['init', '-n=MyOrg', '-i=1234'])
-      .it('init repo', ctx => {
-        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
-      });
+    it('init repo and add a file', async () => {
+      await initCommand.run(['-n=MyOrg', '-i=1234']);
+      expect(stdout[0]).toMatch('Initialized empty Fortellis repository');
 
-    test
-      .stdout()
-      .command(['add', '-s', constants.sampleSpecName])
-      .it('add a file', ctx => {
-        expect(ctx.stdout).to.contain('has been added to the repository');
-      });
+      await addCommand.run(['-s', constants.sampleSpecName]);
+      expect(stdout[1]).toMatch('has been added to the repository');
+    });
   });
 });

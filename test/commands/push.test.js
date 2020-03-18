@@ -1,36 +1,46 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
-const { expect, test } = require('@oclif/test');
 const RepositoryService = require('../../src/services/repository.service');
 const { ERRORS } = require('../../src/utils/errors');
+const initCommand = require('../../src/commands/init');
+const pushCommand = require('../../src/commands/push');
 
 describe('push', () => {
-  after(() => {
+  let stdout;
+  afterEach(() => {
     const repoService = new RepositoryService();
     repoService.deleteLocalRepository();
     console.log('Cleaning up repository');
+    jest.restoreAllMocks();
+  });
+
+  beforeEach(() => {
+    stdout = [];
+    jest
+      .spyOn(process.stdout, 'write')
+      .mockImplementation(val => stdout.push(val));
   });
 
   describe('- push without a repo', () => {
-    test
-      .stdout()
-      .command(['push', '-p=myPass', '-u=myUser', '-f=testFile.yaml'])
-      .exit(ERRORS.REPO_INVALID.exit)
-      .it('exits with correct status if repo does not exist');
+    it('exits with correct status if repo does not exist', async () => {
+      try {
+        await pushCommand.run(['-p=myPass', '-u=myUser', '-f=testFile.yaml']);
+      } catch (error) {
+        expect(error.oclif.exit).toBe(ERRORS.REPO_INVALID.exit);
+      }
+    });
   });
 
   describe('- push with a repo, but no file type', () => {
-    test
-      .stdout()
-      .command(['init', '-n=MyOrg', '-i=1234'])
-      .it('creating repo', ctx => {
-        expect(ctx.stdout).to.contain('Initialized empty Fortellis repository');
-      });
+    it('exit with status 2 if file type not specified', async () => {
+      await initCommand.run(['-n=MyOrg', '-i=1234']);
+      expect(stdout[0]).toMatch('Initialized empty Fortellis repository');
 
-    test
-      .stdout()
-      .command(['push', '-p=myPass', '-u=myUser', '-f=testFile.yaml'])
-      .exit(ERRORS.FILE_TYPE_NOT_GIVEN.exit)
-      .it('exit with status 2 if file type not specified');
+      try {
+        await pushCommand.run(['-p=myPass', '-u=myUser', '-f=testFile.yaml']);
+      } catch (error) {
+        expect(error.oclif.exit).toBe(ERRORS.FILE_TYPE_NOT_GIVEN.exit);
+      }
+    });
   });
 });

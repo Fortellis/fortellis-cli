@@ -8,7 +8,7 @@ const {
   mapRulesetSeverity
 } = require('../../../src/services/linter');
 
-describe('mapRuleSeverity', async function() {
+describe('mapRuleSeverity', function() {
   it('should assign a default severity of `warning` if missing', async function() {
     const testRule = {};
     const mappedRule = mapRuleSeverity(testRule);
@@ -58,7 +58,7 @@ describe('mapRuleSeverity', async function() {
   });
 });
 
-describe('mapRulesetSeverity', async function() {
+describe('mapRulesetSeverity', function() {
   const testRuleset = {
     a: { severity: 'error' },
     b: { severity: 'warn' },
@@ -80,7 +80,7 @@ describe('mapRulesetSeverity', async function() {
   });
 });
 
-describe('filterRulesBySeverity', async function() {
+describe('filterRulesBySeverity', function() {
   const testRules = {
     a: { severity: DiagnosticSeverity.Error },
     b: { severity: DiagnosticSeverity.Warning },
@@ -131,7 +131,7 @@ describe('filterRulesBySeverity', async function() {
   });
 });
 
-describe('sortResults', async function() {
+describe('sortResults', function() {
   it('should sort results by descending severity level`', async function() {
     const testResults = [
       { severity: DiagnosticSeverity.Warning },
