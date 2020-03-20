@@ -1,5 +1,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable unicorn/new-for-builtins */
+
+const _ = require('lodash');
+
 const caseTypes = {
   flatCase: {
     regex: RegExp('^[a-z][a-zA-Z0-9]+$'),
@@ -37,27 +40,56 @@ const caseTypes = {
 
 function casing(targetVal, opts) {
   /**
-     * This rule verifies that the value matches the specified case type.
-     */
-    
-    const { casing } = opts;
-    if(casing === void 0)
-        throw "must include 'casing' option";
+   * This rule verifies that the value matches the specified case type.
+   */
 
-    const caseType = caseTypes[casing];
-    if(casing === void 0)
-        throw "invalid 'casing' option";
+  const { casing } = opts;
+  if (casing === void 0) throw "must include 'casing' option";
 
-    if(!caseType.regex.test(targetVal)) {
-        return [{
-            message: "`" + targetVal + "` should be `" + caseType.prettyName + "`"
-        }];
-    }
+  const caseType = caseTypes[casing];
+  if (casing === void 0) throw "invalid 'casing' option";
 
-    return [];
+  if (!caseType.regex.test(targetVal)) {
+    return [
+      {
+        message: '`' + targetVal + '` should be `' + caseType.prettyName + '`'
+      }
+    ];
+  }
+
+  return [];
+}
+
+function objectDefsRequiredProp(targetVal) {
+  /**
+   * This rule verifies that definitions of type `object` declare a `required` property.
+   */
+  const required = _.get(targetVal, 'required');
+  const type = _.get(targetVal, 'type');
+  const properties = _.get(targetVal, 'properties');
+
+  // Definitions can declare themselves as type `object` in two ways:
+  // 1. Declaring a property `type` equal to `object`
+  // 2. Declaring a `properties` property
+
+  // If explicity/implicitly type `object` and `required` not declared:
+  if (
+    (type === 'object' || properties !== undefined) &&
+    required === undefined
+  ) {
+    return [
+      {
+        message:
+          'Definitions of type `object` should declared a `required` property.'
+      }
+    ];
+  }
+
+  return [];
 }
 
 module.exports = {
   caseTypes,
   casing,
+  objectDefsRequiredProp
 };

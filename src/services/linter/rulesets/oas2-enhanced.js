@@ -201,14 +201,13 @@ const wdef001 = {
 };
 
 const wdef002 = {
-  description: 'defintion objects should declare a `required` property.',
+  // Definitions of type `object` should declared a `required` property.'
   recommended: true,
   type: 'style',
   severity: 'warn',
   given: '$.definitions[*]',
   then: {
-    field: 'required',
-    function: 'truthy'
+    function: 'objectDefsRequiredProp'
   }
 };
 
