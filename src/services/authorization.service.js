@@ -42,7 +42,7 @@ async function getSessionId(authUsername, authPassword) {
         'Cache-Control': 'no-cache',
         Connection: 'keep-alive',
         'Content-Type': 'application/json',
-        Host: 'api.accounts-dev.fortellis.io',
+        Host: `${constants.getSessionHost}`,
         Accept: '*/*'
       }
     };
@@ -72,7 +72,7 @@ async function getSessionId(authUsername, authPassword) {
 
 async function getToken(sessionToken, entityId) {
   try {
-    const tokenUrl = `${constants.authTokenUrl}?client_id=0oa4qokpibPph9mnb2p7&nonce=nonce&prompt=none&redirect_uri=https%3A%2F%2Fdeveloper-dev.fortellis.io%2F&response_mode=fragment&response_type=token&scope=openid%20email%20profile&state=state&sessionToken=${sessionToken}`;
+    const tokenUrl = `${constants.authTokenUrl}?client_id=${constants.authTokenClientId}&nonce=nonce&prompt=none&redirect_uri=https%3A%2F%2Fdeveloper.fortellis.io%2F&response_mode=fragment&response_type=token&scope=openid%20email%20profile&state=state&sessionToken=${sessionToken}`;
 
     let myHeaders = {
       Accept: '*/*',
