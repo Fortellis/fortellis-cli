@@ -9,5 +9,5 @@ module.exports = Object.freeze({
   authTokenUrl:
     'https://identity.fortellis.io/oauth2/aus1p1ixy7YL8cMq02p7/v1/authorize',
   authTokenClientId: '0oa4rgkrelVivvAW72p7',
-  fortellisShimURL: 'https://specifications.fortellis.io/cli/spec'
+  fortellisPushUrl: 'https://specifications.fortellis.io/v1/push'
 });
