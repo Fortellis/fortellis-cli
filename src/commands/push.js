@@ -55,7 +55,7 @@ class PushCommand extends Command {
           token = configService.token;
         }
 
-        let cliPushUrl = `${constants.fortellisShimURL}`;
+        let cliPushUrl = `${constants.fortellisPushUrl}`;
         const config = {
           headers: {
             Authorization: `Bearer ${token.token}`

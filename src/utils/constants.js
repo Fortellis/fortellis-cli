@@ -3,9 +3,11 @@ module.exports = Object.freeze({
   configFileName: 'config.yaml',
   sampleSpecName: 'pet-adoption-v1.0.0.yaml',
   sampleErrorSpecName: 'pet-adoption-v1.0.0.error.yaml',
-  orgListUrl: 'https://organizations-dev.fortellis.io/v1/organizations',
-  getSessionUrl: 'https://api.accounts-dev.fortellis.io/api/v1/authn',
+  orgListUrl: 'https://organizations.fortellis.io/v1/organizations',
+  getSessionUrl: 'https://api.accounts.fortellis.io/api/v1/authn',
+  getSessionHost: 'api.accounts.fortellis.io',
   authTokenUrl:
-    'https://api-dev.identity.fortellis.io/oauth2/aus1ni5i9n9WkzcYa2p7/v1/authorize',
-  fortellisShimURL: 'https://specifications-dev.fortellis.io/cli/spec'
+    'https://identity.fortellis.io/oauth2/aus1p1ixy7YL8cMq02p7/v1/authorize',
+  authTokenClientId: '0oa4rgkrelVivvAW72p7',
+  fortellisPushUrl: 'https://specifications.fortellis.io/v1/push'
 });
